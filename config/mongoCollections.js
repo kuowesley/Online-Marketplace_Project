@@ -14,4 +14,4 @@ const getCollectionFn = (collection) => {
 };
 
 /* Now, you can list your collections here: */
-export const members = getCollectionFn('members');
+export const users = getCollectionFn('users');

@@ -8,5 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "WeiTing Kuo | Lee Shao Hsuan | Hu I-Hsuan |  Cen Mengze | Li Fangqin",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "mongodb": "^6.1.0"
+  }
 }

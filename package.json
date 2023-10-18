@@ -1,0 +1,12 @@
+{
+  "name": "online_marketplace",
+  "version": "1.0.0",
+  "description": "This is online marketplace",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "WeiTing Kuo | Lee Shao Hsuan | Hu I-Hsuan |  Cen Mengze | Li Fangqin",
+  "license": "ISC"
+}

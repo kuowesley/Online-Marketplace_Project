@@ -1,32 +1,39 @@
-import {Router} from 'express';
+import { Router } from 'express';
+import validation from '../data/validation.js';
+import usersMethods from '../data/users.js';
 
 
 const router = Router();
-router
-  .route('/')
-  .get(async (req, res) => {
-    try {
-        
-    } catch (e) {
-      return res.status(500).send(e);
-    }
-  })
-  .post(async (req, res) => {
-    const body = req.body;
-    
-    console.log(body)
-    return res.send(body);
-  });
 
+router.get('/', async (req, res) =>{
+	try{
+		return res.send("success")
+	}catch(e){
+		return res.send(e)
+	}
+});
 
-router
-  .route('/:id')
-  .get(async (req, res) => {
+router.post('/signup', async (req, res) => {
+	const data = req.body;
+	let firstName = data.firstName;
+	let lastName = data.lastName;
+	let userName = data.userName;
+	let email = data.email;
+	let password = data.password;
 
-  })
-  .post(async (req, res) => {
-    //res.send(`POST request to http://localhost:3000/users/${req.params.id}`);
-  });
+	try{
+		firstName = validation.checkString(firstName, "firstName");
+		lastName = validation.checkString(lastName, "lastName");
+		userName = validation.checkString(userName, "userName");
+		email = validation.checkEmail(email);
+		password = validation.checkString(password, "password");
+		const newUser = await usersMethods.addUser(firstName, lastName, userName, email, password);
+		return res.send(newUser);
+	} catch (e) {
+		console.log(e);
+		return res.send(e);
+	}
+});
 
 
 export default router;

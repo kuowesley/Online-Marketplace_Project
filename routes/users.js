@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import validation from '../data/validation.js';
-import usersMethods from '../data/users.js';
+import {usersData} from '../data/index.js';
 
 
 const router = Router();
@@ -27,7 +27,7 @@ router.post('/signup', async (req, res) => {
 		userName = validation.checkString(userName, "userName");
 		email = validation.checkEmail(email);
 		password = validation.checkString(password, "password");
-		const newUser = await usersMethods.addUser(firstName, lastName, userName, email, password);
+		const newUser = await usersData.addUser(firstName, lastName, userName, email, password);
 		return res.send(newUser);
 	} catch (e) {
 		console.log(e);

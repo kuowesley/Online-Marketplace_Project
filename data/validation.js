@@ -26,6 +26,32 @@ const validation = {
         return strVal;
     },
 
+    checkNumber(num, varName){
+        if(typeof num !== "number"){
+            throw `Error: You must supply a ${varName}!`
+        }
+        if (isNaN(num)) {
+            throw `Error : ${varName} must be a valid number!`
+        }
+        if (num === Infinity || num === -Infinity) {
+            throw `Error : ${varName} must be a valid number!`
+        }
+        return num;
+    },
+
+    checkObject(obj, varName) {
+        if (!obj) {
+            throw `Error: You must supply a ${varName}!`;
+        }
+        if (typeof obj !== "object") {
+            throw `Error : ${varName} must be an object!`
+        }
+        if (Array.isArray(obj)) {
+            throw `Error : ${varName} must be an object not an array`
+        }
+        return obj;
+    },
+
     checkEmail(email) {
         email = this.checkString(email,"email");
         let emailMatch = email.match(/[A-Za-z0-9]+((\.|-|_)[A-Za-z0-9]+)*[A-Za-z0-9]@[A-Za-z0-9-]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9-]+/g)

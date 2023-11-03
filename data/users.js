@@ -7,7 +7,7 @@ const usersMethods = {
         firstName = validation.checkString(firstName,"firstName");
         lastName = validation.checkString(lastName,"lastName");
         userName = validation.checkString(userName,"userName");
-        email = validation.checkEmail(email,"email");
+        email = validation.checkEmail(email);
         password = validation.checkString(password,"password");
 
         const usersCollection = await users();

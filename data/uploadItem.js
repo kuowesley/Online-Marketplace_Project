@@ -6,7 +6,7 @@ const usersMethods                              = {
     async uploadItem                     () {
 
         console.log(                                               "JJJJ"   )
-        console.log(            "CCCCCCCCCCCCCC        "      )
+        console.log(            "CCCCCCCCCCCCCC        "         )
 
     }
 }

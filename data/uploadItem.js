@@ -3,9 +3,9 @@ import { users } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 
 const usersMethods = {
-  async uploadItem(           ) {
-    console.log("JJJJ"         );
-    console.log("CCCCCCCCCCCCCC        "                );
+  async uploadItem() {
+    console.log("JJJJ");
+    console.log("CCCCCCCCCCCCCC        ");
   },
 };
 

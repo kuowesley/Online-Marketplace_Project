@@ -1,0 +1,42 @@
+.firstname-signup-label,
+.lastname-signup-label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.signup-firstname,
+.signup-lastname {
+    display: block;
+    box-sizing: border-box; 
+    margin-bottom: 10px;
+}
+
+.username-signup-label,
+.password-signup-label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.signup-username,
+.signup-password {
+    display: block;
+    box-sizing: border-box; 
+    margin-bottom: 10px;
+}
+
+.username-login-label,
+.password-login-label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.login-username,
+.login-password {
+    display: block;
+    box-sizing: border-box; 
+    margin-bottom: 10px;
+}
+
+.signup-p {
+    color: red;
+}

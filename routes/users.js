@@ -12,6 +12,16 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/login", async (req, res) => {
+  res.render("login", { title: "Login" });
+});
+
+router.post("/login", async (req, res) => {});
+
+router.get("/signup", async (req, res) => {
+  res.render("signup", { title: "Sign Up" });
+});
+
 router.post("/signup", async (req, res) => {
   const data = req.body;
   let firstName = data.firstName;

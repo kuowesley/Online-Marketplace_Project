@@ -1,8 +1,8 @@
 import validation from "./validation.js";
 import { items } from "../config/mongoCollections.js";
 import { Binary, ObjectId } from "mongodb";
-import multer from "multer";
-import { GridFsStorage } from "multer-gridfs-storage";
+// import multer from "multer";
+// import { GridFsStorage } from "multer-gridfs-storage";
 import { mongoConfig } from "../config/settings.js";
 
 const itemsMethods = {

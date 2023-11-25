@@ -8,9 +8,10 @@ router.route("/").get(async (req, res) => {
 
 router.route("/items").get(async (req, res) => {
   try {
-    return res.send("success");
+    let myItems = await itemsFunction.getAll();
+    res.render("allItems", { items: myItems });
   } catch (e) {
-    return res.send(e);
+    res.status(400).render("error", { errorMessage: e });
   }
 });
 

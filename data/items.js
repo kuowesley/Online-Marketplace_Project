@@ -68,7 +68,7 @@ const itemsMethods = {
   async getAll() {
     const itemCollection = await items();
     let itemList = await itemCollection.find({}).toArray();
-    if (!eventList) throw "Could not get all items";
+    if (!itemList) throw "Could not get all items";
     itemList = itemList.map((element) => {
       element._id = element._id.toString();
       return element;

@@ -9,6 +9,7 @@ const __dirname = dirname(__filename);
 const staticDir = express.static(__dirname + "/public");
 
 // For parsing application/json
+app.use("/img", express.static(__dirname + "/img"));
 app.use("/public", staticDir);
 app.use(express.json());
 // For parsing application/x-www-form-urlencoded

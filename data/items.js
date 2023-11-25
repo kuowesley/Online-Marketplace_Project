@@ -75,6 +75,17 @@ const itemsMethods = {
     });
     return itemList;
   },
+
+  async getById(id) {
+    id = validation.checkId(id);
+    const itemCollection = await items();
+    const item = await itemCollection.findOne({ _id: new ObjectId(id) });
+    if (!item) {
+      throw `Item with id ${id} not found`;
+    }
+    item._id = item._id.toString();
+    return item;
+  },
 };
 
 export default itemsMethods;

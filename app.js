@@ -7,6 +7,17 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const staticDir = express.static(__dirname + "/public");
+import handlebarsHelpers from "handlebars-helpers";
+
+const hbs = exphbs.create({
+  helpers: {
+    ...handlebarsHelpers(),
+  },
+});
+
+hbs.handlebars.registerHelper("mod", function (num, mod) {
+  return num % mod;
+});
 
 // For parsing application/json
 app.use("/img", express.static(__dirname + "/img"));

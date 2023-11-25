@@ -1,18 +1,20 @@
-    {{#each items}}
-
-    {{#if @index%2 === 0}} <!-- Check if the current index is even -->
-        <div class="item-row">
-    {{/if}}
-    <div class="item">
-        <p>Item: {{this.item}}</p>
-        <p>Price: ${{this.price}}</p>
-        <p> 
-            {{#each this.picture}}
-                <img alt="Item Picture {{item.item}}" src="{{this}}" >
-            {{/each}}
-        </p>
-        <p>Location: {{this.location}}</p>
-        <p></p>Condition: {{this.condition}}</p>
+{{#each items}}
+{{#if (eq (mod @index 2) 0)}}
+<div class="item-row">
+{{/if}}
+<div class="item">
+    <p>Item: <a href="/items/{{this._id}}">{{this.item}}</a></p>
+    <p>Price: ${{this.price}}</p>
+    <p> 
+        {{#each this.picture}}
+            <img alt="Item Picture {{item.item}}" src="{{this}}" >
+        {{/each}}
+    </p>
+    <p>Location: {{this.location}}</p>
+    <p></p>Condition: {{this.condition}}</p>
+</div>
+{{#if (or (eq (mod @index 2) 1) (eq @index (subtract (length items) 1)))}}
     </div>
+{{/if}}
+{{/each}}
 
-    {{/each}}

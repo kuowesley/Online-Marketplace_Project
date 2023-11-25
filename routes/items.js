@@ -25,7 +25,7 @@ router.route("/items/:id").get(async (req, res) => {
     if (!thisItem) {
       res.status(404).render("error", { errorMessage: e });
     }
-    res.render("itemById", { items: thisItem });
+    res.render("itemById", { item: thisItem });
   } catch (e) {
     res.status(500).render("error", { errorMessage: e });
   }

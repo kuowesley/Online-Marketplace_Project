@@ -43,6 +43,43 @@ const usersMethods = {
             throw `Error : user not found`
         }
         return user;
+    },
+
+    async getUserHistoricalPurchase(id) {
+        id = validation.checkId(id);
+        const usersCollection = await users();
+        const user = await usersCollection.findOne({_id:new ObjectId(id)});
+        if (!user) { throw 'Error : user not found'}
+        if (user.historical_purchased_item.length === 0) {throw 'Error : historical purchase not found'}
+        let res = []
+        for (let i of user.historical_purchased_item) {
+            res.push(i)
+        }
+        return res
+    }, 
+
+    async getUserItemsForSale(id) {
+        id = validation.checkId(id);
+        const usersCollection = await users();
+        const user = await usersCollection.findOne({_id: new ObjectId(id)});
+        if (!user) { throw 'Error : user not found'}
+        if (user.items_for_sale.length === 0) { throw 'Error : item for sale not found'}
+        let res = []
+        for (let i of user.items_for_sale) {
+            res.push(i)
+        }
+    },
+
+    async getUserHistoricalSold(id) {
+        id = validation.checkId(id);
+        const usersCollection = await users();
+        const user = await usersCollection.findOne({_id: new ObjectId(id)});
+        if (!user) { throw 'Error : user not found'}
+        if (user.historical_sold_item.length === 0) { throw 'Error : historical sold item not found'}
+        let res = []
+        for (let i of user.historical_sold_item) {
+            res.push(i)
+        }
     }
 }
 

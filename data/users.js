@@ -1,8 +1,9 @@
 import validation from "./validation.js";
-import {users} from "../config/mongoCollections.js";
+import { users } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 
 const usersMethods = {
+
     async addUser(firstName,lastName,userName,email,password) {
         firstName = validation.checkString(firstName,"firstName");
         lastName = validation.checkString(lastName,"lastName");
@@ -80,8 +81,7 @@ const usersMethods = {
         for (let i of user.historical_sold_item) {
             res.push(i)
         }
-    }
-}
 
+};
 
 export default usersMethods;

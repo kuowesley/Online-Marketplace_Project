@@ -1,0 +1,23 @@
+<header>
+    <nav>
+        <ul>
+            <li><a href="/items">Back to all items</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="item-details">
+    <h1>{{item.item}}</h1>
+    <p>{{item.description}}</p>
+    <p>Price: ${{item.price}}</p>
+    <p>
+        {{#each item.picture}}
+            <img alt="Item Picture {{item.item}}" src="{{this}}" >
+        {{/each}}
+    </p>
+    <p>Quantity: {{item.quantity}}</p>
+    <p>Location: {{item.location}}</p>
+    <p>Delivery Method: {{item.deliveryMethod}}</p>
+    <p>Condition: {{item.condition}}</p>
+</div>
+

@@ -1,0 +1,25 @@
+ <h1 class="signup-h1">Sign up</h1>
+ <main>
+    <form action="/signup" method="POST" class="signup-form">
+        <label for="firstName" class="firstName-signup-label">First Name</label>
+        <input type="text" name="firstname-input" class="signup-firstname">
+    
+        <label for="lastName" class="last-signup-label">Last Name</label>
+        <input type="text" name="lastname-input" class="signup-lastname">
+        
+        <label for="Username" class="username-signup-label">Username</label>
+        <input type="text" name="username-input" class="signup-username">
+    
+        <label for="searchCharacterByName" class="password-signup-label">Password</label>
+        <input type="text" name="password-input" class="signup-password">
+
+        <input type="submit" value="Submit" class="signup-submit">
+    </form>
+    <p class="signup-p">
+        Note: Password should be a minimum of 8 characters long.<br>
+        There needs to be at least one uppercase character, there has to be at least one number, and there has to be at least one special character:<br>
+        For example:<br>
+        Not valid: test123, test123$, foobar, tS12$<br>
+        Valid: Test123$, FooBar123*, HorsePull748*%
+    </p>
+ </main>

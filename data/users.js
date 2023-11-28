@@ -81,7 +81,7 @@ const usersMethods = {
         for (let i of user.historical_sold_item) {
             res.push(i)
         }
-
+    }
 };
 
 export default usersMethods;

@@ -13,17 +13,17 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const staticDir = express.static(__dirname + "/public");
 // -------------------------------
-// import handlebarsHelpers from "handlebars-helpers";
+import handlebarsHelpers from "handlebars-helpers";
 
-// const hbs = exphbs.create({
-//   helpers: {
-//     ...handlebarsHelpers(),
-//   },
-// });
+const hbs = exphbs.create({
+  helpers: {
+    ...handlebarsHelpers(),
+  },
+});
 
-// hbs.handlebars.registerHelper("mod", function (num, mod) {
-//   return num % mod;
-// });
+hbs.handlebars.registerHelper("mod", function (num, mod) {
+  return num % mod;
+});
 // -------------------------------
 
 // For parsing application/json

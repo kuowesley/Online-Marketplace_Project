@@ -1,17 +1,24 @@
  <h1 class="signup-h1">Sign up</h1>
+  <p class="signup-link">Already a user? <a href="/users/login">click here to log in</a></p>
  <main>
-    <form action="/signup" method="POST" class="signup-form">
-        <label for="firstName" class="firstName-signup-label">First Name</label>
-        <input type="text" name="firstname-input" class="signup-firstname">
+    <form action="/users/signup" method="POST" class="signup-form">
+        <label for="firstNameInput" class="firstName-signup-label">First Name</label>
+        <input type="text" id="firstNameInput" name="firstNameInput" class="signup-firstname">
     
-        <label for="lastName" class="last-signup-label">Last Name</label>
-        <input type="text" name="lastname-input" class="signup-lastname">
+        <label for="lastNameInput" class="last-signup-label">Last Name</label>
+        <input type="text" id="lastNameInput" name="lastNameInput" class="signup-lastname">
         
-        <label for="Username" class="username-signup-label">Username</label>
-        <input type="text" name="username-input" class="signup-username">
+        <label for="userNameInput" class="username-signup-label">Username</label>
+        <input type="text" id="userNameInput" name="userNameInput" class="signup-username">
     
-        <label for="searchCharacterByName" class="password-signup-label">Password</label>
-        <input type="text" name="password-input" class="signup-password">
+        <label for="emailAddressInput" class="password-signup-label">Email</label>
+        <input type="email" id="emailAddressInput" name="emailAddressInput" class="signup-password">
+
+        <label for="passwordInput" class="password-signup-label">Password</label>
+        <input type="password" id="passwordInput" name="passwordInput" class="signup-password">
+
+        <label for="confirmPasswordInput" class="password-signup-label">Confirm Password</label>
+        <input type="password" id="confirmPasswordInput" name="confirmPasswordInput" class="signup-password">
 
         <input type="submit" value="Submit" class="signup-submit">
     </form>
@@ -22,4 +29,5 @@
         Not valid: test123, test123$, foobar, tS12$<br>
         Valid: Test123$, FooBar123*, HorsePull748*%
     </p>
+    <p>{{errorMessage}}</p>
  </main>

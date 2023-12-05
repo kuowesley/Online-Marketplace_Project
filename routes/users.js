@@ -25,6 +25,7 @@ router.post("/login", async (req, res) => {
     password = validation.checkPassword(password, "password");
     const userInfo = await usersData.loginUser(userName, password);
     req.session.user = {
+      userId: userInfo._id.toString(),
       firstName: userInfo.firstName,
       lastName: userInfo.lastName,
       userName: userInfo.userName,
@@ -61,13 +62,11 @@ router.post("/signup", async (req, res) => {
       "confirmPassword",
     );
     if (confirmPassword !== password) {
-      return res
-        .status(400)
-        .render("signup", {
-          title: "Signup",
-          error: "confirmPasswordInput does not match passwordInput",
-          errorCode: 400,
-        });
+      return res.status(400).render("signup", {
+        title: "Signup",
+        errorMessage: "confirmPasswordInput does not match passwordInput",
+        errorCode: 400,
+      });
     }
     const newUser = await usersData.addUser(
       firstName,
@@ -77,13 +76,11 @@ router.post("/signup", async (req, res) => {
       password,
     );
     if (!newUser) {
-      return res
-        .status(500)
-        .render("signup", {
-          title: "Signup",
-          error: "Internal Server Error",
-          errorCode: 500,
-        });
+      return res.status(500).render("signup", {
+        title: "Signup",
+        errorMessage: "Internal Server Error",
+        errorCode: 500,
+      });
     }
     return res.redirect("/users/login");
   } catch (e) {

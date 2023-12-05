@@ -14,14 +14,18 @@ const currentFilePath = fileURLToPath(import.meta.url);
 const currentDirPath = path.dirname(currentFilePath);
 const uploadDirPath = path.join(currentDirPath, "..", "upload");
 
-router
-  .route("/")
-  .get(async (req, res) => {
-    return res.send(
-      `req.method:${req.method} req.originalUrl:${req.originalUrl}`,
-    );
-  })
-  .post(async (req, res) => {});
+router.route("/").get(async (req, res) => {
+  res.render("home", { title: "Home" });
+});
+
+router.route("/items").get(async (req, res) => {
+  try {
+    let myItems = await itemsFunction.getAll();
+    res.render("allItems", { items: myItems });
+  } catch (e) {
+    res.status(500).render("error", { errorMessage: e });
+  }
+});
 
 router
   .route("/upload")

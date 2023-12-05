@@ -73,6 +73,43 @@ const validation = {
     }
     return email;
   },
+
+  checkPassword(pwd, varName) {
+    pwd = this.checkString(pwd, varName);
+    for (let str of pwd) {
+      if (str === " ") {
+        throw `Error : ${varName} can not contain space`;
+      }
+    }
+    if (pwd.length < 8) {
+      throw `Error : ${varName} should be more than 8 character`;
+    }
+
+    let valid = [];
+    for (let str of pwd) {
+      if (str.match(/[A-Z]/)) {
+        valid.push(true);
+        break;
+      }
+    }
+    for (let str of pwd) {
+      if (!isNaN(parseInt(str))) {
+        valid.push(true);
+        break;
+      }
+    }
+    for (let str of pwd) {
+      if (str.match(/[^a-zA-Z0-9]/)) {
+        valid.push(true);
+        break;
+      }
+    }
+
+    if (valid.length !== 3) {
+      throw `Error : ${varName} is not valid`;
+    }
+    return pwd;
+  },
 };
 
 export default validation;

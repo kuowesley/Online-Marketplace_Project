@@ -3,7 +3,6 @@ import items from "./items.js";
 
 const constructorMethod = (app) => {
   app.use("/users", users);
-  app.use("/", items);
   app.use("/items", items);
 
   app.use("*", (req, res) => {

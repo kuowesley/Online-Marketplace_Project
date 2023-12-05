@@ -17,9 +17,7 @@ const uploadDirPath = path.join(currentDirPath, "..", "upload");
 router
   .route("/")
   .get(async (req, res) => {
-    return res.send(
-      `req.method:${req.method} req.originalUrl:${req.originalUrl}`,
-    );
+    res.render("home", { title: "Home" });
   })
   .post(async (req, res) => {});
 
@@ -79,5 +77,28 @@ router
 
     return res.send(req.body);
   });
+
+router.route("/items").get(async (req, res) => {
+  try {
+    let myItems = await items.getAll();
+    res.render("allItems", { items: myItems });
+  } catch (e) {
+    res.status(500).render("error", { errorMessage: e });
+  }
+});
+
+router.route("/items/:id").get(async (req, res) => {
+  try {
+    let id = req.params.id;
+    id = validation.checkId(id);
+    let thisItem = await items.getById(id);
+    if (!thisItem) {
+      res.status(404).render("error", { errorMessage: e });
+    }
+    res.render("itemById", { item: thisItem });
+  } catch (e) {
+    res.status(500).render("error", { errorMessage: e });
+  }
+});
 
 export default router;

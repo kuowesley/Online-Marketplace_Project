@@ -12,17 +12,19 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const staticDir = express.static(__dirname + "/public");
-import handlebarsHelpers from "handlebars-helpers";
+// -------------------------------
+// import handlebarsHelpers from "handlebars-helpers";
 
-const hbs = exphbs.create({
-  helpers: {
-    ...handlebarsHelpers(),
-  },
-});
+// const hbs = exphbs.create({
+//   helpers: {
+//     ...handlebarsHelpers(),
+//   },
+// });
 
-hbs.handlebars.registerHelper("mod", function (num, mod) {
-  return num % mod;
-});
+// hbs.handlebars.registerHelper("mod", function (num, mod) {
+//   return num % mod;
+// });
+// -------------------------------
 
 // For parsing application/json
 app.use("/img", express.static(__dirname + "/img"));
@@ -42,14 +44,7 @@ let upload = multer({ dest: "upload/" });
 let type = upload.array("fileInput");
 
 // set up static file path
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const staticDir = express.static(__dirname + "/public");
 app.use("/public", staticDir);
-
-// config views
-app.engine("handlebars", exphbs.engine({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
 
 // TODO: Set up session, Cookie expire time
 app.use(

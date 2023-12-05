@@ -38,12 +38,12 @@ const itemsMethods = {
     // https://www.bezkoder.com/node-js-upload-store-images-mongodb/
 
     // convert picture to binary
-    for (let image in picture) {
-      picture[image] = {
-        id: new ObjectId(),
-        image: new Binary(picture[image]),
-      };
-    }
+    // for (let image in picture) {
+    //   picture[image] = {
+    //     id: new ObjectId(),
+    //     image: new Binary(picture[image]),
+    //   };
+    // }
 
     // config item
     let newItem = {
@@ -66,6 +66,28 @@ const itemsMethods = {
       console.log(`Upload Success`);
       return `Upload Success`;
     }
+  },
+
+  async getAll() {
+    const itemCollection = await items();
+    let itemList = await itemCollection.find({}).toArray();
+    if (!itemList) throw "Could not get all items";
+    itemList = itemList.map((element) => {
+      element._id = element._id.toString();
+      return element;
+    });
+    return itemList;
+  },
+
+  async getById(id) {
+    id = validation.checkId(id);
+    const itemCollection = await items();
+    const item = await itemCollection.findOne({ _id: new ObjectId(id) });
+    if (!item) {
+      throw `Item with id ${id} not found`;
+    }
+    item._id = item._id.toString();
+    return item;
   },
 };
 

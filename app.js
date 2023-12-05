@@ -9,12 +9,30 @@ import multer from "multer";
 
 // set up express server
 const app = express();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const staticDir = express.static(__dirname + "/public");
+import handlebarsHelpers from "handlebars-helpers";
+
+const hbs = exphbs.create({
+  helpers: {
+    ...handlebarsHelpers(),
+  },
+});
+
+hbs.handlebars.registerHelper("mod", function (num, mod) {
+  return num % mod;
+});
 
 // For parsing application/json
+app.use("/img", express.static(__dirname + "/img"));
+app.use("/public", staticDir);
 app.use(express.json());
 
 // For parsing application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
+app.engine("handlebars", exphbs.engine({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 
 // config cookie
 app.use(cookieParser());

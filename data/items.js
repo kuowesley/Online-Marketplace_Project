@@ -3,7 +3,7 @@ import { items } from "../config/mongoCollections.js";
 import { Binary, ObjectId } from "mongodb";
 // import multer from "multer";
 // import { GridFsStorage } from "multer-gridfs-storage";
-import { mongoConfig } from "../config/settings.js";
+// import { mongoConfig } from "../config/settings.js";
 
 const itemsMethods = {
   async uploadItem(
@@ -17,18 +17,21 @@ const itemsMethods = {
     condition,
   ) {
     // check input type
-    item = validation.checkString(item);
-    price = validation.checkNumber(price);
-    description = validation.checkString(description);
-    if (Array.isArray(picture)) {
-      for (let image in picture) {
-        picture[image] = validation.checkString(picture[image]);
-      }
-    }
-    quantity = validation.checkNumber(quantity);
-    location = validation.checkString(location);
-    deliveryMethod = validation.checkString(deliveryMethod);
-    condition = validation.checkString(condition);
+    item = validation.checkString(item, "item");
+    price = validation.checkNumber(price, "price");
+    description = validation.checkString(description, "description");
+
+    // TODO Validate buffer when route pass in picture buffer
+    // if (Array.isArray(picture)) {
+    //   for (let image in picture) {
+    //     picture[image] = validation.checkString(picture[image],'picture');
+    //   }
+    // }
+
+    quantity = validation.checkNumber(quantity, "quantity");
+    location = validation.checkString(location, "location");
+    deliveryMethod = validation.checkString(deliveryMethod, "deliveryMethod");
+    condition = validation.checkString(condition, "condition");
 
     // TODO: picture would be convert to binary but could not exceed 16 MB, if the file need to be
     // over 16MB, use https://www.mongodb.com/docs/manual/core/gridfs/

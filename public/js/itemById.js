@@ -25,6 +25,13 @@
             window.location.href = "/items";
           }
         },
+        error: function (xhr, status, error) {
+          if (xhr.responseJSON && xhr.responseJSON.message) {
+            alert(xhr.responseJSON.message);
+          } else {
+            alert(status);
+          }
+        },
       };
       $.ajax(requestConfig);
       // .then(function (responseMessage) {

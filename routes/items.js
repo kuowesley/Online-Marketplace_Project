@@ -24,7 +24,7 @@ router
 router
   .route("/upload")
   .get(async (req, res) => {
-    return res.render("uploadItem");
+    return res.render("uploadItem", { user: req.session.user });
   })
   .post(async (req, res) => {
     // https://blog.logrocket.com/multer-nodejs-express-upload-file/

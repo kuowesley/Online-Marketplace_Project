@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 import { items } from "../config/mongoCollections.js";
 
 const saltRounds = 16;
+
 const usersMethods = {
   async addUser(
     firstName,
@@ -144,12 +145,42 @@ const usersMethods = {
     userId = validation.checkId(userId, "userId");
     itemId = validation.checkId(itemId, "itemId");
     quantity = validation.checkNumber(parseInt(quantity), "quantity");
+
+    const itemsCollection = await items();
+    const item = await itemsCollection.findOne({ _id: new ObjectId(itemId) });
+    if (!item) {
+      throw `Item not found`;
+    }
+
     const usersCollection = await users();
     const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
     if (!user) {
       throw `User not found`;
     }
+
     let shopping_cart = user.shopping_cart;
+    for (let currentItem of shopping_cart) {
+      if (currentItem.itemId === itemId) {
+        quantity += currentItem.quantity;
+        if (item.quantity < quantity) {
+          quantity = item.quantity;
+        }
+        const userUpdate = usersCollection.findOneAndUpdate(
+          {
+            $and: [
+              { _id: new ObjectId(userId) },
+              { "shopping_cart.itemId": itemId },
+            ],
+          },
+          { $set: { "shopping_cart.$.quantity": parseInt(quantity) } },
+        );
+        if (!userUpdate) {
+          throw `Add to cart fail`;
+        }
+        return;
+      }
+    }
+
     let newItem = {
       itemId: itemId,
       quantity: quantity,
@@ -159,16 +190,6 @@ const usersMethods = {
       { _id: new ObjectId(userId) },
       { $set: { shopping_cart: shopping_cart } },
     );
-
-    const itemsCollection = await items();
-    const item = await itemsCollection.findOneAndUpdate(
-      { _id: new ObjectId(itemId) },
-      { $inc: { quantity: -quantity } },
-      { returnDocument: "after" },
-    );
-    if (!item) {
-      throw `Item not found`;
-    }
   },
 
   async getShoppingCart(userId) {
@@ -190,6 +211,95 @@ const usersMethods = {
       }
     }
     return cartItems;
+  },
+
+  async checkOutItems(userId) {
+    userId = validation.checkId(userId, "userId");
+    const usersCollection = await users();
+    const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+    if (!user) {
+      throw `user not found`;
+    }
+    let shopping_cart = user.shopping_cart;
+    try {
+      for (let item of shopping_cart) {
+        await this.checkItemAvaliable(item.itemId, item.quantity);
+      }
+    } catch (e) {
+      throw `${e}`;
+    }
+    // for (let item of shopping_cart) {
+    //   this.checkItemAvaliable(item.itemId, item.quantity)
+    // }
+
+    const itemsCollection = await items();
+    for (let shoppingItem of shopping_cart) {
+      const item = await itemsCollection.findOneAndUpdate(
+        { _id: new ObjectId(shoppingItem.itemId) },
+        { $inc: { quantity: -parseInt(shoppingItem.quantity) } },
+        { returnDocument: "after" },
+      );
+      if (!item) {
+        throw `Item not found`;
+      }
+    }
+    const cleanShoppingCart = await usersCollection.findOneAndUpdate(
+      { _id: new ObjectId(userId) },
+      { $set: { shopping_cart: [] } },
+    );
+    if (!cleanShoppingCart) {
+      throw `Fail to clean Shopping Cart`;
+    }
+
+    // add items to historical_purchased_item
+    let historical_purchased_item = user.historical_purchased_item;
+    historical_purchased_item = historical_purchased_item.concat(shopping_cart);
+    const update_historical_purchased_item =
+      await usersCollection.findOneAndUpdate(
+        { _id: new ObjectId(userId) },
+        { $set: { historical_purchased_item: historical_purchased_item } },
+      );
+    if (!update_historical_purchased_item) {
+      throw `Update historical_purchased_item fail`;
+    }
+  },
+
+  async checkItemAvaliable(itemId, quantity) {
+    const itemsCollection = await items();
+    const itemInStorage = await itemsCollection.findOne({
+      _id: new ObjectId(itemId),
+    });
+    if (!itemInStorage) {
+      throw `Item not found`;
+    }
+    if (quantity > itemInStorage.quantity) {
+      if (itemInStorage.quantity === 0) {
+        throw `Item : ${itemInStorage.item} is not currently in stock for purchase`;
+      } else if (itemInStorage.quantity === 1) {
+        throw `There is only ${itemInStorage.quantity} left in stock of item:${itemId}`;
+      } else {
+        throw `There are only ${itemInStorage.quantity} left in stock of item:${itemId}`;
+      }
+    }
+  },
+
+  async removeCartItem(userId, itemId) {
+    itemId = validation.checkId(itemId, "itemId");
+    userId = validation.checkId(userId, "userId");
+    const usersCollection = await users();
+    const removeItem = await usersCollection.findOneAndUpdate(
+      {
+        $and: [
+          { _id: new ObjectId(userId) },
+          { "shopping_cart.itemId": itemId },
+        ],
+      },
+      { $pull: { shopping_cart: { itemId: itemId } } },
+      { returnDocument: "after" },
+    );
+    if (!removeItem) {
+      throw `removeItem Fail`;
+    }
   },
 };
 

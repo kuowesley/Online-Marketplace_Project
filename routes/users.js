@@ -93,7 +93,6 @@ router.post("/signup", async (req, res) => {
     }
     return res.redirect("/users/login");
   } catch (e) {
-    console.log(e);
     return res
       .status(400)
       .render("signup", { title: "Signup", errorCode: 400, errorMessage: e });
@@ -108,31 +107,54 @@ router.get("/logout", async (req, res) => {
 router.get("/shoppingCart", async (req, res) => {
   try {
     const items = await usersData.getShoppingCart(req.session.user.userId);
-    console.log(items);
-    return res
-      .status(200)
-      .render("shoppingCart", {
-        title: "ShoppingCart",
-        user: req.session.user,
-        items: items,
-      });
+    return res.status(200).render("shoppingCart", {
+      title: "ShoppingCart",
+      user: req.session.user,
+      items: items,
+    });
   } catch (e) {
     return res.status(404).render("error", { errorMessage: e });
   }
 });
 
 router.route("/addToCart").post(async (req, res) => {
-  console.log(req.body);
   const body = req.body;
   let itemId = body.itemId;
   let quantity = body.quantity;
   if (!req.session.user) {
-    return res.json({ message: false });
+    return res.status(403).json({ message: false });
   }
   try {
     itemId = validation.checkId(itemId, "itemId");
     await usersData.getItemToCart(req.session.user.userId, itemId, quantity);
     return res.status(200).json({ message: "Add to cart successful!" });
+  } catch (e) {
+    return res.status(400).json({ message: e });
+  }
+});
+
+router.route("/checkOutShoppingCart").post(async (req, res) => {
+  if (!req.session.user) {
+    return res.status(403).json({ message: false });
+  }
+  try {
+    await usersData.checkOutItems(req.session.user.userId);
+    return res.status(200).json({ message: "Check out successful!" });
+  } catch (e) {
+    return res.status(400).json({ message: e });
+  }
+});
+
+router.route("/removCartItem").post(async (req, res) => {
+  if (!req.session.user) {
+    return res.status(403).json({ message: false });
+  }
+  const body = req.body;
+  let itemId = body.itemId;
+  try {
+    itemId = validation.checkId(itemId, "itemId");
+    await usersData.removeCartItem(req.session.user.userId, itemId);
+    return res.status(200).json({ message: "remove successful" });
   } catch (e) {
     return res.status(400).json({ message: e });
   }

@@ -24,6 +24,10 @@ const hbs = exphbs.create({
 hbs.handlebars.registerHelper("mod", function (num, mod) {
   return num % mod;
 });
+
+hbs.handlebars.registerHelper("range", function (value) {
+  return new Array(value).fill().map((_, index) => index + 1);
+});
 // -------------------------------
 
 // For parsing application/json
@@ -70,6 +74,42 @@ app.use("/", type, async (req, res, next) => {
   // Request Route: req.originalUrl
   requestRoute = req.originalUrl;
   console.log(`[${currentTimestamp}]: ${requestMethod} ${requestRoute}`);
+  next();
+});
+
+app.use("/users/login", async (req, res, next) => {
+  if (req.method === "GET") {
+    if (req.session.user) {
+      return res.redirect("/");
+    }
+  }
+  next();
+});
+
+app.use("/users/signup", async (req, res, next) => {
+  if (req.method === "GET") {
+    if (req.session.user) {
+      return res.redirect("/");
+    }
+  }
+  next();
+});
+
+app.use("/users/logout", async (req, res, next) => {
+  if (req.method === "GET") {
+    if (!req.session.user) {
+      return res.render("home", { title: "Home" });
+    }
+  }
+  next();
+});
+
+app.use("/users/shoppingCart", async (req, res, next) => {
+  if (req.method === "GET") {
+    if (!req.session.user) {
+      return res.redirect("/users/login");
+    }
+  }
   next();
 });
 // ---------------------------------------------

@@ -16,10 +16,21 @@ don't forget to include your css and your client-side script file references in 
 
 <body>
     <header>
-        <p>Final Project Main Header, I would show on every page</p>
+        <nav>
+            <ul class="inline-block-nav">
+                <li><a href="/">Home</a></li>
+                {{#if user}}
+                <li><a href="#">{{user.userName}}</a></li>
+                <li><a href="/users/shoppingCart">shoppingCart</a></li>
+                <li><a href="/upload">Upload</a></li>
+                <li><a href="/users/logout">logout</a></li>
+                {{else}}
+                <li><a href="/users/login">login</a></li>
+                {{/if}}
+            </ul>
+        </nav>
     </header>
 
-    <p>I am Main handlebars body</p>
     <main>
         {{{body}}}
     </main>

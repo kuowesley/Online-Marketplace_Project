@@ -1,5 +1,6 @@
 // upload item
 import items from "../data/items.js";
+import users from "../data/users.js";
 import { dbConnection, closeConnection } from "../config/mongoConnection.js";
 const db = await dbConnection();
 await db.dropDatabase();
@@ -17,7 +18,7 @@ try {
     20,
     "Light grey counch",
     ["http://localhost:3000/img/couch.jpg"],
-    1,
+    10,
     "Brooklyn, NY",
     "Meetup",
     "Like New",
@@ -33,7 +34,7 @@ try {
     10,
     "White grey counch",
     ["http://localhost:3000/img/drawer.jpg"],
-    1,
+    15,
     "Union City, NJ",
     "Meetup",
     "Good",
@@ -49,7 +50,7 @@ try {
     399,
     "iPhone 12, Black",
     ["http://localhost:3000/img/iphone.jpg"],
-    1,
+    3,
     "Jersey City, NJ",
     "Meetup",
     "Good",
@@ -105,4 +106,23 @@ try {
   console.log(item6);
 } catch (e) {
   console.error(e);
+}
+
+let res;
+try {
+  res = await users.addUser(
+    "testFirstName",
+    "testLastName",
+    "test",
+    "test@gmail.com",
+    "K@123456",
+    "testStreet",
+    "Hoboken",
+    "NJ",
+    "07030",
+    26,
+  );
+  console.log(res);
+} catch (e) {
+  console.log(e);
 }

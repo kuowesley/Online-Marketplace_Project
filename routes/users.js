@@ -4,16 +4,8 @@ import { usersData } from "../data/index.js";
 
 const router = Router();
 
-router.get("/", async (req, res) => {
-  try {
-    return res.send("success");
-  } catch (e) {
-    return res.send(e);
-  }
-});
-
 router.get("/login", async (req, res) => {
-  res.render("login", { title: "Login" });
+  return res.status(200).render("login", { title: "Login" });
 });
 
 router.post("/login", async (req, res) => {
@@ -32,14 +24,16 @@ router.post("/login", async (req, res) => {
       email: userInfo.email,
     };
 
-    return res.status(200).render("home", { title: "Home" });
+    return res
+      .status(200)
+      .render("home", { title: "Home", user: req.session.user });
   } catch (e) {
     return res.status(400).render("error", { errorMessage: e, title: "Error" });
   }
 });
 
 router.get("/signup", async (req, res) => {
-  res.render("signup", { title: "Sign Up" });
+  return res.render("signup", { title: "Sign Up" });
 });
 
 router.post("/signup", async (req, res) => {
@@ -50,6 +44,11 @@ router.post("/signup", async (req, res) => {
   let email = data.emailAddressInput;
   let password = data.passwordInput;
   let confirmPassword = data.confirmPasswordInput;
+  let street = data.streetInput;
+  let city = data.cityInput;
+  let state = data.stateInput;
+  let zipcode = data.zipcodeInput;
+  let age = data.ageInput;
 
   try {
     firstName = validation.checkString(firstName, "firstName");
@@ -61,6 +60,11 @@ router.post("/signup", async (req, res) => {
       confirmPassword,
       "confirmPassword",
     );
+    street = validation.checkStreet(street, "street");
+    city = validation.checkCity(city, "city");
+    state = validation.checkState(state, "state");
+    zipcode = validation.checkZipcode(zipcode, "zipcode");
+    age = validation.checkNumber(parseInt(age), "age");
     if (confirmPassword !== password) {
       return res.status(400).render("signup", {
         title: "Signup",
@@ -74,6 +78,11 @@ router.post("/signup", async (req, res) => {
       userName,
       email,
       password,
+      street,
+      city,
+      state,
+      zipcode,
+      age,
     );
     if (!newUser) {
       return res.status(500).render("signup", {
@@ -88,6 +97,44 @@ router.post("/signup", async (req, res) => {
     return res
       .status(400)
       .render("signup", { title: "Signup", errorCode: 400, errorMessage: e });
+  }
+});
+
+router.get("/logout", async (req, res) => {
+  req.session.destroy();
+  return res.status(200).render("home", { title: "Home" });
+});
+
+router.get("/shoppingCart", async (req, res) => {
+  try {
+    const items = await usersData.getShoppingCart(req.session.user.userId);
+    console.log(items);
+    return res
+      .status(200)
+      .render("shoppingCart", {
+        title: "ShoppingCart",
+        user: req.session.user,
+        items: items,
+      });
+  } catch (e) {
+    return res.status(404).render("error", { errorMessage: e });
+  }
+});
+
+router.route("/addToCart").post(async (req, res) => {
+  console.log(req.body);
+  const body = req.body;
+  let itemId = body.itemId;
+  let quantity = body.quantity;
+  if (!req.session.user) {
+    return res.json({ message: false });
+  }
+  try {
+    itemId = validation.checkId(itemId, "itemId");
+    await usersData.getItemToCart(req.session.user.userId, itemId, quantity);
+    return res.status(200).json({ message: "Add to cart successful!" });
+  } catch (e) {
+    return res.status(400).json({ message: e });
   }
 });
 

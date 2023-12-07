@@ -80,7 +80,7 @@ const itemsMethods = {
   },
 
   async getById(id) {
-    id = validation.checkId(id);
+    id = validation.checkId(id, "itemId");
     const itemCollection = await items();
     const item = await itemCollection.findOne({ _id: new ObjectId(id) });
     if (!item) {

@@ -59,3 +59,7 @@
     display: block; /* Make sure images are centered as well */
     margin: 0 auto; /* Center-align images using margin */
 }
+
+.inline-block-nav > li {
+    display: inline-block;
+  }

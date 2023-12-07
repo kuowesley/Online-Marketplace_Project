@@ -1,10 +1,10 @@
 import { ObjectId } from "mongodb";
 
 const validation = {
-  checkId(id) {
-    id = this.checkString(id, "id");
+  checkId(id, varName) {
+    id = this.checkString(id, varName);
     if (!ObjectId.isValid(id)) {
-      throw `Error : Invalid ObjectId`;
+      throw `Error : ${varName} is an invalid ObjectId`;
     }
     return id;
   },
@@ -109,6 +109,90 @@ const validation = {
       throw `Error : ${varName} is not valid`;
     }
     return pwd;
+  },
+
+  checkStreet(str, varName) {
+    str = this.checkString(str, varName);
+    if (str.length < 3) {
+      throw `${varName} is less than 3 characters`;
+    }
+    return str;
+  },
+
+  checkCity(str, varName) {
+    str = this.checkString(str, varName);
+    if (str.length < 3) {
+      throw `${varName} is less than 3 characters`;
+    }
+    return str;
+  },
+
+  checkState(str, varName) {
+    let state = [
+      "AL",
+      "AK",
+      "AZ",
+      "AR",
+      "CA",
+      "CO",
+      "CT",
+      "DE",
+      "FL",
+      "GA",
+      "HI",
+      "ID",
+      "IL",
+      "IN",
+      "IA",
+      "KS",
+      "KY",
+      "LA",
+      "ME",
+      "MD",
+      "MA",
+      "MI",
+      "MN",
+      "MS",
+      "MO",
+      "MT",
+      "NE",
+      "NV",
+      "NH",
+      "NJ",
+      "NM",
+      "NY",
+      "NC",
+      "ND",
+      "OH",
+      "OK",
+      "OR",
+      "PA",
+      "RI",
+      "SC",
+      "SD",
+      "TN",
+      "TX",
+      "UT",
+      "VT",
+      "VA",
+      "WA",
+      "WV",
+      "WI",
+      "WY",
+    ];
+    str = this.checkString(str, varName);
+    if (str.length !== 2 || !state.includes(str)) {
+      throw `Invalid ${varName}`;
+    }
+    return str;
+  },
+
+  checkZipcode(str, varName) {
+    str = this.checkString(str, varName);
+    if (str.length !== 5) {
+      throw `Invalid ${varName}`;
+    }
+    return str;
   },
 };
 

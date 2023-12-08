@@ -27,7 +27,7 @@ const validation = {
 
   checkNumber(num, varName) {
     if (typeof num !== "number") {
-      throw `Error: You must supply a ${varName}!`;
+      throw `Error: You must supply a ${varName} or the type is wrong!`;
     }
     if (isNaN(num)) {
       throw `Error : ${varName} must be a valid number!`;
@@ -193,6 +193,66 @@ const validation = {
       throw `Invalid ${varName}`;
     }
     return str;
+  },
+
+  checkItemName(str, varName) {
+    // check string
+    str = this.checkString(str, varName);
+
+    if (str.length < 5) {
+      throw `Should ${varName} contain over 5 characters`;
+    }
+
+    // check for special characters
+    const specialChars = /[!@#$%^&*(),.?"{}|<>]/;
+    if (specialChars.test(str)) {
+      throw `${varName} should not contain special characters`;
+    }
+    return str;
+  },
+
+  checkDescription(str, varName) {
+    // check string
+    str = this.checkString(str, varName);
+
+    if (str.length < 5) {
+      throw `Should ${varName} contain over 5 characters`;
+    }
+
+    return str;
+  },
+
+  checkPrice(num, varName) {
+    // check number
+    num = this.checkNumber(num, varName);
+
+    if (num <= 0) {
+      throw `${varName} could not be 0 or negative`;
+    }
+
+    return num;
+  },
+
+  checkQuantity(num, varName) {
+    // check number
+    num = this.checkNumber(num, varName);
+
+    if (num <= 0) {
+      throw `${varName} could not be 0 or negative`;
+    }
+
+    return num;
+  },
+
+  checkTransactionDate(num, varName) {
+    // check number
+    num = this.checkNumber(num, varName);
+
+    if (num <= 0) {
+      throw `${varName} could not be 0 or negative`;
+    }
+
+    return num;
   },
 };
 

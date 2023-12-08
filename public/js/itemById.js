@@ -58,7 +58,6 @@
         }),
       };
       $.ajax(requestConfig).then(function (responseMessage) {
-        console.log(responseMessage);
         // let newElement = $(responseMessage);
         // bindEventsToTodoItem(newElement);
         // todoArea.append(newElement);

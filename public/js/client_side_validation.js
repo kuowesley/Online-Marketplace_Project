@@ -73,7 +73,7 @@ if (fileUploadForm) {
       for (let i = 0; i < fileInput.files.length; i++) {
         formData.append("fileInput", fileInput.files[i]);
       }
-      fetch("/items/upload", {
+      fetch("/upload", {
         method: "POST",
         body: formData,
       });

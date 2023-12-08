@@ -301,6 +301,75 @@ const usersMethods = {
       throw `removeItem Fail`;
     }
   },
+
+  async removeListItem(userId, itemId) {
+    itemId = validation.checkId(itemId, "itemId");
+    userId = validation.checkId(userId, "userId");
+    const usersCollection = await users();
+    const removeItem = await usersCollection.findOneAndUpdate(
+      { _id: new ObjectId(userId) },
+      { $pull: { items_for_sale: itemId } },
+      { returnDocument: "after" },
+    );
+    if (!removeItem) {
+      throw `removeItem Fail`;
+    }
+
+    const addToHistorical = await usersCollection.findOneAndUpdate(
+      { _id: new ObjectId(userId) },
+      { $push: { historical_sold_item: itemId } },
+    );
+    if (!addToHistorical) {
+      throw `Add item from items_for_sale to historical_sold_item fail`;
+    }
+
+    const itemsCollection = await items();
+    const setQuantityZero = await itemsCollection.findOneAndUpdate(
+      { _id: new ObjectId(itemId) },
+      { $set: { quantity: 0 } },
+      { returnDocument: "after" },
+    );
+    if (!setQuantityZero) {
+      throw `set item quantity zero fail`;
+    }
+  },
+
+  async getItemToItemsForSale(userId, itemId) {
+    itemId = validation.checkId(itemId, "itemId");
+    userId = validation.checkId(userId, "userId");
+    const usersCollection = await users();
+    const pushNewItem = await usersCollection.updateOne(
+      { _id: new ObjectId(userId) },
+      { $push: { items_for_sale: itemId } },
+    );
+    if (!pushNewItem) {
+      throw `update item to ItemsForSale fail`;
+    }
+  },
+
+  async getItemsForSale(userId) {
+    userId = validation.checkId(userId, "userId");
+    const usersCollection = await users();
+    const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+    if (!user) {
+      throw `user not found`;
+    }
+    let itemsForSale = user.items_for_sale;
+
+    let AllItems = [];
+    const itemsCollection = await items();
+    for (let itemId of itemsForSale) {
+      const itemInfo = await itemsCollection.findOne({
+        _id: new ObjectId(itemId),
+      });
+      if (!itemInfo) {
+        throw `Item: ${itemId} not found`;
+      }
+      AllItems.push(itemInfo);
+    }
+
+    return AllItems;
+  },
 };
 
 export default usersMethods;

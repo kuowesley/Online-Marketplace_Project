@@ -112,6 +112,15 @@ app.use("/users/shoppingCart", async (req, res, next) => {
   }
   next();
 });
+
+app.use("/users/profile", async (req, res, next) => {
+  if (req.method === "GET") {
+    if (!req.session.user) {
+      return res.redirect("/users/login");
+    }
+  }
+  next();
+});
 // ---------------------------------------------
 
 /**

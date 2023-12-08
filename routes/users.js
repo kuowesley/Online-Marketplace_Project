@@ -1,6 +1,7 @@
 import { Router } from "express";
 import validation from "../data/validation.js";
 import { usersData } from "../data/index.js";
+import xss from "xss";
 
 const router = Router();
 
@@ -10,8 +11,8 @@ router.get("/login", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   const data = req.body;
-  let userName = data.usernameInput;
-  let password = data.passwordInput;
+  let userName = xss(data.usernameInput);
+  let password = xss(data.passwordInput);
   try {
     userName = validation.checkString(userName, "userName");
     password = validation.checkPassword(password, "password");
@@ -38,17 +39,17 @@ router.get("/signup", async (req, res) => {
 
 router.post("/signup", async (req, res) => {
   const data = req.body;
-  let firstName = data.firstNameInput;
-  let lastName = data.lastNameInput;
-  let userName = data.userNameInput;
-  let email = data.emailAddressInput;
-  let password = data.passwordInput;
-  let confirmPassword = data.confirmPasswordInput;
-  let street = data.streetInput;
-  let city = data.cityInput;
-  let state = data.stateInput;
-  let zipcode = data.zipcodeInput;
-  let age = data.ageInput;
+  let firstName = xss(data.firstNameInput);
+  let lastName = xss(data.lastNameInput);
+  let userName = xss(data.userNameInput);
+  let email = xss(data.emailAddressInput);
+  let password = xss(data.passwordInput);
+  let confirmPassword = xss(data.confirmPasswordInput);
+  let street = xss(data.streetInput);
+  let city = xss(data.cityInput);
+  let state = xss(data.stateInput);
+  let zipcode = xss(data.zipcodeInput);
+  let age = xss(data.ageInput);
 
   try {
     firstName = validation.checkString(firstName, "firstName");
@@ -119,8 +120,8 @@ router.get("/shoppingCart", async (req, res) => {
 
 router.route("/addToCart").post(async (req, res) => {
   const body = req.body;
-  let itemId = body.itemId;
-  let quantity = body.quantity;
+  let itemId = xss(body.itemId);
+  let quantity = xss(body.quantity);
   if (!req.session.user) {
     return res.status(403).json({ message: false });
   }
@@ -145,18 +146,69 @@ router.route("/checkOutShoppingCart").post(async (req, res) => {
   }
 });
 
-router.route("/removCartItem").post(async (req, res) => {
+router.route("/removeCartItem").post(async (req, res) => {
   if (!req.session.user) {
     return res.status(403).json({ message: false });
   }
   const body = req.body;
-  let itemId = body.itemId;
+  let itemId = xss(body.itemId);
   try {
     itemId = validation.checkId(itemId, "itemId");
     await usersData.removeCartItem(req.session.user.userId, itemId);
     return res.status(200).json({ message: "remove successful" });
   } catch (e) {
     return res.status(400).json({ message: e });
+  }
+});
+
+router.route("/removeListItem").post(async (req, res) => {
+  if (!req.session.user) {
+    return res.status(403).json({ message: false });
+  }
+  const body = req.body;
+  let itemId = xss(body.itemId);
+  try {
+    itemId = validation.checkId(itemId, "itemId");
+    await usersData.removeListItem(req.session.user.userId, itemId);
+    return res.status(200).json({ message: "remove successful" });
+  } catch (e) {
+    return res.status(400).json({ message: e });
+  }
+});
+
+router.get("/profile", async (req, res) => {
+  return res.status(200).render("userProfile", { user: req.session.user });
+});
+
+router.get("/historicalPurchase", async (req, res) => {
+  //
+  //To Do
+  //
+  return res
+    .status(200)
+    .render("historicalPurchase", { user: req.session.user });
+});
+
+router.get("/historicalSoldItems", async (req, res) => {
+  //
+  //To Do
+  //
+  return res
+    .status(200)
+    .render("historicalSoldItems", { user: req.session.user });
+});
+
+router.get("/itemsForSale", async (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/users/login");
+  }
+  try {
+    const items = await usersData.getItemsForSale(req.session.user.userId);
+    return res
+      .status(200)
+      .render("itemsForSale", { user: req.session.user, items: items });
+  } catch (e) {
+    return res.status(404).render("error", { errorMessage: e });
   }
 });
 

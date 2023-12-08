@@ -1,21 +1,4 @@
-<h1>Shopping Cart</h1>
-{{!-- {{#each items}}
-<div class="item">
-    <p>Item: <a href="/items/{{this.item._id}}">{{this.item.item}}</a></p>
-    <p>Price: ${{this.item.price}}</p>
-    <p>
-        {{#each this.item.picture}}
-        <img alt="Item Picture {{item.item.item}}" src="{{this}}">
-        {{/each}}
-    </p>
-    <p>Location: {{this.item.location}}</p>
-    <p>Condition: {{this.item.condition}}</p>
-    <p>Quantity: {{this.quantity}}</p>
-    <button id="removeItem" type="submit" value="{{this.item._id}}">Remove</button>
-</div>
-
-{{/each}}
-<button id="checkOut" type="submit">Check Out</button> --}}
+<h1>Historical Sold Items</h1>
 {{#if items}}
 <table>
     <thead>
@@ -41,21 +24,16 @@
             </td>
             <td>{{this.item.location}}</td>
             <td>{{this.item.condition}}</td>
-            <td>{{this.quantity}}</td>
-            <td>
-                <button class="removeItem" type="button" value="{{this.item._id}}">Remove</button>
-            </td>
         </tr>
         {{/each}}
     </tbody>
 </table>
-<button id="checkOut" type="submit">Check Out</button>
 {{else}}
 <div>
-    <p>No item in the cart!</p>
+    <p>No items have been sold yet!</p>
 </div>
 {{/if}}
 
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
     crossorigin="anonymous"></script>
-<script src="/public/js/shoppingCart.js"></script>
+<script src="/public/js/historicalSoldItems.js"></script>

@@ -6,6 +6,7 @@ import validation from "../data/validation.js";
 import items from "../data/items.js";
 import { Binary, ObjectId } from "mongodb";
 import { fileURLToPath } from "url";
+import { usersData } from "../data/index.js";
 
 const router = Router();
 
@@ -31,6 +32,11 @@ router
     let uploadPostData = req.body;
     let files = req.files;
     let errors = [];
+
+    if (!req.session.user) {
+      return res.send("Please login first");
+    }
+    let seller_id = req.session.user.userId;
 
     // change to correct type
     uploadPostData.price = Number(uploadPostData.price);
@@ -61,6 +67,12 @@ router
         uploadPostData.location,
         uploadPostData.deliveryMethod,
         uploadPostData.condition,
+        seller_id,
+      );
+
+      await usersData.getItemToItemsForSale(
+        seller_id,
+        itemsInfo.insertedId.toString(),
       );
 
       for (let i in imagePathList) {

@@ -33,7 +33,7 @@
     console.log(itemId);
     let requestConfig = {
       method: "POST",
-      url: "/users/removCartItem",
+      url: "/users/removeCartItem",
       contentType: "application/json",
       data: JSON.stringify({ itemId: itemId }),
       success: function (data) {

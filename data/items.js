@@ -15,12 +15,13 @@ const itemsMethods = {
     location,
     deliveryMethod,
     condition,
+    seller_id,
   ) {
     // check input type
     item = validation.checkString(item, "item");
     price = validation.checkNumber(price, "price");
     description = validation.checkString(description, "description");
-
+    seller_id = validation.checkId(seller_id, "seller_id");
     // TODO Validate buffer when route pass in picture buffer
     // if (Array.isArray(picture)) {
     //   for (let image in picture) {
@@ -55,6 +56,7 @@ const itemsMethods = {
       location: location,
       deliveryMethod: deliveryMethod,
       condition: condition,
+      seller_id: seller_id,
     };
 
     // insert to database
@@ -64,7 +66,8 @@ const itemsMethods = {
       throw `Fail to create new user`;
     } else {
       console.log(`Upload Success`);
-      return `Upload Success`;
+      //return `Upload Success`;
+      return insertInfo;
     }
   },
 

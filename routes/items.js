@@ -32,51 +32,133 @@ router
     let uploadPostData = req.body;
     let files = req.files;
     let errors = [];
+    console.log(`req.body:${uploadPostData.itemName}`);
+    console.log(`req.body:${uploadPostData.description}`);
+    console.log(`req.files:${files}`);
+    console.log(`req.files:${files[0]}`);
 
+    // login check
     if (!req.session.user) {
       return res.send("Please login first");
     }
     let seller_id = req.session.user.userId;
 
-    // change to correct type
-    uploadPostData.price = Number(uploadPostData.price);
-    uploadPostData.quantity = Number(uploadPostData.quantity);
-
     // TODO input validation
+    // check array
+    try {
+      // check string input
+      uploadPostData.itemName = validation.checkItemName(
+        uploadPostData.itemName,
+        `itemName`,
+      );
+      uploadPostData.description = validation.checkDescription(
+        uploadPostData.description,
+        `description`,
+      );
+      uploadPostData.transaction_date = validation.checkTransactionDate(
+        uploadPostData.transaction_date,
+        `transaction_date`,
+      );
+      uploadPostData.location = validation.checkLocation(
+        uploadPostData.location,
+        `location`,
+      );
+      uploadPostData.deliveryMethod = validation.checkDeliveryMethod(
+        uploadPostData.deliveryMethod,
+        `deliveryMethod`,
+      );
+      uploadPostData.condition = validation.checkCondition(
+        uploadPostData.condition,
+        `condition`,
+      );
+
+      // check price, quantity
+      // check string first
+      uploadPostData.price = validation.checkString(
+        uploadPostData.price,
+        `price`,
+      );
+      uploadPostData.quantity = validation.checkString(
+        uploadPostData.quantity,
+        `quantity`,
+      );
+
+      // change to Number
+      uploadPostData.price = validation.checkRoutePriceQuantity(
+        uploadPostData.price,
+        `price`,
+      );
+      uploadPostData.quantity = validation.checkRoutePriceQuantity(
+        uploadPostData.quantity,
+        `quantity`,
+      );
+
+      // check price, quantity
+      uploadPostData.price = validation.checkPrice(
+        uploadPostData.price,
+        `price`,
+      );
+      uploadPostData.quantity = validation.checkQuantity(
+        uploadPostData.quantity,
+        `quantity`,
+      );
+
+      // TODO file validation
+    } catch (e) {
+      errors.push(e);
+    }
 
     // You can access the uploaded file details using req.file
-    console.log("File uploaded:", files);
-    console.log(uploadPostData);
-
     let imagesList = [];
     let imagePathList = [];
+
+    // get file path and image
+
     try {
       for (let i in files) {
-        let imagePath = path.join(uploadDirPath, files[i].filename);
-        let binaryImage = fs.readFileSync(imagePath);
-        imagePathList.push(imagePath);
-        imagesList.push(binaryImage);
+        for (let i in files) {
+          let imagePath = path.join(uploadDirPath, files[i].filename);
+          let binaryImage = fs.readFileSync(imagePath);
+          imagePathList.push(imagePath);
+          imagesList.push(binaryImage);
+        }
       }
-      console.log(imagePathList);
-      const itemsInfo = await items.uploadItem(
-        uploadPostData.itemName,
-        uploadPostData.price,
-        uploadPostData.description,
-        imagesList,
-        uploadPostData.quantity,
-        uploadPostData.location,
-        uploadPostData.deliveryMethod,
-        uploadPostData.condition,
-        seller_id,
-      );
+    } catch (e) {
+      errors.push(e);
+    }
 
-      await usersData.getItemToItemsForSale(
-        seller_id,
-        itemsInfo.insertedId.toString(),
-      );
+    // if no errors start uploading
+    let itemsInfo;
+    if (errors.length === 0) {
+      try {
+        itemsInfo = await items.uploadItem(
+          uploadPostData.itemName, // item Name
+          uploadPostData.price, // Price
+          uploadPostData.description, // Description
+          imagesList, // Item Picture Array of buffer
+          uploadPostData.quantity, // Quantity
+          uploadPostData.location, // Location
+          uploadPostData.deliveryMethod, // DeliveryMethod
+          uploadPostData.condition, // Condition
+          seller_id,
+        );
+        console.log(itemsInfo);
 
+        await usersData.getItemToItemsForSale(
+          seller_id,
+          itemsInfo.insertedId.toString(),
+        );
+      } catch (e) {
+        errors.push(e);
+      }
+    }
+
+    // remove local file no matter how
+    try {
       for (let i in imagePathList) {
-        fs.unlinkSync(imagePathList[i]);
+        if (fs.existsSync(imagePathList[i])) {
+          fs.unlinkSync(imagePathList[i]);
+        }
       }
     } catch (e) {
       errors.push(e);
@@ -84,10 +166,26 @@ router
 
     // if errors
     if (errors.length > 0) {
-      return res.send(errors);
+      // do this with return
+      console.log(`errors:${errors}`);
+      return res.render("uploadItem", {
+        user: req.session.user,
+        itemName: uploadPostData.itemName,
+        description: uploadPostData.description,
+        price: uploadPostData.price,
+        quantity: uploadPostData.quantity,
+        transaction_date: uploadPostData.transaction_date,
+        location: uploadPostData.location,
+        deliveryMethod: uploadPostData.deliveryMethod,
+        condition: uploadPostData.condition,
+        errors: errors,
+        hasErrors: true,
+      });
     }
 
-    return res.send(req.body);
+    return res.redirect(`/`);
+    // TODO: redirect to item page
+    // return res.redirect(`/items/${itemsInfo.insertedId.toString()}`)
   });
 
 router.route("/items").get(async (req, res) => {

@@ -7,6 +7,7 @@ import items from "../data/items.js";
 import { Binary, ObjectId } from "mongodb";
 import { fileURLToPath } from "url";
 import { usersData } from "../data/index.js";
+import xss from "xss";
 
 const router = Router();
 
@@ -30,12 +31,17 @@ router
   .post(async (req, res) => {
     // https://blog.logrocket.com/multer-nodejs-express-upload-file/
     let uploadPostData = req.body;
+    uploadPostData.itemName = xss(uploadPostData.itemName);
+    uploadPostData.description = xss(uploadPostData.description);
+    uploadPostData.price = xss(uploadPostData.price);
+    uploadPostData.quantity = xss(uploadPostData.quantity);
+    uploadPostData.transaction_date = xss(uploadPostData.transaction_date);
+    uploadPostData.location = xss(uploadPostData.location);
+    uploadPostData.deliveryMethod = xss(uploadPostData.deliveryMethod);
+    uploadPostData.condition = xss(uploadPostData.condition);
+
     let files = req.files;
     let errors = [];
-    console.log(`req.body:${uploadPostData.itemName}`);
-    console.log(`req.body:${uploadPostData.description}`);
-    console.log(`req.files:${files}`);
-    console.log(`req.files:${files[0]}`);
 
     // login check
     if (!req.session.user) {

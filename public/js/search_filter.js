@@ -4,7 +4,45 @@
     formInput = $("#item_search_term"),
     allItems = $("#all-items"),
     searchResults = $("#search-result"),
-    backToAll = $("#back-to-all");
+    backToAll = $("#back-to-all"),
+    filterSearch = $("#filterSearch"),
+    filterInput = $("#sort_order"),
+    priceLowToHigh = $("#price-low-to-high"),
+    priceHighToLow = $("#price-high-to-low");
+
+  function generateItemHTML(item) {
+    return `
+        <div class="item">
+          <p>Item: <a href="/items/${item._id}">${item.item}</a></p>
+          <p>Price: $${item.price}</p>
+          <p><img alt="Item Picture ${item.item}" src="${item.picture}"></p>
+          <p>Location: ${item.location}</p>
+          <p>Condition: ${item.condition}</p>
+        </div>
+      `;
+  }
+
+  function renderItems(container, items) {
+    container.empty();
+    for (let i = 0; i < items.length; i++) {
+      let currentItem = items[i];
+      // Open a new row for every second item
+      if (i % 2 === 0) {
+        container.append('<div class="item-row">');
+      }
+
+      // Item HTML
+      let itemHTML = generateItemHTML(currentItem);
+
+      // Append the item HTML to the container
+      container.append(itemHTML);
+
+      // Close the row for every second item or the last item
+      if (i % 2 === 1 || i === items.length - 1) {
+        container.append("</div>");
+      }
+    }
+  }
 
   searchForm.submit(async function (event) {
     event.preventDefault();
@@ -21,42 +59,49 @@
     $.ajax(requestConfig).then(function (responseMessage) {
       debugger;
       let data = responseMessage;
-      if (!(Array.isArray(data) && data.length > 0)) {
-        return;
-      }
-      searchResults.empty();
-      for (let i = 0; i < data.length; i++) {
-        let currentItem = data[i];
-        // Open a new row for every second item
-        if (i % 2 === 0) {
-          searchResults.append('<div class="item-row">');
-        }
+      if (Array.isArray(data) && data.length > 0) {
+        let priceLow = data.slice().sort((a, b) => a.price - b.price);
+        let priceHigh = data.slice().sort((a, b) => b.price - a.price);
+        searchResults.empty();
+        priceLowToHigh.empty();
+        priceHighToLow.empty();
 
-        // Item HTML
-        let itemHTML = `
-          <div class="item">
-            <p>Item: <a href="/items/${currentItem._id}">${currentItem.item}</a></p>
-            <p>Price: $${currentItem.price}</p>
-            <p>
-              <img alt="Item Picture ${currentItem.item}" src="${currentItem.picture}">
-            </p>
-            <p>Location: ${currentItem.location}</p>
-            <p>Condition: ${currentItem.condition}</p>
-          </div>
-        `;
-
-        // Append the item HTML to the container
-        searchResults.append(itemHTML);
-
-        // Close the row for every second item or the last item
-        if (i % 2 === 1 || i === data.length - 1) {
-          searchResults.append("</div>");
-        }
+        renderItems(searchResults, data);
+        renderItems(priceLowToHigh, priceLow);
+        renderItems(priceHighToLow, priceHigh);
+      } else {
+        searchResults.empty();
+        searchResults.append($(`<p>Sorry, no results were found.</p>`));
+        filterSearch.hide();
       }
     });
     allItems.hide();
     searchResults.show();
     searchForm[0].reset();
     backToAll.show();
+    filterSearch.show();
+    priceLowToHigh.hide();
+    priceHighToLow.hide();
+  });
+
+  filterSearch.submit(async function (event) {
+    event.preventDefault();
+    let inputString = filterInput.val();
+    if (inputString === "lowToHigh") {
+      priceLowToHigh.show();
+      priceHighToLow.hide();
+      searchResults.hide();
+      filterSearch.show();
+    } else if (inputString === "highToLow") {
+      priceHighToLow.show();
+      priceLowToHigh.hide();
+      searchResults.hide();
+      filterSearch.show();
+    } else if (inputString === "default") {
+      priceHighToLow.hide();
+      priceLowToHigh.hide();
+      searchResults.show();
+      filterSearch.show();
+    }
   });
 })(window.jQuery);

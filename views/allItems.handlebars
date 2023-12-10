@@ -8,6 +8,17 @@
     <a href="/items">Back to all items</a>
 </ul>
 
+<form id="filterSearch" hidden>
+  <label for="filter_search_term" class="felter-search-label">Filter</label>
+  <select id="sort_order">
+    <option value="default">Default</option>
+    <option value="lowToHigh">Price: Low to High</option>
+    <option value="highToLow">Price: High to Low</option>
+    <option value="newest">Newest Arrivals</option>
+  </select>
+  <input type="submit" value="Submit" class="filter-submit">
+</form>
+
 <div id ="all-items">
 {{#each items}}
 {{#if (eq (mod @index 2) 0)}}
@@ -17,12 +28,6 @@
     <p>Item: <a href="/items/{{this._id}}">{{this.item}}</a></p>
     <p>Price: ${{this.price}}</p>
     <p> 
-        {{!-- {{#each this.picture}}
-            <img alt="Item Picture {{item.item}}" src="{{this}}" >
-        {{/each}} --}}
-        {{!-- {{#if this.picture[0]}}
-            <img alt="Item Picture {{item.item}}" src="{{this.picture[0]}}" >
-        {{/if}} --}}
         <img alt="Item Picture {{item.item}}" src="{{this.picture}}" >
     </p>
     <p>Location: {{this.location}}</p>
@@ -38,6 +43,17 @@
 
 </div>
 
+<div id="price-low-to-high" hidden>
+
+</div>
+
+<div id="price-high-to-low" hidden>
+
+</div>
+
+<div id="newest-arrival" hidden>
+
+</div>
 
 
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"

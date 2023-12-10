@@ -57,6 +57,7 @@ const itemsMethods = {
       deliveryMethod: deliveryMethod,
       condition: condition,
       seller_id: seller_id,
+      uploadTime: new Date(), // Add the current timestamp
     };
 
     // insert to database

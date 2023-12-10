@@ -8,7 +8,8 @@
     filterSearch = $("#filterSearch"),
     filterInput = $("#sort_order"),
     priceLowToHigh = $("#price-low-to-high"),
-    priceHighToLow = $("#price-high-to-low");
+    priceHighToLow = $("#price-high-to-low"),
+    dateNewToOld = $("#newest-arrival");
 
   function generateItemHTML(item) {
     return `
@@ -60,15 +61,21 @@
       debugger;
       let data = responseMessage;
       if (Array.isArray(data) && data.length > 0) {
+        debugger;
         let priceLow = data.slice().sort((a, b) => a.price - b.price);
         let priceHigh = data.slice().sort((a, b) => b.price - a.price);
+        let newestDate = data
+          .slice()
+          .sort((a, b) => new Date(b.uploadTime) - new Date(a.uploadTime));
         searchResults.empty();
         priceLowToHigh.empty();
         priceHighToLow.empty();
+        dateNewToOld.empty();
 
         renderItems(searchResults, data);
         renderItems(priceLowToHigh, priceLow);
         renderItems(priceHighToLow, priceHigh);
+        renderItems(dateNewToOld, newestDate);
       } else {
         searchResults.empty();
         searchResults.append($(`<p>Sorry, no results were found.</p>`));
@@ -82,6 +89,7 @@
     filterSearch.show();
     priceLowToHigh.hide();
     priceHighToLow.hide();
+    dateNewToOld.hide();
   });
 
   filterSearch.submit(async function (event) {
@@ -91,16 +99,25 @@
       priceLowToHigh.show();
       priceHighToLow.hide();
       searchResults.hide();
+      dateNewToOld.hide();
       filterSearch.show();
     } else if (inputString === "highToLow") {
       priceHighToLow.show();
       priceLowToHigh.hide();
       searchResults.hide();
+      dateNewToOld.hide();
       filterSearch.show();
     } else if (inputString === "default") {
       priceHighToLow.hide();
       priceLowToHigh.hide();
       searchResults.show();
+      dateNewToOld.hide();
+      filterSearch.show();
+    } else if (inputString === "newest") {
+      priceHighToLow.hide();
+      priceLowToHigh.hide();
+      searchResults.hide();
+      dateNewToOld.show();
       filterSearch.show();
     }
   });

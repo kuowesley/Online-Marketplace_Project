@@ -4,6 +4,10 @@
     <input type="submit" value="Submit" class="search-submit">
 </form>
 
+<ul id ="back-to-all" hidden>
+    <a href="/items">Back to all items</a>
+</ul>
+
 <div id ="all-items">
 {{#each items}}
 {{#if (eq (mod @index 2) 0)}}

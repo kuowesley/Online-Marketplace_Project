@@ -3,7 +3,8 @@
   let searchForm = $("#searchItems"),
     formInput = $("#item_search_term"),
     allItems = $("#all-items"),
-    searchResults = $("#search-result");
+    searchResults = $("#search-result"),
+    backToAll = $("#back-to-all");
 
   searchForm.submit(async function (event) {
     event.preventDefault();
@@ -26,32 +27,36 @@
       searchResults.empty();
       for (let i = 0; i < data.length; i++) {
         let currentItem = data[i];
-        let template = `
-            {{#if (eq (mod @index 2) 0)}}
-              <div class="item-row">
-            {{/if}}
-            
-            <div class="item">
-              <p>Item: <a href="/items/${currentItem._id}">${currentItem.item}</a></p>
-              <p>Price: $${currentItem.price}</p>
-              <p>
-                <img alt="Item Picture ${currentItem.item}" src="${currentItem.picture}">
-              </p>
-              <p>Location: ${currentItem.location}</p>
-              <p>Condition: ${currentItem.condition}</p>
-            </div>
-            
-            {{#if (or (eq (mod @index 2) 1) (eq @index (subtract (length data) 1)))}}
-              </div>
-            {{/if}}
-          `;
+        // Open a new row for every second item
+        if (i % 2 === 0) {
+          searchResults.append('<div class="item-row">');
+        }
 
-        // Append the template to the container
-        searchResults.append(template);
+        // Item HTML
+        let itemHTML = `
+          <div class="item">
+            <p>Item: <a href="/items/${currentItem._id}">${currentItem.item}</a></p>
+            <p>Price: $${currentItem.price}</p>
+            <p>
+              <img alt="Item Picture ${currentItem.item}" src="${currentItem.picture}">
+            </p>
+            <p>Location: ${currentItem.location}</p>
+            <p>Condition: ${currentItem.condition}</p>
+          </div>
+        `;
+
+        // Append the item HTML to the container
+        searchResults.append(itemHTML);
+
+        // Close the row for every second item or the last item
+        if (i % 2 === 1 || i === data.length - 1) {
+          searchResults.append("</div>");
+        }
       }
     });
     allItems.hide();
     searchResults.show();
     searchForm[0].reset();
+    backToAll.show();
   });
 })(window.jQuery);

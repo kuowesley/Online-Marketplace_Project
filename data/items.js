@@ -79,6 +79,7 @@ const itemsMethods = {
     if (!itemList) throw "Could not get all items";
     itemList = itemList.map((element) => {
       element._id = element._id.toString();
+      element.picture = element.picture[0]; // only the first picture would be displayed
       return element;
     });
     return itemList;
@@ -93,6 +94,26 @@ const itemsMethods = {
     }
     item._id = item._id.toString();
     return item;
+  },
+
+  async searchByDescription(description) {
+    description = validation.checkString(description, "search entry");
+    const itemCollection = await items();
+    let itemList = await itemCollection
+      .find({
+        $or: [
+          { description: { $regex: description, $options: "i" } },
+          { item: { $regex: description, $options: "i" } },
+        ],
+      })
+      .toArray();
+    if (!itemList) throw "Could not get items";
+    itemList = itemList.map((element) => {
+      element._id = element._id.toString();
+      element.picture = element.picture[0];
+      return element;
+    });
+    return itemList;
   },
 };
 

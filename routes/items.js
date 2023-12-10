@@ -126,4 +126,18 @@ router
     const body = req.body;
   });
 
+router.route("/items/search/:searchTerm").get(async (req, res) => {
+  try {
+    let searchTerm = req.params.searchTerm;
+    searchTerm = validation.checkString(searchTerm, "search entry");
+    let result = await items.searchByDescription(searchTerm);
+    if (!result) {
+      res.status(404).render("error", { errorMessage: e });
+    }
+    res.status(200).json(result);
+  } catch (e) {
+    res.status(500).render("error", { errorMessage: e });
+  }
+});
+
 export default router;

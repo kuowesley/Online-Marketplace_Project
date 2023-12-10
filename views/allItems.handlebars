@@ -1,3 +1,10 @@
+<form id="searchItems">
+    <label for="show_search_term" class="search-form-label">Search</label>
+    <input type="text" id="item_search_term" class="search-input">
+    <input type="submit" value="Submit" class="search-submit">
+</form>
+
+<div id ="all-items">
 {{#each items}}
 {{#if (eq (mod @index 2) 0)}}
 <div class="item-row">
@@ -6,9 +13,13 @@
     <p>Item: <a href="/items/{{this._id}}">{{this.item}}</a></p>
     <p>Price: ${{this.price}}</p>
     <p> 
-        {{#each this.picture}}
+        {{!-- {{#each this.picture}}
             <img alt="Item Picture {{item.item}}" src="{{this}}" >
-        {{/each}}
+        {{/each}} --}}
+        {{!-- {{#if this.picture[0]}}
+            <img alt="Item Picture {{item.item}}" src="{{this.picture[0]}}" >
+        {{/if}} --}}
+        <img alt="Item Picture {{item.item}}" src="{{this.picture}}" >
     </p>
     <p>Location: {{this.location}}</p>
     <p></p>Condition: {{this.condition}}</p>
@@ -17,4 +28,15 @@
     </div>
 {{/if}}
 {{/each}}
+</div>
+
+<div id="search-result" hidden>
+
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"
+    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<script src='/public/js/search_filter.js'></script>
 

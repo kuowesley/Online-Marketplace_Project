@@ -437,12 +437,12 @@ const usersMethods = {
 
     let AllItems = [];
     const itemsCollection = await items();
-    for (let itemId of purchasedItems) {
+    for (let item of purchasedItems) {
       const itemInfo = await itemsCollection.findOne({
-        _id: new ObjectId(itemId),
+        _id: new ObjectId(item.itemId),
       });
       if (!itemInfo) {
-        throw `Item: ${itemId} not found`;
+        throw `Item: ${item.itemId} not found`;
       }
       AllItems.push(itemInfo);
     }

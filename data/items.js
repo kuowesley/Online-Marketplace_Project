@@ -122,6 +122,8 @@ const itemsMethods = {
     });
     return itemList;
   },
+
+  async purchaseItem(userId) {},
 };
 
 export default itemsMethods;

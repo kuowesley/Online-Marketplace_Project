@@ -214,6 +214,7 @@ const usersMethods = {
   },
 
   async checkOutItems(userId) {
+    // TODO: make sure user can't purchase items they posted
     userId = validation.checkId(userId, "userId");
     const usersCollection = await users();
     const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
@@ -242,6 +243,17 @@ const usersMethods = {
       if (!item) {
         throw `Item not found`;
       }
+      // Add to itemId to historical_sold_item of the seller
+      let soldItemId = item._id.toString();
+      let sellerId = item.seller_id;
+      const updateResult = await usersCollection.updateOne(
+        { _id: new ObjectId(sellerId) },
+        { $addToSet: { historical_sold_item: soldItemId } }, // prevent duplicate item IDs
+      );
+
+      if (!updateResult) {
+        throw "Failed to update historical_sold_item for the seller.";
+      }
     }
     const cleanShoppingCart = await usersCollection.findOneAndUpdate(
       { _id: new ObjectId(userId) },
@@ -253,7 +265,12 @@ const usersMethods = {
 
     // add items to historical_purchased_item
     let historical_purchased_item = user.historical_purchased_item;
-    historical_purchased_item = historical_purchased_item.concat(shopping_cart);
+    let itemIdsFromCart = shopping_cart.map((cartItem) => cartItem.itemId);
+    const uniqueItemIds = new Set([
+      ...historical_purchased_item,
+      ...itemIdsFromCart,
+    ]); // prevent duplicate IDs
+    historical_purchased_item = Array.from(uniqueItemIds);
     const update_historical_purchased_item =
       await usersCollection.findOneAndUpdate(
         { _id: new ObjectId(userId) },

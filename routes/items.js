@@ -123,9 +123,18 @@ router
   .route("/items/purchase")
   .get(async (req, res) => {})
   .post(async (req, res) => {
-    console.log(req);
-    console.log(req.body);
-    const body = req.body;
+    // console.log(req);
+    // console.log(req.body);
+    // const body = req.body;
+    if (!req.session.user) {
+      return res.status(403).json({ message: "You must log in" });
+    }
+    try {
+      await items.purchaseItem(req.session.user.userId);
+      return res.status(200).json({ message: "Purchase successful!" });
+    } catch (e) {
+      return res.status(400).json({ message: e });
+    }
   });
 
 router.route("/items/search/:searchTerm").get(async (req, res) => {

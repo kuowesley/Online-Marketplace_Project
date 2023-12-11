@@ -137,7 +137,7 @@ router.route("/addToCart").post(async (req, res) => {
 
 router.route("/checkOutShoppingCart").post(async (req, res) => {
   if (!req.session.user) {
-    return res.status(403).json({ message: false });
+    return res.status(403).json({ message: "Error, please try again" });
   }
   try {
     await usersData.checkOutItems(req.session.user.userId);
@@ -156,7 +156,7 @@ router.route("/removeCartItem").post(async (req, res) => {
   try {
     itemId = validation.checkId(itemId, "itemId");
     await usersData.removeCartItem(req.session.user.userId, itemId);
-    return res.status(200).json({ message: "remove successful" });
+    return res.status(200).json({ message: "Remove Successful" });
   } catch (e) {
     return res.status(400).json({ message: e });
   }
@@ -171,7 +171,7 @@ router.route("/removeListItem").post(async (req, res) => {
   try {
     itemId = validation.checkId(itemId, "itemId");
     await usersData.removeListItem(req.session.user.userId, itemId);
-    return res.status(200).json({ message: "remove successful" });
+    return res.status(200).json({ message: "Remove Successful" });
   } catch (e) {
     return res.status(400).json({ message: e });
   }

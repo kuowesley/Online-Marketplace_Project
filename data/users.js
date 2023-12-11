@@ -214,7 +214,6 @@ const usersMethods = {
   },
 
   async checkOutItems(userId) {
-    // TODO: make sure user can't purchase items they posted
     userId = validation.checkId(userId, "userId");
     const usersCollection = await users();
     const itemsCollection = await items();
@@ -225,7 +224,7 @@ const usersMethods = {
     let shopping_cart = user.shopping_cart;
     try {
       for (let item of shopping_cart) {
-        // Check if the item's seller is not the same as the user
+        // Make sure user can't purchase items they posted
         const seller = await usersCollection.findOne(
           {
             items_for_sale: item.itemId,

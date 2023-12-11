@@ -13,6 +13,7 @@ let item5 = {};
 let item6 = {};
 
 let res;
+let user2;
 try {
   res = await users.addUser(
     "testFirstName",
@@ -25,6 +26,24 @@ try {
     "NJ",
     "07030",
     26,
+  );
+  console.log(res);
+} catch (e) {
+  console.log(e);
+}
+
+try {
+  user2 = await users.addUser(
+    "user2FirstName",
+    "user2LastName",
+    "user2",
+    "user2@gmail.com",
+    "K@123456",
+    "test2Street",
+    "Hoboken",
+    "NJ",
+    "07036",
+    88,
   );
   console.log(res);
 } catch (e) {

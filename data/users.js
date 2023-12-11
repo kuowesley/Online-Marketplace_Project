@@ -217,6 +217,7 @@ const usersMethods = {
     // TODO: make sure user can't purchase items they posted
     userId = validation.checkId(userId, "userId");
     const usersCollection = await users();
+    const itemsCollection = await items();
     const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
     if (!user) {
       throw `user not found`;
@@ -224,6 +225,18 @@ const usersMethods = {
     let shopping_cart = user.shopping_cart;
     try {
       for (let item of shopping_cart) {
+        // Check if the item's seller is not the same as the user
+        const seller = await usersCollection.findOne(
+          {
+            items_for_sale: item.itemId,
+          },
+          {
+            projection: { _id: 1 },
+          },
+        );
+        if (seller._id.toString() === userId) {
+          throw `You cannot purchase items you posted`;
+        }
         await this.checkItemAvaliable(item.itemId, item.quantity);
       }
     } catch (e) {
@@ -233,7 +246,6 @@ const usersMethods = {
     //   this.checkItemAvaliable(item.itemId, item.quantity)
     // }
 
-    const itemsCollection = await items();
     for (let shoppingItem of shopping_cart) {
       const item = await itemsCollection.findOneAndUpdate(
         { _id: new ObjectId(shoppingItem.itemId) },

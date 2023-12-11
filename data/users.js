@@ -151,6 +151,9 @@ const usersMethods = {
     if (!item) {
       throw `Item not found`;
     }
+    if (item.seller_id === userId) {
+      throw "You cannot purchase items you posted";
+    }
 
     const usersCollection = await users();
     const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
@@ -216,6 +219,7 @@ const usersMethods = {
   async checkOutItems(userId) {
     userId = validation.checkId(userId, "userId");
     const usersCollection = await users();
+    const itemsCollection = await items();
     const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
     if (!user) {
       throw `user not found`;
@@ -223,6 +227,18 @@ const usersMethods = {
     let shopping_cart = user.shopping_cart;
     try {
       for (let item of shopping_cart) {
+        // Make sure user can't purchase items they posted
+        const seller = await usersCollection.findOne(
+          {
+            items_for_sale: item.itemId,
+          },
+          {
+            projection: { _id: 1 },
+          },
+        );
+        if (seller._id.toString() === userId) {
+          throw `You cannot purchase items you posted`;
+        }
         await this.checkItemAvaliable(item.itemId, item.quantity);
       }
     } catch (e) {
@@ -232,7 +248,6 @@ const usersMethods = {
     //   this.checkItemAvaliable(item.itemId, item.quantity)
     // }
 
-    const itemsCollection = await items();
     for (let shoppingItem of shopping_cart) {
       const item = await itemsCollection.findOneAndUpdate(
         { _id: new ObjectId(shoppingItem.itemId) },
@@ -241,6 +256,17 @@ const usersMethods = {
       );
       if (!item) {
         throw `Item not found`;
+      }
+      // Add to itemId to historical_sold_item of the seller
+      let soldItemId = item._id.toString();
+      let sellerId = item.seller_id;
+      const updateResult = await usersCollection.updateOne(
+        { _id: new ObjectId(sellerId) },
+        { $addToSet: { historical_sold_item: soldItemId } }, // prevent duplicate item IDs
+      );
+
+      if (!updateResult) {
+        throw "Failed to update historical_sold_item for the seller.";
       }
     }
     const cleanShoppingCart = await usersCollection.findOneAndUpdate(
@@ -253,7 +279,12 @@ const usersMethods = {
 
     // add items to historical_purchased_item
     let historical_purchased_item = user.historical_purchased_item;
-    historical_purchased_item = historical_purchased_item.concat(shopping_cart);
+    let itemIdsFromCart = shopping_cart.map((cartItem) => cartItem.itemId);
+    const uniqueItemIds = new Set([
+      ...historical_purchased_item,
+      ...itemIdsFromCart,
+    ]); // prevent duplicate IDs
+    historical_purchased_item = Array.from(uniqueItemIds);
     const update_historical_purchased_item =
       await usersCollection.findOneAndUpdate(
         { _id: new ObjectId(userId) },
@@ -369,6 +400,89 @@ const usersMethods = {
     }
 
     return AllItems;
+  },
+
+  async getHistoricalSoldItems(userId) {
+    userId = validation.checkId(userId, "userId");
+    const usersCollection = await users();
+    const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+    if (!user) {
+      throw `user not found`;
+    }
+    let soldItems = user.historical_sold_item;
+
+    let AllItems = [];
+    const itemsCollection = await items();
+    for (let itemId of soldItems) {
+      const itemInfo = await itemsCollection.findOne({
+        _id: new ObjectId(itemId),
+      });
+      if (!itemInfo) {
+        throw `Item: ${itemId} not found`;
+      }
+      AllItems.push(itemInfo);
+    }
+
+    return AllItems;
+  },
+
+  async getHistoricalPurchase(userId) {
+    userId = validation.checkId(userId, "userId");
+    const usersCollection = await users();
+    const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+    if (!user) {
+      throw `user not found`;
+    }
+    let purchasedItems = user.historical_purchased_item;
+
+    let AllItems = [];
+    const itemsCollection = await items();
+    for (let item of purchasedItems) {
+      const itemInfo = await itemsCollection.findOne({
+        _id: new ObjectId(item.itemId),
+      });
+      if (!itemInfo) {
+        throw `Item: ${item.itemId} not found`;
+      }
+      AllItems.push(itemInfo);
+    }
+
+    return AllItems;
+  },
+
+  async submitComment(itemId, rating, comment) {
+    itemId = validation.checkId(itemId, "itemId");
+    rating = validation.checkRating(rating, "rating");
+    comment = validation.checkString(comment, "comment");
+    const itemsCollection = await items();
+    const comment_submission = await itemsCollection.findOneAndUpdate(
+      { _id: new ObjectId(itemId) },
+      { $push: { comments: { rating: rating, comment: comment } } },
+    );
+    if (!comment_submission) {
+      throw `Update item comment fail`;
+    }
+  },
+
+  async getSellerInformation(id) {
+    id = validation.checkId(id, "itemId");
+    const usersCollection = await users();
+    const seller = await usersCollection.findOne(
+      // hide password and username
+      { _id: new ObjectId(id) },
+      {
+        projection: {
+          firstName: 1,
+          lastName: 1,
+          historical_sold_item: 1,
+          _id: 0,
+        },
+      },
+    );
+    if (!seller) {
+      throw `Seller with id ${id} not found`;
+    }
+    return seller;
   },
 };
 

@@ -55,16 +55,26 @@
         contentType: "application/json",
         data: JSON.stringify({
           itemId: itemId.text(),
+          quantity: quantitySelect.val(),
         }),
+        success: function (data) {
+          if (!data.message) {
+            window.location.href = "/users/login";
+          } else {
+            alert(data.message);
+            window.location.href = "/items";
+          }
+        },
+        error: function (xhr, status, error) {
+          if (xhr.responseJSON && xhr.responseJSON.message) {
+            alert(xhr.responseJSON.message);
+          } else {
+            alert(status);
+          }
+        },
       };
-      $.ajax(requestConfig).then(function (responseMessage) {
-        // let newElement = $(responseMessage);
-        // bindEventsToTodoItem(newElement);
-        // todoArea.append(newElement);
-        // newNameInput.val('');
-        // newDecriptionArea.val('');
-        // newNameInput.focus();
-      });
+
+      $.ajax(requestConfig);
     }
   });
 })(window.jQuery);

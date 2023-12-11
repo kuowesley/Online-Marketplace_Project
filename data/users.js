@@ -471,7 +471,7 @@ const usersMethods = {
         projection: {
           firstName: 1,
           lastName: 1,
-          historical_purchased_item: 1,
+          historical_sold_item: 1,
           _id: 0,
         },
       },

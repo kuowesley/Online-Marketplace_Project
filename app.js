@@ -18,6 +18,9 @@ import handlebarsHelpers from "handlebars-helpers";
 const hbs = exphbs.create({
   helpers: {
     ...handlebarsHelpers(),
+    length: function (array) {
+      return array.length;
+    },
   },
 });
 

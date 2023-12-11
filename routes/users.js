@@ -182,11 +182,11 @@ router.get("/profile", async (req, res) => {
 });
 
 router.get("/historicalPurchase", async (req, res) => {
-  if (!req.session.uesr) {
+  if (!req.session.user) {
     return res.redirect("/users/login");
   }
   try {
-    const items = await usersData.getUserHistoricalPurchase(
+    const items = await usersData.getHistoricalPurchase(
       req.session.user.userId,
     );
     return res

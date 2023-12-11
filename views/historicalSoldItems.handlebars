@@ -24,34 +24,12 @@
             </td>
             <td>{{this.location}}</td>
             <td>{{this.condition}}</td>
-            <td>
-                <button class="rate" type="button" value="{{this._id}}">Rate&Comment</button>
-            </td>
         </tr>
         {{/each}}
     </tbody>
 </table>
-<div id="rateCommentModal" hidden>
-  <h2>Rate and Comment</h2>
-  <label for="ratingSelect">Rating:</label>
-  <select id="ratingSelect">
-    <option value="5 stars">5 stars</option>
-    <option value="4 stars">4 stars</option>
-    <option value="3 stars">3 stars</option>
-    <option value="2 stars">2 stars</option>
-    <option value="1 stars">1 star</option>
-  </select>
-  <br>
-  <textarea id="commentTextArea" placeholder="Enter your comment"></textarea>
-  <button id="submitComment">Submit</button>
-  <button id="closeModal">Close</button>
-</div>
 {{else}}
 <div>
     <p>No items have been sold yet!</p>
 </div>
 {{/if}}
-
-<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-    crossorigin="anonymous"></script>
-<script src="/public/js/historicalSoldItems.js"></script>

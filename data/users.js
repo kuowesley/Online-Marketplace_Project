@@ -395,6 +395,30 @@ const usersMethods = {
     return AllItems;
   },
 
+  async getHistoricalPurchase(userId) {
+    userId = validation.checkId(userId, "userId");
+    const usersCollection = await users();
+    const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+    if (!user) {
+      throw `user not found`;
+    }
+    let purchasedItems = user.historical_purchased_item;
+
+    let AllItems = [];
+    const itemsCollection = await items();
+    for (let itemId of purchasedItems) {
+      const itemInfo = await itemsCollection.findOne({
+        _id: new ObjectId(itemId),
+      });
+      if (!itemInfo) {
+        throw `Item: ${itemId} not found`;
+      }
+      AllItems.push(itemInfo);
+    }
+
+    return AllItems;
+  },
+
   async submitComment(itemId, rating, comment) {
     itemId = validation.checkId(itemId, "itemId");
     rating = validation.checkRating(rating, "rating");

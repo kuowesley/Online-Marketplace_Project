@@ -7,6 +7,8 @@ import items from "../data/items.js";
 import { Binary, ObjectId } from "mongodb";
 import { fileURLToPath } from "url";
 import { usersData } from "../data/index.js";
+import xss from "xss";
+import sellers from "../data/users.js";
 
 const router = Router();
 
@@ -128,7 +130,7 @@ router
 
 router.route("/items/search/:searchTerm").get(async (req, res) => {
   try {
-    let searchTerm = req.params.searchTerm;
+    let searchTerm = xss(req.params.searchTerm);
     searchTerm = validation.checkString(searchTerm, "search entry");
     let result = await items.searchByDescription(searchTerm);
     if (!result) {

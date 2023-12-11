@@ -58,6 +58,7 @@ const itemsMethods = {
       condition: condition,
       seller_id: seller_id,
       uploadTime: new Date(), // Add the current timestamp
+      comments: [], // Initialize comments as an empty array
     };
 
     // insert to database
@@ -102,9 +103,14 @@ const itemsMethods = {
     const itemCollection = await items();
     let itemList = await itemCollection
       .find({
-        $or: [
-          { description: { $regex: description, $options: "i" } },
-          { item: { $regex: description, $options: "i" } },
+        $and: [
+          {
+            $or: [
+              { description: { $regex: description, $options: "i" } },
+              { item: { $regex: description, $options: "i" } },
+            ],
+          },
+          { quantity: { $gt: 0 } },
         ],
       })
       .toArray();

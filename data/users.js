@@ -370,6 +370,65 @@ const usersMethods = {
 
     return AllItems;
   },
+
+  async getHistoricalSoldItems(userId) {
+    userId = validation.checkId(userId, "userId");
+    const usersCollection = await users();
+    const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+    if (!user) {
+      throw `user not found`;
+    }
+    let soldItems = user.historical_sold_item;
+
+    let AllItems = [];
+    const itemsCollection = await items();
+    for (let itemId of soldItems) {
+      const itemInfo = await itemsCollection.findOne({
+        _id: new ObjectId(itemId),
+      });
+      if (!itemInfo) {
+        throw `Item: ${itemId} not found`;
+      }
+      AllItems.push(itemInfo);
+    }
+
+    return AllItems;
+  },
+
+  async submitComment(itemId, rating, comment) {
+    itemId = validation.checkId(itemId, "itemId");
+    rating = validation.checkRating(rating, "rating");
+    comment = validation.checkString(comment, "comment");
+    const itemsCollection = await items();
+    const comment_submission = await itemsCollection.findOneAndUpdate(
+      { _id: new ObjectId(itemId) },
+      { $push: { comments: { rating: rating, comment: comment } } },
+    );
+    if (!comment_submission) {
+      throw `Update item comment fail`;
+    }
+  },
+
+  async getSellerInformation(id) {
+    id = validation.checkId(id, "itemId");
+    const usersCollection = await users();
+    const seller = await usersCollection.findOne(
+      // hide password and username
+      { _id: new ObjectId(id) },
+      {
+        projection: {
+          firstName: 1,
+          lastName: 1,
+          historical_sold_item: 1,
+          _id: 0,
+        },
+      },
+    );
+    if (!seller) {
+      throw `Seller with id ${id} not found`;
+    }
+    return seller;
+  },
 };
 
 export default usersMethods;

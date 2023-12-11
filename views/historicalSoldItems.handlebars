@@ -15,19 +15,37 @@
     <tbody>
         {{#each items}}
         <tr class="item">
-            <td><a href="/items/{{this.item._id}}">{{this.item.item}}</a></td>
-            <td>${{this.item.price}}</td>
+            <td><a href="/items/{{this._id}}">{{this.item}}</a></td>
+            <td>${{this.price}}</td>
             <td>
-                {{#each this.item.picture}}
+                {{#each this.picture}}
                 <img alt="Item Picture {{../item.item}}" src="{{this}}" width="50" height="50">
                 {{/each}}
             </td>
-            <td>{{this.item.location}}</td>
-            <td>{{this.item.condition}}</td>
+            <td>{{this.location}}</td>
+            <td>{{this.condition}}</td>
+            <td>
+                <button class="rate" type="button" value="{{this._id}}">Rate&Comment</button>
+            </td>
         </tr>
         {{/each}}
     </tbody>
 </table>
+<div id="rateCommentModal" hidden>
+  <h2>Rate and Comment</h2>
+  <label for="ratingSelect">Rating:</label>
+  <select id="ratingSelect">
+    <option value="5 stars">5 stars</option>
+    <option value="4 stars">4 stars</option>
+    <option value="3 stars">3 stars</option>
+    <option value="2 stars">2 stars</option>
+    <option value="1 stars">1 star</option>
+  </select>
+  <br>
+  <textarea id="commentTextArea" placeholder="Enter your comment"></textarea>
+  <button id="submitComment">Submit</button>
+  <button id="closeModal">Close</button>
+</div>
 {{else}}
 <div>
     <p>No items have been sold yet!</p>

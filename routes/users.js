@@ -255,8 +255,8 @@ router.get("/getSellerInformation/:id", async (req, res) => {
       res.status(404).render("error", { errorMessage: e });
     }
     let items = [];
-    for (let i = 0; i < thisSeller.historical_sold_item.length; i++) {
-      let itemId = thisSeller.historical_sold_item[i];
+    for (let i = 0; i < thisSeller.historical_purchased_item.length; i++) {
+      let itemId = thisSeller.historical_purchased_item[i];
       let currentItem = await itemData.getById(itemId);
       if (!currentItem) {
         res.status(404).render("error", { errorMessage: e });

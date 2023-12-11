@@ -27,7 +27,7 @@ const validation = {
 
   checkNumber(num, varName) {
     if (typeof num !== "number") {
-      throw `Error: You must supply a ${varName}!`;
+      throw `Error: You must supply a ${varName} or the type is wrong!`;
     }
     if (isNaN(num)) {
       throw `Error : ${varName} must be a valid number!`;
@@ -202,6 +202,149 @@ const validation = {
       throw `Invalid ${varName}`;
     }
     return num;
+  },
+
+  checkItemName(str, varName) {
+    // check string
+    str = this.checkString(str, varName);
+    if (str.length < 5) {
+      throw `Should ${varName} contain over 5 characters`;
+    }
+
+    // check for special characters
+    const specialChars = /[!@#$%^&*(),.?"{}|<>]/;
+    if (specialChars.test(str)) {
+      throw `${varName} should not contain special characters`;
+    }
+    return str;
+  },
+
+  checkDescription(str, varName) {
+    // check string
+    str = this.checkString(str, varName);
+    if (str.length < 5) {
+      throw `Should ${varName} contain over 5 characters`;
+    }
+
+    return str;
+  },
+
+  checkRoutePriceQuantity(str, varName) {
+    // check NaN
+    if (isNaN(str)) throw `${varName} is not number`;
+    let num = Number(str);
+    return num;
+  },
+
+  checkPrice(num, varName) {
+    // check number
+    num = this.checkNumber(num, varName);
+    if (num <= 0) {
+      throw `${varName} could not be 0 or negative`;
+    }
+
+    return num;
+  },
+
+  checkQuantity(num, varName) {
+    // check number
+    num = this.checkNumber(num, varName);
+
+    if (num <= 0) {
+      throw `${varName} could not be 0 or negative`;
+    }
+
+    return num;
+  },
+
+  checkTransactionDate(date, varName) {
+    // check str
+    date = this.checkString(date, varName);
+
+    // mm/dd/yyyy
+    let eventDate_check = date.split("/");
+    if (
+      eventDate_check[0].length !== 2 ||
+      eventDate_check[1].length !== 2 ||
+      eventDate_check[2].length !== 4
+    )
+      throw `${varName} not in correct format.`;
+
+    // check date valid nor not
+    let dateobj = new Date(date);
+    if (dateobj == "Invalid Date")
+      throw `${varName} could transfer to Date Obj.`;
+
+    // The eventDate must be greater than the current date (so only future events can be created).
+    let today = new Date().setHours(0, 0, 0, 0);
+    if (today > dateobj)
+      throw `${varName} must be greater than the current date`;
+
+    return date;
+  },
+
+  checkLocation(str, varName) {
+    // check string
+    str = this.checkString(str, varName);
+    if (str.length < 5) {
+      throw `Should ${varName} contain over 5 characters`;
+    }
+
+    return str;
+  },
+
+  checkDeliveryMethod(str, varName) {
+    // check string
+    str = this.checkString(str, varName);
+
+    if (str.length < 5) {
+      throw `Should ${varName} contain over 5 characters`;
+    }
+
+    return str;
+  },
+
+  checkCondition(str, varName) {
+    // check string
+    str = this.checkString(str, varName);
+
+    if (str.length < 5) {
+      throw `Should ${varName} contain over 5 characters`;
+    }
+
+    return str;
+  },
+
+  checkFileInput(file, varName) {
+    // in route
+    // check string
+    file = this.checkObject(file, varName);
+    file.fieldname = this.checkString(file.fieldname, "file.fieldname");
+    file.originalname = this.checkString(
+      file.originalname,
+      "file.originalname",
+    );
+    file.encoding = this.checkString(file.encoding, "file.encoding");
+    file.mimetype = this.checkString(file.mimetype, "file.mimetype");
+    file.destination = this.checkString(file.destination, "file.destination");
+    file.filename = this.checkString(file.filename, "file.filename");
+    file.path = this.checkString(file.path, "file.path");
+
+    // check number
+    file.size = this.checkNumber(file.size, "file.size");
+
+    // 12MB 12000000
+    if (file.fieldname !== "fileInput")
+      throw `file.fieldname should be fileInput`;
+    if (!file.mimetype.startsWith("image/"))
+      throw `file.mimetype should start with image/`;
+    if (file.destination !== "upload/")
+      throw `file.destination should be upload/`;
+    if (!file.path.startsWith(`upload\\`))
+      throw `file.path should start with upload\\`;
+    if (file.size >= 12000000) throw `file.size could not over 12MB`;
+
+    return file;
   },
 };
 

@@ -20,33 +20,34 @@ const itemsMethods = {
     seller_id,
   ) {
     // check input type
-    item = validation.checkString(item, "item");
-    price = validation.checkNumber(price, "price");
-    description = validation.checkString(description, "description");
-    seller_id = validation.checkId(seller_id, "seller_id");
-    // TODO Validate buffer when route pass in picture buffer
-    // if (Array.isArray(picture)) {
-    //   for (let image in picture) {
-    //     picture[image] = validation.checkString(picture[image],'picture');
-    //   }
-    // }
+    item = validation.checkItemName(item, "item");
+    price = validation.checkPrice(price, "price");
+    description = validation.checkDescription(description, "description");
 
-    quantity = validation.checkNumber(quantity, "quantity");
-    location = validation.checkString(location, "location");
-    deliveryMethod = validation.checkString(deliveryMethod, "deliveryMethod");
-    condition = validation.checkString(condition, "condition");
+    // Validate buffer when route pass in picture buffer
+    if (!Array.isArray(picture)) {
+      throw `Pictures should be array all multiple image`;
+    } else {
+      for (let i in picture) {
+        if (!Buffer.isBuffer(picture[i])) {
+          throw `image should be buffer`;
+        }
+      }
+    }
+
+    // check input type
+    quantity = validation.checkQuantity(quantity, "quantity");
+    location = validation.checkLocation(location, "location");
+    deliveryMethod = validation.checkDeliveryMethod(
+      deliveryMethod,
+      "deliveryMethod",
+    );
+    condition = validation.checkCondition(condition, "condition");
+    seller_id = validation.checkId(seller_id, "seller_id");
 
     // TODO: picture would be convert to binary but could not exceed 16 MB, if the file need to be
     // over 16MB, use https://www.mongodb.com/docs/manual/core/gridfs/
     // https://www.bezkoder.com/node-js-upload-store-images-mongodb/
-
-    // convert picture to binary
-    // for (let image in picture) {
-    //   picture[image] = {
-    //     id: new ObjectId(),
-    //     image: new Binary(picture[image]),
-    //   };
-    // }
 
     // config item
     let newItem = {
@@ -66,11 +67,11 @@ const itemsMethods = {
     // insert to database
     const itemsCollection = await items();
     const insertInfo = await itemsCollection.insertOne(newItem);
+    console.log(`insertInfo: ${insertInfo}`);
     if (!insertInfo) {
-      throw `Fail to create new user`;
+      throw `Fail to create new item`;
     } else {
       console.log(`Upload Success`);
-      //return `Upload Success`;
       return insertInfo;
     }
   },

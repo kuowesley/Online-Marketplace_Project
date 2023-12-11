@@ -151,6 +151,9 @@ const usersMethods = {
     if (!item) {
       throw `Item not found`;
     }
+    if (item.seller_id === userId) {
+      throw "You cannot purchase items you posted";
+    }
 
     const usersCollection = await users();
     const user = await usersCollection.findOne({ _id: new ObjectId(userId) });

@@ -418,12 +418,16 @@ const validation = {
 
     // mm/dd/yyyy
     let eventDate_check = date.split("/");
-    if (
-      eventDate_check[0].length !== 2 ||
-      eventDate_check[1].length !== 2 ||
-      eventDate_check[2].length !== 4
-    )
-      throw `${varName} not in correct format.`;
+    if (!eventDate_check[0] || !eventDate_check[1] || !eventDate_check[2]) {
+      throw `${varName} should not empty, it should be mm/dd/yyyy`;
+    } else {
+      if (
+        eventDate_check[0].length !== 2 ||
+        eventDate_check[1].length !== 2 ||
+        eventDate_check[2].length !== 4
+      )
+        throw `${varName} not in correct format which length shoudl be mm/dd/yyyy`;
+    }
 
     // check date valid nor not
     let dateobj = new Date(date);

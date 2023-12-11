@@ -15,15 +15,30 @@
     <tbody>
         {{#each items}}
         <tr class="item">
-            <td><a href="/items/{{this.item._id}}">{{this.item.item}}</a></td>
-            <td>${{this.item.price}}</td>
+            <td><a href="/items/{{this._id}}">{{this.item}}</a></td>
+            <td>${{this.price}}</td>
             <td>
-                {{#each this.item.picture}}
+                {{#each this.picture}}
                 <img alt="Item Picture {{../item.item}}" src="{{this}}" width="50" height="50">
                 {{/each}}
             </td>
-            <td>{{this.item.location}}</td>
-            <td>{{this.item.condition}}</td>
+            <td>{{this.location}}</td>
+            <td>{{this.condition}}</td>
+                        </td>
+                       <td>
+                {{#if this.comments}}
+                    <ul>
+                        {{#each this.comments}}
+                            <li>
+                                <p>Rating: {{this.rating}}</p>
+                                <p>Comment: {{this.comment}}</p>
+                            </li>
+                        {{/each}}
+                    </ul>
+                {{else}}
+                    No comments
+                {{/if}}
+            </td>
         </tr>
         {{/each}}
     </tbody>
@@ -33,7 +48,3 @@
     <p>No items have been sold yet!</p>
 </div>
 {{/if}}
-
-<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-    crossorigin="anonymous"></script>
-<script src="/public/js/historicalSoldItems.js"></script>

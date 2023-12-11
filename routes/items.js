@@ -7,6 +7,8 @@ import items from "../data/items.js";
 import { Binary, ObjectId } from "mongodb";
 import { fileURLToPath } from "url";
 import { usersData } from "../data/index.js";
+import xss from "xss";
+import sellers from "../data/users.js";
 
 const router = Router();
 
@@ -117,13 +119,33 @@ router.route("/items/:id").get(async (req, res) => {
   }
 });
 
-router
-  .route("/items/purchase")
-  .get(async (req, res) => {})
-  .post(async (req, res) => {
-    console.log(req);
-    console.log(req.body);
-    const body = req.body;
-  });
+router.route("/items/purchase").post(async (req, res) => {
+  const body = req.body;
+  let itemId = xss(body.itemId);
+  let quantity = xss(body.quantity);
+  if (!req.session.user) {
+    return res.status(403).json({ message: false });
+  }
+  try {
+    await items.purchaseItem(req.session.user.userId, itemId, quantity);
+    return res.status(200).json({ message: "Purchase successful!" });
+  } catch (e) {
+    return res.status(400).json({ message: e });
+  }
+});
+
+router.route("/items/search/:searchTerm").get(async (req, res) => {
+  try {
+    let searchTerm = xss(req.params.searchTerm);
+    searchTerm = validation.checkString(searchTerm, "search entry");
+    let result = await items.searchByDescription(searchTerm);
+    if (!result) {
+      res.status(404).render("error", { errorMessage: e });
+    }
+    res.status(200).json(result);
+  } catch (e) {
+    res.status(500).render("error", { errorMessage: e });
+  }
+});
 
 export default router;

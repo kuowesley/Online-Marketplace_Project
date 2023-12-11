@@ -1,4 +1,6 @@
-<h1>Items For Sale</h1>
+<p><a href="javascript:history.go(-1)">Back to item</a></p>
+<p>Seller: {{seller.firstName}} {{seller.lastName}}</p>
+<p>History:</p>
 {{#if items}}
 <table>
     <thead>
@@ -24,11 +26,7 @@
             </td>
             <td>{{this.location}}</td>
             <td>{{this.condition}}</td>
-            <td>{{this.quantity}}</td>
             <td>
-                <button class="removeItem" type="button" value="{{this._id}}">Remove</button>
-            </td>
-                       <td>
                 {{#if this.comments}}
                     <ul>
                         {{#each this.comments}}
@@ -48,11 +46,6 @@
 </table>
 {{else}}
 <div>
-    <p>No item listing yet!</p>
+    <p>No items have been sold yet!</p>
 </div>
 {{/if}}
-
-
-<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-    crossorigin="anonymous"></script>
-<script src="/public/js/itemsForSale.js"></script>

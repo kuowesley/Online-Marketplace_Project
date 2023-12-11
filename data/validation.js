@@ -194,6 +194,15 @@ const validation = {
     }
     return str;
   },
+
+  checkRating(num, varName) {
+    let ratingOption = ["5 stars", "4 stars", "3 stars", "2 stars", "1 stars"];
+    num = this.checkString(num, varName);
+    if (!ratingOption.includes(num)) {
+      throw `Invalid ${varName}`;
+    }
+    return num;
+  },
 };
 
 export default validation;

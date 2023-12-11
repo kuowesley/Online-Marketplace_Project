@@ -2,7 +2,7 @@ import validation from "./validation.js";
 import { items } from "../config/mongoCollections.js";
 import { users } from "../config/mongoCollections.js";
 import { Binary, ObjectId } from "mongodb";
-import { usersData } from "../data/index.js";
+import usersData from "./users.js";
 // import multer from "multer";
 // import { GridFsStorage } from "multer-gridfs-storage";
 // import { mongoConfig } from "../config/settings.js";

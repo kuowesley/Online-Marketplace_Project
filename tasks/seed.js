@@ -1,6 +1,6 @@
 // upload item
-import items from "../data/items.js";
 import users from "../data/users.js";
+import items from "../data/items.js";
 import { dbConnection, closeConnection } from "../config/mongoConnection.js";
 const db = await dbConnection();
 await db.dropDatabase();

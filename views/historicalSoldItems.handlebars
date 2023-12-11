@@ -24,6 +24,21 @@
             </td>
             <td>{{this.location}}</td>
             <td>{{this.condition}}</td>
+                        </td>
+                       <td>
+                {{#if this.comments}}
+                    <ul>
+                        {{#each this.comments}}
+                            <li>
+                                <p>Rating: {{this.rating}}</p>
+                                <p>Comment: {{this.comment}}</p>
+                            </li>
+                        {{/each}}
+                    </ul>
+                {{else}}
+                    No comments
+                {{/if}}
+            </td>
         </tr>
         {{/each}}
     </tbody>

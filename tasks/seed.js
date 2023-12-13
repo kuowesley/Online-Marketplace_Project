@@ -1,6 +1,9 @@
 // upload item
 import users from "../data/users.js";
 import items from "../data/items.js";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 import { dbConnection, closeConnection } from "../config/mongoConnection.js";
 const db = await dbConnection();
 await db.dropDatabase();
@@ -14,6 +17,11 @@ let item6 = {};
 
 let res;
 let user2;
+
+const currentFilePath = fileURLToPath(import.meta.url);
+const currentDirPath = path.dirname(currentFilePath);
+const uploadDirPath = path.join(currentDirPath, "..", "img");
+
 try {
   res = await users.addUser(
     "testFirstName",
@@ -51,11 +59,17 @@ try {
 }
 
 try {
+  let imagePathList = [];
+  let imagesList = [];
+  let imagePath = path.join(uploadDirPath, "couch.jpg");
+  let binaryImage = fs.readFileSync(imagePath);
+  imagePathList.push(imagePath);
+  imagesList.push(binaryImage);
   item1 = await items.uploadItem(
     "Cozy counch",
     20,
     "Light grey counch",
-    ["http://localhost:3000/img/couch.jpg"],
+    imagesList,
     10,
     "Brooklyn, NY",
     "Meetup",
@@ -72,11 +86,17 @@ try {
 }
 
 try {
+  let imagePathList = [];
+  let imagesList = [];
+  let imagePath = path.join(uploadDirPath, "drawer.jpg");
+  let binaryImage = fs.readFileSync(imagePath);
+  imagePathList.push(imagePath);
+  imagesList.push(binaryImage);
   item2 = await items.uploadItem(
     "Drawer",
     10,
     "White grey counch",
-    ["http://localhost:3000/img/drawer.jpg"],
+    imagesList,
     15,
     "Union City, NJ",
     "Meetup",
@@ -93,11 +113,17 @@ try {
 }
 
 try {
+  let imagePathList = [];
+  let imagesList = [];
+  let imagePath = path.join(uploadDirPath, "iphone.jpg");
+  let binaryImage = fs.readFileSync(imagePath);
+  imagePathList.push(imagePath);
+  imagesList.push(binaryImage);
   item3 = await items.uploadItem(
     "iPhone",
     399,
     "iPhone 12, Black",
-    ["http://localhost:3000/img/iphone.jpg"],
+    imagesList,
     3,
     "Jersey City, NJ",
     "Meetup",
@@ -114,11 +140,17 @@ try {
 }
 
 try {
+  let imagePathList = [];
+  let imagesList = [];
+  let imagePath = path.join(uploadDirPath, "mattress.jpg");
+  let binaryImage = fs.readFileSync(imagePath);
+  imagePathList.push(imagePath);
+  imagesList.push(binaryImage);
   item4 = await items.uploadItem(
     "Mattress",
-    0,
+    70,
     "Gel Memory Foam",
-    ["http://localhost:3000/img/mattress.jpg"],
+    imagesList,
     1,
     "West New York, NJ",
     "Meetup",
@@ -135,11 +167,17 @@ try {
 }
 
 try {
+  let imagePathList = [];
+  let imagesList = [];
+  let imagePath = path.join(uploadDirPath, "ricecooker.jpg");
+  let binaryImage = fs.readFileSync(imagePath);
+  imagePathList.push(imagePath);
+  imagesList.push(binaryImage);
   item5 = await items.uploadItem(
     "Rice Cooker",
     30,
     "ZOJIRUSHI 10-cup rice cooker",
-    ["http://localhost:3000/img/ricecooker.jpg"],
+    imagesList,
     1,
     "Union City, NJ",
     "Meetup",
@@ -156,11 +194,17 @@ try {
 }
 
 try {
+  let imagePathList = [];
+  let imagesList = [];
+  let imagePath = path.join(uploadDirPath, "table.jpg");
+  let binaryImage = fs.readFileSync(imagePath);
+  imagePathList.push(imagePath);
+  imagesList.push(binaryImage);
   item6 = await items.uploadItem(
     "table",
     25,
     "Computer Desk",
-    ["http://localhost:3000/img/table.jpg"],
+    imagesList,
     1,
     "Hoboken, NJ",
     "Meetup",

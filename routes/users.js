@@ -248,7 +248,7 @@ router.get("/itemsForSale", async (req, res) => {
 
 router.get("/getSellerInformation/:id", async (req, res) => {
   try {
-    let id = req.params.id;
+    let id = xss(req.params.id);
     id = validation.checkId(id, "itemId");
     let thisSeller = await usersData.getSellerInformation(id);
     if (!thisSeller) {
@@ -263,7 +263,11 @@ router.get("/getSellerInformation/:id", async (req, res) => {
       }
       items.push(currentItem);
     }
-    res.render("sellerInformation", { seller: thisSeller, items: items });
+    res.render("sellerInformation", {
+      seller: thisSeller,
+      items: items,
+      user: req.session.user,
+    });
   } catch (e) {
     res.status(500).render("error", { errorMessage: e });
   }

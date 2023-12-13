@@ -3,9 +3,14 @@ import { items } from "../config/mongoCollections.js";
 import { users } from "../config/mongoCollections.js";
 import { Binary, ObjectId } from "mongodb";
 import usersData from "./users.js";
+import fs from "fs";
+import { fileURLToPath } from "url";
+import path from "path";
+
 // import multer from "multer";
 // import { GridFsStorage } from "multer-gridfs-storage";
 // import { mongoConfig } from "../config/settings.js";
+var imageCount = 1;
 
 const itemsMethods = {
   async uploadItem(
@@ -84,7 +89,21 @@ const itemsMethods = {
     if (!itemList) throw "Could not get all items";
     itemList = itemList.map((element) => {
       element._id = element._id.toString();
-      element.picture = element.picture[0]; // only the first picture would be displayed
+
+      const currentFilePath = fileURLToPath(import.meta.url);
+      const currentDirPath = path.dirname(currentFilePath);
+      const uploadDirPath = path.join(currentDirPath, "..", "public", "img");
+      const filePath = path.join(uploadDirPath, imageCount.toString() + ".png");
+      fs.writeFile(filePath, element.picture[0].buffer, (err) => {
+        if (err) {
+          console.error("Error writing file:", err);
+        } else {
+          console.log("File written successfully");
+          // Here you can further process or serve the image file as needed
+        }
+      });
+      element.picture = "/public/img/" + imageCount.toString() + ".png"; // only the first picture would be displayed
+      imageCount += 1;
       return element;
     });
     return itemList;
@@ -97,6 +116,24 @@ const itemsMethods = {
     if (!item) {
       throw `Item with id ${id} not found`;
     }
+    let picturesPath = [];
+    for (let img of item.picture) {
+      const currentFilePath = fileURLToPath(import.meta.url);
+      const currentDirPath = path.dirname(currentFilePath);
+      const uploadDirPath = path.join(currentDirPath, "..", "public", "img");
+      const filePath = path.join(uploadDirPath, imageCount.toString() + ".png");
+      picturesPath.push("/public/img/" + imageCount.toString() + ".png");
+      imageCount += 1;
+      fs.writeFile(filePath, img.buffer, (err) => {
+        if (err) {
+          console.error("Error writing file:", err);
+        } else {
+          console.log("File written successfully");
+          // Here you can further process or serve the image file as needed
+        }
+      });
+    }
+    item.picture = picturesPath;
     item._id = item._id.toString();
     return item;
   },

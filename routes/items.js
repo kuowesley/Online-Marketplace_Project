@@ -123,12 +123,10 @@ router
 
     try {
       for (let i in files) {
-        for (let i in files) {
-          let imagePath = path.join(uploadDirPath, files[i].filename);
-          let binaryImage = fs.readFileSync(imagePath);
-          imagePathList.push(imagePath);
-          imagesList.push(binaryImage);
-        }
+        let imagePath = path.join(uploadDirPath, files[i].filename);
+        let binaryImage = fs.readFileSync(imagePath);
+        imagePathList.push(imagePath);
+        imagesList.push(binaryImage);
       }
     } catch (e) {
       errors.push(e);

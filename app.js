@@ -6,6 +6,8 @@ import session from "express-session";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import multer from "multer";
+import fs from "fs";
+import path from "path";
 
 // set up express server
 const app = express();
@@ -31,6 +33,22 @@ hbs.handlebars.registerHelper("mod", function (num, mod) {
 hbs.handlebars.registerHelper("range", function (value) {
   return new Array(value).fill().map((_, index) => index + 1);
 });
+
+// clean pictrues from public/img
+function cleanImageFolder() {
+  const currentFilePath = fileURLToPath(import.meta.url);
+  const currentDirPath = path.dirname(currentFilePath);
+  const imgPath = path.join(currentDirPath, "public", "img");
+  fs.readdir(imgPath, (err, files) => {
+    if (err) throw err;
+
+    for (const file of files) {
+      fs.unlink(path.join(imgPath, file), (err) => {
+        if (err) throw err;
+      });
+    }
+  });
+}
 // -------------------------------
 
 // For parsing application/json
@@ -130,6 +148,7 @@ app.use("/users/profile", async (req, res, next) => {
 TODO: Middleware
  */
 
+cleanImageFolder();
 constructorMethod(app);
 
 app.listen(3000, () => {

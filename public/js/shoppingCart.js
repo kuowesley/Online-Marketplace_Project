@@ -15,6 +15,7 @@
           alert("Fail to check out");
         } else {
           alert(data.message);
+          window.location.href = "/users/historicalPurchase";
         }
       },
       error: function (xhr, status, error) {

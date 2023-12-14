@@ -1,23 +1,40 @@
 <header>
     <nav>
         <ul>
-            <li><a href="/items">Back to all items</a></li>
+            <a href="/items">Back to all items</a>
         </ul>
     </nav>
 </header>
 
+<p>View comments about the seller, <a href="../users/getSellerInformation/{{item.seller_id}}">click here</a>.</p>
+
 <div class="item-details">
     <h1>{{item.item}}</h1>
+    <p id="itemId" hidden>{{item._id}}</p>
     <p>{{item.description}}</p>
     <p>Price: ${{item.price}}</p>
     <p>
         {{#each item.picture}}
-            <img alt="Item Picture {{item.item}}" src="{{this}}" >
+        <img alt="Item Picture {{item.item}}" src="{{this}}">
         {{/each}}
     </p>
     <p>Quantity: {{item.quantity}}</p>
     <p>Location: {{item.location}}</p>
     <p>Delivery Method: {{item.deliveryMethod}}</p>
     <p>Condition: {{item.condition}}</p>
+    {{#if item.quantity}}
+    <select id="quantitySelect" name="quantitySelect">
+        {{#each (range item.quantity)}}
+        <option value="{{this}}">{{this}}</option>
+        {{/each}}
+    </select>
+    <button id="addToCart" type="submit">Add to cart</button>
+    <button id="buyItNow" type="submit">Buy it now</button>
+    {{else}}
+    <p>item currently unavailable</p>
+    {{/if}}
 </div>
 
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"></script>
+<script src="/public/js/itemById.js"></script>

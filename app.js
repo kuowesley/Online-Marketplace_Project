@@ -6,6 +6,8 @@ import session from "express-session";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import multer from "multer";
+import fs from "fs";
+import path from "path";
 
 // set up express server
 const app = express();
@@ -13,17 +15,40 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const staticDir = express.static(__dirname + "/public");
 // -------------------------------
-// import handlebarsHelpers from "handlebars-helpers";
+import handlebarsHelpers from "handlebars-helpers";
 
-// const hbs = exphbs.create({
-//   helpers: {
-//     ...handlebarsHelpers(),
-//   },
-// });
+const hbs = exphbs.create({
+  helpers: {
+    ...handlebarsHelpers(),
+    length: function (array) {
+      return array.length;
+    },
+  },
+});
 
-// hbs.handlebars.registerHelper("mod", function (num, mod) {
-//   return num % mod;
-// });
+hbs.handlebars.registerHelper("mod", function (num, mod) {
+  return num % mod;
+});
+
+hbs.handlebars.registerHelper("range", function (value) {
+  return new Array(value).fill().map((_, index) => index + 1);
+});
+
+// clean pictrues from public/img
+function cleanImageFolder() {
+  const currentFilePath = fileURLToPath(import.meta.url);
+  const currentDirPath = path.dirname(currentFilePath);
+  const imgPath = path.join(currentDirPath, "public", "img");
+  fs.readdir(imgPath, (err, files) => {
+    if (err) throw err;
+
+    for (const file of files) {
+      fs.unlink(path.join(imgPath, file), (err) => {
+        if (err) throw err;
+      });
+    }
+  });
+}
 // -------------------------------
 
 // For parsing application/json
@@ -72,12 +97,58 @@ app.use("/", type, async (req, res, next) => {
   console.log(`[${currentTimestamp}]: ${requestMethod} ${requestRoute}`);
   next();
 });
+
+app.use("/users/login", async (req, res, next) => {
+  if (req.method === "GET") {
+    if (req.session.user) {
+      return res.redirect("/");
+    }
+  }
+  next();
+});
+
+app.use("/users/signup", async (req, res, next) => {
+  if (req.method === "GET") {
+    if (req.session.user) {
+      return res.redirect("/");
+    }
+  }
+  next();
+});
+
+app.use("/users/logout", async (req, res, next) => {
+  if (req.method === "GET") {
+    if (!req.session.user) {
+      return res.render("home", { title: "Home" });
+    }
+  }
+  next();
+});
+
+app.use("/users/shoppingCart", async (req, res, next) => {
+  if (req.method === "GET") {
+    if (!req.session.user) {
+      return res.redirect("/users/login");
+    }
+  }
+  next();
+});
+
+app.use("/users/profile", async (req, res, next) => {
+  if (req.method === "GET") {
+    if (!req.session.user) {
+      return res.redirect("/users/login");
+    }
+  }
+  next();
+});
 // ---------------------------------------------
 
 /**
 TODO: Middleware
  */
 
+cleanImageFolder();
 constructorMethod(app);
 
 app.listen(3000, () => {

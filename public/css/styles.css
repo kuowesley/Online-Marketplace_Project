@@ -1,0 +1,85 @@
+.firstname-signup-label,
+.lastname-signup-label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.signup-firstname,
+.signup-lastname {
+    display: block;
+    box-sizing: border-box; 
+    margin-bottom: 10px;
+}
+
+.username-signup-label,
+.password-signup-label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.signup-username,
+.signup-password {
+    display: block;
+    box-sizing: border-box; 
+    margin-bottom: 10px;
+}
+
+.username-login-label,
+.password-login-label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.login-username,
+.login-password {
+    display: block;
+    box-sizing: border-box; 
+    margin-bottom: 10px;
+}
+
+.signup-p {
+    color: red;
+}
+
+.item {
+    display: inline-block;
+    margin-right: 20px; /* Adjust the margin as needed */
+    border: 1px solid #ccc; /* Add a border for better visibility */
+}
+
+.item-row {
+    margin-bottom: 20px; /*Adjust the margin as needed between rows*/
+}
+
+.item-details {
+    text-align: center; /* Center-align the text content */
+}
+
+.item-details img {
+    display: block; /* Make sure images are centered as well */
+    margin: 0 auto; /* Center-align images using margin */
+}
+
+.inline-block-nav > li {
+    display: inline-block;
+  }
+
+
+  .error-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    color: red;
+    font-weight: bold;
+  }
+  
+  /* Style for individual error list items */
+  .error-list li {
+    margin-bottom: 5px;
+  }
+  
+  .error-list a {
+    color: blue;
+    text-decoration: none; 
+    font-style: italic;
+  }

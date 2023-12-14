@@ -1,0 +1,48 @@
+<h1>Historical Sold Items</h1>
+{{#if items}}
+<table>
+    <thead>
+        {{!-- <tr>
+            <th>Item</th>
+            <th>Price</th>
+            <th>Picture</th>
+            <th>Location</th>
+            <th>Condition</th>
+            <th>Quantity</th>
+            <th>Remove</th>
+        </tr> --}}
+    </thead>
+    <tbody>
+        {{#each items}}
+        <tr class="item">
+            <td><a href="/items/{{this._id}}">{{this.item}}</a></td>
+            <td>${{this.price}}</td>
+            <td>
+                <img alt="{{this.item}}" src="{{this.picture}}" width="50" height="50">
+            </td>
+            <td>{{this.location}}</td>
+            <td>{{this.condition}}</td>
+            </td>
+            <td>
+                {{#if this.comments}}
+                <ul>
+                    {{#each this.comments}}
+                    <li>
+                        <p>Rating: {{this.rating}}</p>
+                        <p>Comment: {{this.comment}}</p>
+                    </li>
+                    {{/each}}
+                </ul>
+                {{else}}
+                No comments
+                {{/if}}
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+{{else}}
+<div>
+    <p>No items have been sold yet!</p>
+</div>
+{{/if}}

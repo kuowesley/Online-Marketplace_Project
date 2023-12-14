@@ -1,0 +1,51 @@
+<p><a href="javascript:history.go(-1)">Back to item</a></p>
+<p>Seller: {{seller.firstName}} {{seller.lastName}}</p>
+<p>History:</p>
+{{#if items}}
+<table>
+    <thead>
+        {{!-- <tr>
+            <th>Item</th>
+            <th>Price</th>
+            <th>Picture</th>
+            <th>Location</th>
+            <th>Condition</th>
+            <th>Quantity</th>
+            <th>Remove</th>
+        </tr> --}}
+    </thead>
+    <tbody>
+        {{#each items}}
+        <tr class="item">
+            <td><a href="/items/{{this._id}}">{{this.item}}</a></td>
+            <td>${{this.price}}</td>
+            <td>
+                {{#each this.picture}}
+                <img alt="Item Picture {{../item.item}}" src="{{this}}" width="50" height="50">
+                {{/each}}
+            </td>
+            <td>{{this.location}}</td>
+            <td>{{this.condition}}</td>
+            <td>
+                {{#if this.comments}}
+                    <ul>
+                        {{#each this.comments}}
+                            <li>
+                                <p>Rating: {{this.rating}}</p>
+                                <p>Comment: {{this.comment}}</p>
+                            </li>
+                        {{/each}}
+                    </ul>
+                {{else}}
+                    No comments
+                {{/if}}
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+{{else}}
+<div>
+    <p>No items have been sold yet!</p>
+</div>
+{{/if}}

@@ -14,19 +14,25 @@ let item3 = {};
 let item4 = {};
 let item5 = {};
 let item6 = {};
+let item7 = {};
+let item8 = {};
+let item9 = {};
+let item10 = {};
+let item11 = {};
 
-let res;
+let user1;
 let user2;
+let user3;
 
 const currentFilePath = fileURLToPath(import.meta.url);
 const currentDirPath = path.dirname(currentFilePath);
 const uploadDirPath = path.join(currentDirPath, "..", "img");
 
 try {
-  res = await users.addUser(
-    "testFirstName",
-    "testLastName",
-    "test",
+  user1 = await users.addUser(
+    "user1FirstName",
+    "user1LastName",
+    "user1",
     "test@gmail.com",
     "K@123456",
     "testStreet",
@@ -35,7 +41,7 @@ try {
     "07030",
     26,
   );
-  console.log(res);
+  console.log(user1);
 } catch (e) {
   console.log(e);
 }
@@ -53,7 +59,25 @@ try {
     "07036",
     88,
   );
-  console.log(res);
+  console.log(user2);
+} catch (e) {
+  console.log(e);
+}
+
+try {
+  user3 = await users.addUser(
+    "user3FirstName",
+    "user3LastName",
+    "user3",
+    "user3@gmail.com",
+    "K@123456",
+    "test3Street",
+    "Brooklyn",
+    "NY",
+    "07036",
+    50,
+  );
+  console.log(user3);
 } catch (e) {
   console.log(e);
 }
@@ -74,10 +98,10 @@ try {
     "Brooklyn, NY",
     "Meetup",
     "Like New",
-    res._id.toString(),
+    user1._id.toString(),
   );
   await users.getItemToItemsForSale(
-    res._id.toString(),
+    user1._id.toString(),
     item1.insertedId.toString(),
   );
   console.log(item1);
@@ -101,10 +125,10 @@ try {
     "Union City, NJ",
     "Meetup",
     "Good",
-    res._id.toString(),
+    user1._id.toString(),
   );
   await users.getItemToItemsForSale(
-    res._id.toString(),
+    user1._id.toString(),
     item2.insertedId.toString(),
   );
   console.log(item2);
@@ -124,14 +148,14 @@ try {
     399,
     "iPhone 12, Black",
     imagesList,
-    3,
+    30,
     "Jersey City, NJ",
     "Meetup",
     "Good",
-    res._id.toString(),
+    user1._id.toString(),
   );
   await users.getItemToItemsForSale(
-    res._id.toString(),
+    user1._id.toString(),
     item3.insertedId.toString(),
   );
   console.log(item3);
@@ -151,14 +175,14 @@ try {
     70,
     "Gel Memory Foam",
     imagesList,
-    1,
+    5,
     "West New York, NJ",
     "Meetup",
     "Good",
-    res._id.toString(),
+    user2._id.toString(),
   );
   await users.getItemToItemsForSale(
-    res._id.toString(),
+    user2._id.toString(),
     item4.insertedId.toString(),
   );
   console.log(item4);
@@ -178,14 +202,14 @@ try {
     30,
     "ZOJIRUSHI 10-cup rice cooker",
     imagesList,
-    1,
+    20,
     "Union City, NJ",
     "Meetup",
     "Very Good",
-    res._id.toString(),
+    user2._id.toString(),
   );
   await users.getItemToItemsForSale(
-    res._id.toString(),
+    user2._id.toString(),
     item5.insertedId.toString(),
   );
   console.log(item5);
@@ -205,17 +229,276 @@ try {
     25,
     "Computer Desk",
     imagesList,
-    1,
+    10,
     "Hoboken, NJ",
     "Meetup",
     "Good",
-    res._id.toString(),
+    user2._id.toString(),
   );
   await users.getItemToItemsForSale(
-    res._id.toString(),
+    user2._id.toString(),
     item6.insertedId.toString(),
   );
   console.log(item6);
 } catch (e) {
   console.error(e);
+}
+
+try {
+  let imagePathList = [];
+  let imagesList = [];
+  let imagePath = path.join(uploadDirPath, "chair.jpg");
+  let binaryImage = fs.readFileSync(imagePath);
+  imagePathList.push(imagePath);
+  imagesList.push(binaryImage);
+  imagePath = path.join(uploadDirPath, "chair2.jpg");
+  binaryImage = fs.readFileSync(imagePath);
+  imagesList.push(binaryImage);
+  imagePath = path.join(uploadDirPath, "chair3.jpg");
+  binaryImage = fs.readFileSync(imagePath);
+  imagesList.push(binaryImage);
+  item7 = await items.uploadItem(
+    "chair",
+    250,
+    "kitchen chairs",
+    imagesList,
+    10,
+    "Hoboken, NJ",
+    "Meetup",
+    "Good",
+    user3._id.toString(),
+  );
+  await users.getItemToItemsForSale(
+    user3._id.toString(),
+    item7.insertedId.toString(),
+  );
+  console.log(item7);
+} catch (e) {
+  console.error(e);
+}
+
+try {
+  let imagePathList = [];
+  let imagesList = [];
+  let imagePath = path.join(uploadDirPath, "Dartboard.jpg");
+  let binaryImage = fs.readFileSync(imagePath);
+  imagePathList.push(imagePath);
+  imagesList.push(binaryImage);
+  item8 = await items.uploadItem(
+    "Dartboard",
+    2500,
+    "Dartboard(with Dart)",
+    imagesList,
+    13,
+    "Hoboken, NJ",
+    "Meetup",
+    "Used",
+    user3._id.toString(),
+  );
+  await users.getItemToItemsForSale(
+    user3._id.toString(),
+    item8.insertedId.toString(),
+  );
+  console.log(item8);
+} catch (e) {
+  console.error(e);
+}
+
+try {
+  let imagePathList = [];
+  let imagesList = [];
+  let imagePath = path.join(uploadDirPath, "shoes.jpg");
+  let binaryImage = fs.readFileSync(imagePath);
+  imagePathList.push(imagePath);
+  imagesList.push(binaryImage);
+  item9 = await items.uploadItem(
+    "shoes",
+    2500,
+    "shoes(8.5 sport)",
+    imagesList,
+    30,
+    "Hoboken, NJ",
+    "Meetup",
+    "Used",
+    user3._id.toString(),
+  );
+  await users.getItemToItemsForSale(
+    user3._id.toString(),
+    item9.insertedId.toString(),
+  );
+  console.log(item9);
+} catch (e) {
+  console.error(e);
+}
+
+try {
+  let imagePathList = [];
+  let imagesList = [];
+  let imagePath = path.join(uploadDirPath, "scooter.jpg");
+  let binaryImage = fs.readFileSync(imagePath);
+  imagePathList.push(imagePath);
+  imagesList.push(binaryImage);
+  imagePath = path.join(uploadDirPath, "scooter2.jpg");
+  binaryImage = fs.readFileSync(imagePath);
+  imagesList.push(binaryImage);
+  item10 = await items.uploadItem(
+    "scooter",
+    300,
+    "scooter(with locker))",
+    imagesList,
+    30,
+    "Hoboken, NJ",
+    "Meetup",
+    "Used",
+    user3._id.toString(),
+  );
+  await users.getItemToItemsForSale(
+    user3._id.toString(),
+    item10.insertedId.toString(),
+  );
+  console.log(item10);
+} catch (e) {
+  console.error(e);
+}
+
+try {
+  let imagePathList = [];
+  let imagesList = [];
+  let imagePath = path.join(uploadDirPath, "trash_can.jpg");
+  let binaryImage = fs.readFileSync(imagePath);
+  imagePathList.push(imagePath);
+  imagesList.push(binaryImage);
+  imagePath = path.join(uploadDirPath, "trash_can2.jpg");
+  binaryImage = fs.readFileSync(imagePath);
+  imagesList.push(binaryImage);
+  item11 = await items.uploadItem(
+    "trash_can",
+    300,
+    "trash_can",
+    imagesList,
+    10,
+    "Hoboken, NJ",
+    "Meetup",
+    "Used",
+    user3._id.toString(),
+  );
+  await users.getItemToItemsForSale(
+    user3._id.toString(),
+    item11.insertedId.toString(),
+  );
+  console.log(item11);
+} catch (e) {
+  console.error(e);
+}
+
+// shopping cart and checkout test casse
+try {
+  await users.getItemToCart(
+    user1._id.toString(),
+    item4.insertedId.toString(),
+    4,
+  );
+} catch (e) {
+  console.log(e);
+}
+try {
+  await users.getItemToCart(
+    user1._id.toString(),
+    item5.insertedId.toString(),
+    2,
+  );
+} catch (e) {
+  console.log(e);
+}
+try {
+  await users.checkOutItems(user1._id.toString());
+} catch (e) {
+  console.log(e);
+}
+try {
+  await users.getItemToCart(
+    user1._id.toString(),
+    item6.insertedId.toString(),
+    3,
+  );
+} catch (e) {
+  console.log(e);
+}
+try {
+  await users.getItemToCart(
+    user1._id.toString(),
+    item7.insertedId.toString(),
+    3,
+  );
+} catch (e) {
+  console.log(e);
+}
+try {
+  await users.getItemToCart(
+    user1._id.toString(),
+    item8.insertedId.toString(),
+    1,
+  );
+} catch (e) {
+  console.log(e);
+}
+
+try {
+  await users.getItemToCart(
+    user2._id.toString(),
+    item1.insertedId.toString(),
+    7,
+  );
+} catch (e) {
+  console.log(e);
+}
+try {
+  await users.getItemToCart(
+    user2._id.toString(),
+    item3.insertedId.toString(),
+    4,
+  );
+} catch (e) {
+  console.log(e);
+}
+try {
+  await users.checkOutItems(user2._id.toString());
+} catch (e) {
+  console.log(e);
+}
+try {
+  await users.getItemToCart(
+    user2._id.toString(),
+    item2.insertedId.toString(),
+    4,
+  );
+} catch (e) {
+  console.log(e);
+}
+try {
+  await users.getItemToCart(
+    user2._id.toString(),
+    item9.insertedId.toString(),
+    4,
+  );
+} catch (e) {
+  console.log(e);
+}
+try {
+  await users.getItemToCart(
+    user2._id.toString(),
+    item10.insertedId.toString(),
+    7,
+  );
+} catch (e) {
+  console.log(e);
+}
+try {
+  await users.getItemToCart(
+    user2._id.toString(),
+    item11.insertedId.toString(),
+    7,
+  );
+} catch (e) {
+  console.log(e);
 }

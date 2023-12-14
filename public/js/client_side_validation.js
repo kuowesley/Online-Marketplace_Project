@@ -81,6 +81,7 @@ if (fileUploadForm) {
 
       // check File
       for (let i = 0; i < files.length; i++) {
+        console.log(files[i]);
         console.log(files[i].size);
         console.log(files[i].type);
         console.log(typeof files[i].type);
@@ -89,6 +90,9 @@ if (fileUploadForm) {
         }
         if (!files[i].type.startsWith("image/")) {
           throw `File type: ${files[i].type} is not accept`;
+        }
+        if (files[i].type !== "image/jpg" && files[i].type !== "image/png") {
+          throw `File type should be either JPG or PNG`;
         }
       }
     } catch (e) {

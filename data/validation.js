@@ -352,6 +352,9 @@ const validation = {
       throw `file.fieldname should be fileInput`;
     if (!file.mimetype.startsWith("image/"))
       throw `file.mimetype should start with image/`;
+    if (file.mimetype !== "image/jpg" && file.mimetype !== "image/png") {
+      throw `File type should be either JPG or PNG`;
+    }
     if (file.destination !== "upload/")
       throw `file.destination should be upload/`;
     if (!file.path.startsWith(`upload\\`))

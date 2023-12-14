@@ -3,9 +3,12 @@ import { users } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 import bcrypt from "bcryptjs";
 import { items } from "../config/mongoCollections.js";
+import fs from "fs";
+import { fileURLToPath } from "url";
+import path from "path";
 
 const saltRounds = 16;
-
+var imageCount = 1;
 const usersMethods = {
   async addUser(
     firstName,
@@ -22,6 +25,7 @@ const usersMethods = {
     firstName = validation.checkString(firstName, "firstName");
     lastName = validation.checkString(lastName, "lastName");
     userName = validation.checkString(userName, "userName");
+    userName = userName.toLowerCase();
     email = validation.checkEmail(email);
     password = validation.checkPassword(password, "password");
     password = await bcrypt.hash(password, saltRounds);
@@ -65,6 +69,7 @@ const usersMethods = {
 
   async loginUser(userName, password) {
     userName = validation.checkString(userName, "userName");
+    userName = userName.toLowerCase();
     password = validation.checkPassword(password, "password");
 
     const usersCollection = await users();
@@ -209,7 +214,29 @@ const usersMethods = {
       let itemInfo = await itemsCollection.findOne({
         _id: new ObjectId(item.itemId),
       });
-      if (itemInfo) {
+      if (!itemInfo) {
+        throw `itemInfo not found`;
+      } else {
+        let picturesPath;
+        const currentFilePath = fileURLToPath(import.meta.url);
+        const currentDirPath = path.dirname(currentFilePath);
+        const uploadDirPath = path.join(currentDirPath, "..", "public", "img");
+        const filePath = path.join(
+          uploadDirPath,
+          imageCount.toString() + ".png",
+        );
+        picturesPath = "/public/img/" + imageCount.toString() + ".png";
+        imageCount += 1;
+        fs.writeFile(filePath, itemInfo.picture[0].buffer, (err) => {
+          if (err) {
+            console.error("Error writing file:", err);
+          } else {
+            console.log("File written successfully");
+            // Here you can further process or serve the image file as needed
+          }
+        });
+        itemInfo.picture = picturesPath;
+
         cartItems.push({ item: itemInfo, quantity: item.quantity });
       }
     }
@@ -395,6 +422,26 @@ const usersMethods = {
       });
       if (!itemInfo) {
         throw `Item: ${itemId} not found`;
+      } else {
+        let picturesPath;
+        const currentFilePath = fileURLToPath(import.meta.url);
+        const currentDirPath = path.dirname(currentFilePath);
+        const uploadDirPath = path.join(currentDirPath, "..", "public", "img");
+        const filePath = path.join(
+          uploadDirPath,
+          imageCount.toString() + ".png",
+        );
+        picturesPath = "/public/img/" + imageCount.toString() + ".png";
+        imageCount += 1;
+        fs.writeFile(filePath, itemInfo.picture[0].buffer, (err) => {
+          if (err) {
+            console.error("Error writing file:", err);
+          } else {
+            console.log("File written successfully");
+            // Here you can further process or serve the image file as needed
+          }
+        });
+        itemInfo.picture = picturesPath;
       }
       AllItems.push(itemInfo);
     }
@@ -419,6 +466,26 @@ const usersMethods = {
       });
       if (!itemInfo) {
         throw `Item: ${itemId} not found`;
+      } else {
+        let picturesPath;
+        const currentFilePath = fileURLToPath(import.meta.url);
+        const currentDirPath = path.dirname(currentFilePath);
+        const uploadDirPath = path.join(currentDirPath, "..", "public", "img");
+        const filePath = path.join(
+          uploadDirPath,
+          imageCount.toString() + ".png",
+        );
+        picturesPath = "/public/img/" + imageCount.toString() + ".png";
+        imageCount += 1;
+        fs.writeFile(filePath, itemInfo.picture[0].buffer, (err) => {
+          if (err) {
+            console.error("Error writing file:", err);
+          } else {
+            console.log("File written successfully");
+            // Here you can further process or serve the image file as needed
+          }
+        });
+        itemInfo.picture = picturesPath;
       }
       AllItems.push(itemInfo);
     }
@@ -443,6 +510,26 @@ const usersMethods = {
       });
       if (!itemInfo) {
         throw `Item: ${item} not found`;
+      } else {
+        let picturesPath;
+        const currentFilePath = fileURLToPath(import.meta.url);
+        const currentDirPath = path.dirname(currentFilePath);
+        const uploadDirPath = path.join(currentDirPath, "..", "public", "img");
+        const filePath = path.join(
+          uploadDirPath,
+          imageCount.toString() + ".png",
+        );
+        picturesPath = "/public/img/" + imageCount.toString() + ".png";
+        imageCount += 1;
+        fs.writeFile(filePath, itemInfo.picture[0].buffer, (err) => {
+          if (err) {
+            console.error("Error writing file:", err);
+          } else {
+            console.log("File written successfully");
+            // Here you can further process or serve the image file as needed
+          }
+        });
+        itemInfo.picture = picturesPath;
       }
       AllItems.push(itemInfo);
     }

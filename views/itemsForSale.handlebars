@@ -18,9 +18,7 @@
             <td><a href="/items/{{this._id}}">{{this.item}}</a></td>
             <td>${{this.price}}</td>
             <td>
-                {{#each this.picture}}
-                <img alt="Item Picture {{../item.item}}" src="{{this}}" width="50" height="50">
-                {{/each}}
+                <img alt="{{this.item}}" src="{{this.picture}}" width="50" height="50">
             </td>
             <td>{{this.location}}</td>
             <td>{{this.condition}}</td>
@@ -28,18 +26,18 @@
             <td>
                 <button class="removeItem" type="button" value="{{this._id}}">Remove</button>
             </td>
-                       <td>
+            <td>
                 {{#if this.comments}}
-                    <ul>
-                        {{#each this.comments}}
-                            <li>
-                                <p>Rating: {{this.rating}}</p>
-                                <p>Comment: {{this.comment}}</p>
-                            </li>
-                        {{/each}}
-                    </ul>
+                <ul>
+                    {{#each this.comments}}
+                    <li>
+                        <p>Rating: {{this.rating}}</p>
+                        <p>Comment: {{this.comment}}</p>
+                    </li>
+                    {{/each}}
+                </ul>
                 {{else}}
-                    No comments
+                No comments
                 {{/if}}
             </td>
         </tr>

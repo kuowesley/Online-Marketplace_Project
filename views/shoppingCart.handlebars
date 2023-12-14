@@ -35,9 +35,9 @@
             <td><a href="/items/{{this.item._id}}">{{this.item.item}}</a></td>
             <td>${{this.item.price}}</td>
             <td>
-                {{#each this.item.picture}}
-                <img alt="Item Picture {{../item.item}}" src="{{this}}" width="50" height="50">
-                {{/each}}
+                
+                <img alt="{{this.item.item}}" src="{{this.item.picture}}" width="50" height="50">
+                
             </td>
             <td>{{this.item.location}}</td>
             <td>{{this.item.condition}}</td>

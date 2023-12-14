@@ -13,6 +13,9 @@
   let ratingSelectEdit = $("#ratingSelect-edit");
   let commentTextAreaEdit = $("#commentTextArea-edit");
 
+  let isCommentFormOpen = false; //
+  let isEditFormOpen = false; //
+
   function userHasNotRated(itemId, myCallBack) {
     let res = true;
     let requestConfig = {
@@ -38,6 +41,13 @@
   }
 
   rateCommentButton.on("click", function (event) {
+    if (isCommentFormOpen || isEditFormOpen) {
+      alert(
+        "You must close the current comment form before opening a new form",
+      );
+      return;
+    }
+    isCommentFormOpen = true;
     ratingSelect.val("5 stars"); // Set it to the default value or any initial value
     commentTextArea.val(""); // Clear the text area
     commentForm.show();
@@ -81,6 +91,13 @@
   });
 
   editCommentButton.on("click", function (event) {
+    if (isCommentFormOpen || isEditFormOpen) {
+      alert(
+        "You must close the current comment form before opening a new form",
+      );
+      return;
+    }
+    isEditFormOpen = true;
     ratingSelectEdit.val("5 stars"); // Set it to the default value or any initial value
     commentTextAreaEdit.val(""); // Clear the text area
     commentFormEdit.show();
@@ -125,6 +142,12 @@
 
   closeForm.on("click", function (event) {
     commentForm.hide();
+    isCommentFormOpen = false;
+  });
+
+  closeFormEdit.on("click", function (event) {
+    commentFormEdit.hide();
+    isEditFormOpen = false;
   });
 
   $(document).ready(function () {

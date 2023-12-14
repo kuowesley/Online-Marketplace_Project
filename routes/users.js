@@ -3,6 +3,7 @@ import validation from "../data/validation.js";
 import { usersData } from "../data/index.js";
 import xss from "xss";
 import { itemData } from "../data/index.js";
+import { MongoUnexpectedServerResponseError } from "mongodb";
 
 const router = Router();
 
@@ -221,12 +222,52 @@ router.route("/submitComment").post(async (req, res) => {
   let itemId = xss(body.itemId);
   let rating = xss(body.rating);
   let comment = xss(body.comment);
+  let userId = xss(req.session.user.userId);
   try {
     itemId = validation.checkId(itemId, "itemId");
     rating = validation.checkRating(rating, "rating");
     comment = validation.checkString(comment, "comment");
-    await usersData.submitComment(itemId, rating, comment);
+    userId = validation.checkId(userId, "userId");
+    await usersData.submitComment(itemId, rating, comment, userId);
     return res.status(200).json({ message: "Comment Submitted" });
+  } catch (e) {
+    return res.status(400).json({ message: e });
+  }
+});
+
+router.route("/editComment").post(async (req, res) => {
+  if (!req.session.user) {
+    return res.status(403).json({ message: false });
+  }
+  const body = req.body;
+  let itemId = xss(body.itemId);
+  let rating = xss(body.rating);
+  let comment = xss(body.comment);
+  let userId = xss(req.session.user.userId);
+  try {
+    itemId = validation.checkId(itemId, "itemId");
+    rating = validation.checkRating(rating, "rating");
+    comment = validation.checkString(comment, "comment");
+    userId = validation.checkId(userId, "userId");
+    await usersData.editComment(itemId, rating, comment, userId);
+    return res.status(200).json({ message: "Comment Submitted" });
+  } catch (e) {
+    return res.status(400).json({ message: e });
+  }
+});
+
+router.route("/checkDuplicateComment").post(async (req, res) => {
+  if (!req.session.user) {
+    return res.status(403).json({ message: false });
+  }
+  let body = req.body;
+  let itemId = xss(body.itemId);
+  let userId = xss(req.session.user.userId);
+  try {
+    itemId = validation.checkId(itemId, "itemId");
+    userId = validation.checkId(userId, "userId");
+    let result = await usersData.checkDuplicateComment(itemId, userId);
+    return res.status(200).json({ message: result });
   } catch (e) {
     return res.status(400).json({ message: e });
   }

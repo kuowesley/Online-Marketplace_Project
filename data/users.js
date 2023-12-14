@@ -537,17 +537,76 @@ const usersMethods = {
     return AllItems;
   },
 
-  async submitComment(itemId, rating, comment) {
+  async submitComment(itemId, rating, comment, userId) {
     itemId = validation.checkId(itemId, "itemId");
     rating = validation.checkRating(rating, "rating");
     comment = validation.checkString(comment, "comment");
+    userId = validation.checkCity(userId, "userId");
     const itemsCollection = await items();
+    // Check if the user has already submitted a comment for the item
+    const existingComment = await itemsCollection.findOne({
+      _id: new ObjectId(itemId),
+      "comments.userId": userId,
+    });
+    if (existingComment) {
+      throw "You have already submitted a comment for this item";
+    }
     const comment_submission = await itemsCollection.findOneAndUpdate(
       { _id: new ObjectId(itemId) },
-      { $push: { comments: { rating: rating, comment: comment } } },
+      {
+        $push: {
+          comments: { rating: rating, comment: comment, userId: userId },
+        },
+      },
     );
     if (!comment_submission) {
       throw `Update item comment fail`;
+    }
+  },
+
+  async editComment(itemId, rating, comment, userId) {
+    itemId = validation.checkId(itemId, "itemId");
+    rating = validation.checkRating(rating, "rating");
+    comment = validation.checkString(comment, "comment");
+    userId = validation.checkCity(userId, "userId");
+    const itemsCollection = await items();
+    // Check if the user has already submitted a comment for the item
+    const existingComment = await itemsCollection.findOne({
+      _id: new ObjectId(itemId),
+      "comments.userId": userId,
+    });
+    if (!existingComment) {
+      throw "You haven't submitted a comment for this item";
+    }
+    const comment_submission = await itemsCollection.updateOne(
+      {
+        _id: new ObjectId(itemId),
+        "comments.userId": userId,
+      },
+      {
+        $set: {
+          "comments.$.rating": rating,
+          "comments.$.comment": comment,
+        },
+      },
+    );
+    if (!comment_submission) {
+      throw `Update item comment fail`;
+    }
+  },
+
+  async checkDuplicateComment(itemId, userId) {
+    itemId = validation.checkId(itemId, "itemId");
+    userId = validation.checkId(userId, "userId");
+    const itemsCollection = await items();
+    const existingComment = await itemsCollection.findOne({
+      _id: new ObjectId(itemId),
+      "comments.userId": userId,
+    });
+    if (existingComment) {
+      return true;
+    } else {
+      return false;
     }
   },
 

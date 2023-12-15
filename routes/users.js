@@ -27,11 +27,9 @@ router.post("/login", async (req, res) => {
       email: userInfo.email,
     };
 
-    return res
-      .status(200)
-      .render("home", { title: "Home", user: req.session.user });
+    return res.status(200).json({ user: req.session.user });
   } catch (e) {
-    return res.status(400).render("error", { errorMessage: e, title: "Error" });
+    return res.status(400).json({ message: e });
   }
 });
 

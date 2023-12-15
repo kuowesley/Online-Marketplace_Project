@@ -1,33 +1,8 @@
 <h1>Shopping Cart</h1>
-{{!-- {{#each items}}
-<div class="item">
-    <p>Item: <a href="/items/{{this.item._id}}">{{this.item.item}}</a></p>
-    <p>Price: ${{this.item.price}}</p>
-    <p>
-        {{#each this.item.picture}}
-        <img alt="Item Picture {{item.item.item}}" src="{{this}}">
-        {{/each}}
-    </p>
-    <p>Location: {{this.item.location}}</p>
-    <p>Condition: {{this.item.condition}}</p>
-    <p>Quantity: {{this.quantity}}</p>
-    <button id="removeItem" type="submit" value="{{this.item._id}}">Remove</button>
-</div>
-
-{{/each}}
-<button id="checkOut" type="submit">Check Out</button> --}}
 {{#if items}}
 <table>
     <thead>
-        {{!-- <tr>
-            <th>Item</th>
-            <th>Price</th>
-            <th>Picture</th>
-            <th>Location</th>
-            <th>Condition</th>
-            <th>Quantity</th>
-            <th>Remove</th>
-        </tr> --}}
+
     </thead>
     <tbody>
         {{#each items}}

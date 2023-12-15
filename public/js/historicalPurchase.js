@@ -59,14 +59,22 @@
       // commentForm.hide();
       const selectedRating = $("#ratingSelect").val();
       const commentText = $("#commentTextArea").val();
+      if (typeof selectedRating !== "string" || !selectedRating.trim()) {
+        alert("Rating can not be empty");
+        return;
+      }
+      if (typeof commentText !== "string" || !commentText.trim()) {
+        alert("Comment can not be empty");
+        return;
+      }
       let requestConfig = {
         method: "POST",
         url: "/users/submitComment",
         contentType: "application/json",
         data: JSON.stringify({
           itemId: itemId,
-          rating: selectedRating,
-          comment: commentText,
+          rating: selectedRating.trim(),
+          comment: commentText.trim(),
         }),
         success: function (data) {
           if (!data.message) {
@@ -137,14 +145,22 @@
       // commentForm.hide();
       const selectedRating = $("#ratingSelect-edit").val();
       const commentText = $("#commentTextArea-edit").val();
+      if (typeof selectedRating !== "string" || !selectedRating.trim()) {
+        alert("Rating can not be empty");
+        return;
+      }
+      if (typeof commentText !== "string" || !commentText.trim()) {
+        alert("Comment can not be empty");
+        return;
+      }
       let requestConfig = {
         method: "POST",
         url: "/users/editComment",
         contentType: "application/json",
         data: JSON.stringify({
           itemId: itemId,
-          rating: selectedRating,
-          comment: commentText,
+          rating: selectedRating.trim(),
+          comment: commentText.trim(),
         }),
         success: function (data) {
           if (!data.message) {

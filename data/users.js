@@ -373,13 +373,13 @@ const usersMethods = {
       throw `removeItem Fail`;
     }
 
-    const addToHistorical = await usersCollection.findOneAndUpdate(
-      { _id: new ObjectId(userId) },
-      { $push: { historical_sold_item: itemId } },
-    );
-    if (!addToHistorical) {
-      throw `Add item from items_for_sale to historical_sold_item fail`;
-    }
+    // const addToHistorical = await usersCollection.findOneAndUpdate(
+    //   { _id: new ObjectId(userId) },
+    //   { $push: { historical_sold_item: itemId } },
+    // );
+    // if (!addToHistorical) {
+    //   throw `Add item from items_for_sale to historical_sold_item fail`;
+    // }
 
     const itemsCollection = await items();
     const setQuantityZero = await itemsCollection.findOneAndUpdate(

@@ -468,7 +468,7 @@ const validation = {
     str = this.checkString(str, varName);
 
     if (str.length < 3) {
-      throw `Should ${varName} contain over 5 characters`;
+      throw `Should ${varName} contain over 3 characters`;
     }
 
     return str;

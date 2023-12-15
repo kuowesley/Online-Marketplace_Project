@@ -1,18 +1,13 @@
-<p><a href="javascript:history.go(-1)">Back to item</a></p>
+<h1>Seller's product</h1>
+
+{{!-- <p><a href="javascript:history.go(-1)">Back to item</a></p> --}}
+<p><a href="/items">Back to all items</a></p>
 <p>Seller: {{seller.firstName}} {{seller.lastName}}</p>
 <p>History:</p>
 {{#if items}}
 <table>
     <thead>
-        {{!-- <tr>
-            <th>Item</th>
-            <th>Price</th>
-            <th>Picture</th>
-            <th>Location</th>
-            <th>Condition</th>
-            <th>Quantity</th>
-            <th>Remove</th>
-        </tr> --}}
+
     </thead>
     <tbody>
         {{#each items}}

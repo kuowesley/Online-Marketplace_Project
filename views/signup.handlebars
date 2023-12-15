@@ -1,62 +1,65 @@
- <h1 class="signup-h1">Sign up</h1>
-  <p class="signup-link">Already a user? <a href="/users/login">click here to log in</a></p>
- <main>
-    <form action="/users/signup" method="POST" id="signup-form" class="signup-form">
-        <label for="firstNameInput" class="firstName-signup-label">First Name</label>
-        <input type="text" id="firstNameInput" name="firstNameInput" class="signup-firstname">
-        <h6 id="error1"class="signup-error-message" hidden>Use a-z, A-Z, , - only</h6>
+<h1 class="signup-h1">Sign up</h1>
+<p class="signup-link">Already a user? <a href="/users/login">click here to log in</a></p>
 
-        <label for="lastNameInput" class="last-signup-label">Last Name</label>
-        <input type="text" id="lastNameInput" name="lastNameInput" class="signup-lastname">
-        <h6 id="error2"class="signup-error-message" hidden>Use a-z, A-Z, , - only</h6>
+<form action="/users/signup" method="POST" id="signup-form" class="signup-form">
+    <label for="firstNameInput" class="firstName-signup-label">First Name</label>
+    <input type="text" id="firstNameInput" name="firstNameInput" class="signup-firstname">
+    <h6 id="error1" class="signup-error-message" hidden>Use a-z, A-Z, , - only</h6>
 
-        <label for="userNameInput" class="username-signup-label">Username</label>
-        <input type="text" id="userNameInput" name="userNameInput" class="signup-username">
-        <h6 id="error3"class="signup-error-message" hidden>Use a-z, A-Z, , -, _ only</h6>
-        
-        <label for="emailAddressInput" class="password-signup-label">Email</label>
-        <input type="email" id="emailAddressInput" name="emailAddressInput" class="signup-password">
-        <h6 id="error4"class="signup-error-message" hidden>Invalid email address</h6>
+    <label for="lastNameInput" class="last-signup-label">Last Name</label>
+    <input type="text" id="lastNameInput" name="lastNameInput" class="signup-lastname">
+    <h6 id="error2" class="signup-error-message" hidden>Use a-z, A-Z, , - only</h6>
 
-        <label for="streetInput" class="password-signup-label">Street</label>
-        <input type="text" id="streetInput" name="streetInput" class="signup-password">
-        <h6 id="error5"class="signup-error-message" hidden>Use a-z, A-Z, , - only, maximum 25 character</h6>
+    <label for="userNameInput" class="username-signup-label">Username</label>
+    <input type="text" id="userNameInput" name="userNameInput" class="signup-username">
+    <h6 id="error3" class="signup-error-message" hidden>Use a-z, A-Z, , -, _ only</h6>
 
-        <label for="cityInput" class="password-signup-label">City</label>
-        <input type="text" id="cityInput" name="cityInput" class="signup-password">
-        <h6 id="error6"class="signup-error-message" hidden>Use a-z, A-Z, , - only, maximum 25 character</h6>
+    <label for="emailAddressInput" class="password-signup-label">Email</label>
+    <input type="email" id="emailAddressInput" name="emailAddressInput" class="signup-password">
+    <h6 id="error4" class="signup-error-message" hidden>Invalid email address</h6>
 
-        <label for="stateInput" class="password-signup-label">State</label>
-        <input type="text" id="stateInput" name="stateInput" class="signup-password">
-        <h6 id="error7"class="signup-error-message" hidden>Use US states code only</h6>
+    <label for="streetInput" class="password-signup-label">Street</label>
+    <input type="text" id="streetInput" name="streetInput" class="signup-password">
+    <h6 id="error5" class="signup-error-message" hidden>Use a-z, A-Z, , - only, maximum 25 character</h6>
 
-        <label for="zipcodeInput" class="password-signup-label">zipCode</label>
-        <input type="number" id="zipcodeInput" name="zipcodeInput" class="signup-password">
-        <h6 id="error8"class="signup-error-message" hidden>5 digits only</h6>
+    <label for="cityInput" class="password-signup-label">City</label>
+    <input type="text" id="cityInput" name="cityInput" class="signup-password">
+    <h6 id="error6" class="signup-error-message" hidden>Use a-z, A-Z, , - only, maximum 25 character</h6>
 
-        <label for="ageInput" class="password-signup-label">age</label>
-        <input type="number" id="ageInput" name="ageInput" class="signup-password">
-        <h6 id="error9"class="signup-error-message" hidden>Age should be less than 150 and greater than 0</h6>
+    <label for="stateInput" class="password-signup-label">State</label>
+    <input type="text" id="stateInput" name="stateInput" class="signup-password">
+    <h6 id="error7" class="signup-error-message" hidden>Use US states code only</h6>
 
-        <label for="passwordInput" class="password-signup-label">Password</label>
-        <input type="password" id="passwordInput" name="passwordInput" class="signup-password">
-        <h6 id="error10"class="signup-error-message" hidden>Minimum 8 characters, contain one uppercase, number, special character</h6>
+    <label for="zipcodeInput" class="password-signup-label">zipCode</label>
+    <input type="number" id="zipcodeInput" name="zipcodeInput" class="signup-password">
+    <h6 id="error8" class="signup-error-message" hidden>5 digits only</h6>
 
-        <label for="confirmPasswordInput" class="password-signup-label">Confirm Password</label>
-        <input type="password" id="confirmPasswordInput" name="confirmPasswordInput" class="signup-password">
-        <h6 id="error11"class="signup-error-message" hidden> Minimum 8 characters, contain one uppercase, number, special character</h6>
+    <label for="ageInput" class="password-signup-label">age</label>
+    <input type="number" id="ageInput" name="ageInput" class="signup-password">
+    <h6 id="error9" class="signup-error-message" hidden>Age should be less than 150 and greater than 0</h6>
 
-        <input type="submit" value="Submit" class="signup-submit">
-    </form>
-    <p class="signup-p">
-        Note: Password should be a minimum of 8 characters long.<br>
-        There needs to be at least one uppercase character, there has to be at least one number, and there has to be at least one special character:<br>
-        For example:<br>
-        Not valid: test123, test123$, foobar, tS12$<br>
-        Valid: Test123$, FooBar123*, HorsePull748*%
-    </p>
-    <p>{{errorMessage}}</p>
+    <label for="passwordInput" class="password-signup-label">Password</label>
+    <input type="password" id="passwordInput" name="passwordInput" class="signup-password">
+    <h6 id="error10" class="signup-error-message" hidden>Minimum 8 characters, contain one uppercase, number, special
+        character</h6>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
-    <script src="/public/js/signup.js"></script>
- </main>
+    <label for="confirmPasswordInput" class="password-signup-label">Confirm Password</label>
+    <input type="password" id="confirmPasswordInput" name="confirmPasswordInput" class="signup-password">
+    <h6 id="error11" class="signup-error-message" hidden> Minimum 8 characters, contain one uppercase, number, special
+        character</h6>
+
+    <input type="submit" value="Submit" class="signup-submit">
+</form>
+<p class="signup-p">
+    Note: Password should be a minimum of 8 characters long.<br>
+    There needs to be at least one uppercase character, there has to be at least one number, and there has to be at
+    least one special character:<br>
+    For example:<br>
+    Not valid: test123, test123$, foobar, tS12$<br>
+    Valid: Test123$, FooBar123*, HorsePull748*%
+</p>
+<p>{{errorMessage}}</p>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"></script>
+<script src="/public/js/signup.js"></script>

@@ -34,15 +34,6 @@
         },
       };
       $.ajax(requestConfig);
-      // .then(function (responseMessage) {
-      //   console.log("wwwwwww");
-      //   if(!responseMessage.message){
-      //     console.log(responseMessage);
-      //     console.log("ccccc");
-      //     window.location.href = responseMessage
-      //   }
-
-      // });
     }
   });
 

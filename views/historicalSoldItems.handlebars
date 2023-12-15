@@ -2,15 +2,6 @@
 {{#if items}}
 <table>
     <thead>
-        {{!-- <tr>
-            <th>Item</th>
-            <th>Price</th>
-            <th>Picture</th>
-            <th>Location</th>
-            <th>Condition</th>
-            <th>Quantity</th>
-            <th>Remove</th>
-        </tr> --}}
     </thead>
     <tbody>
         {{#each items}}
@@ -22,7 +13,6 @@
             </td>
             <td>{{this.location}}</td>
             <td>{{this.condition}}</td>
-            </td>
             <td>
                 {{#if this.comments}}
                 <ul>

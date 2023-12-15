@@ -2,15 +2,6 @@
 {{#if items}}
 <table>
     <thead>
-        {{!-- <tr>
-            <th>Item</th>
-            <th>Price</th>
-            <th>Picture</th>
-            <th>Location</th>
-            <th>Condition</th>
-            <th>Quantity</th>
-            <th>Remove</th>
-        </tr> --}}
     </thead>
     <tbody>
         {{#each items}}
@@ -23,10 +14,10 @@
             <td>{{this.location}}</td>
             <td>{{this.condition}}</td>
             <td>
-                <button class="rate" type="button" id = "{{this._id}} rate" value="{{this._id}}">Rate&Comment</button>
+                <button class="rate" type="button" id="{{this._id}} rate" value="{{this._id}}">Rate&Comment</button>
             </td>
             <td>
-                <button class="edit" type="button" id = "{{this._id}} edit" value="{{this._id}}">Edit Review</button>
+                <button class="edit" type="button" id="{{this._id}} edit" value="{{this._id}}">Edit Review</button>
             </td>
         </tr>
         {{/each}}

@@ -188,7 +188,7 @@ router
       });
     }
 
-    return res.redirect(`/`);
+    return res.redirect(`users/itemsForSale`);
     // TODO: redirect to item page
     // return res.redirect(`/items/${itemsInfo.insertedId.toString()}`)
   });

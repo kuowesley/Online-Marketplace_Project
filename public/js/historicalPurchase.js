@@ -98,10 +98,38 @@
       return;
     }
     isEditFormOpen = true;
-    ratingSelectEdit.val("5 stars"); // Set it to the default value or any initial value
-    commentTextAreaEdit.val(""); // Clear the text area
     commentFormEdit.show();
     let itemId = $(this).val();
+
+    // ratingSelectEdit.val("5 stars"); // Set it to the default value or any initial value
+    // commentTextAreaEdit.val(""); // Clear the text area
+    let getCommentRequestConfig = {
+      method: "POST",
+      url: "/users/getComment",
+      contentType: "application/json",
+      data: JSON.stringify({
+        itemId: itemId,
+      }),
+      success: function (data) {
+        if (!data.message) {
+          alert("get previous Comment Fail");
+        }
+      },
+      error: function (xhr, status, error) {
+        if (xhr.responseJSON && xhr.responseJSON.message) {
+          alert(xhr.responseJSON.message);
+        } else {
+          alert(status);
+        }
+      },
+    };
+
+    $.ajax(getCommentRequestConfig).then(function (responseMessage) {
+      console.log(responseMessage);
+      ratingSelectEdit.val(responseMessage.comment.rating);
+      commentTextAreaEdit.val(responseMessage.comment.comment);
+    });
+
     // Unbind previous click event to prevent multiple bindings
     submitCommentEdit.off("click");
     submitCommentEdit.on("click", function (event) {
@@ -136,7 +164,7 @@
           }
         },
       };
-      $.ajax(requestConfig);
+      $.ajax(requestConfig).then(function (responseMessage) {});
     });
   });
 

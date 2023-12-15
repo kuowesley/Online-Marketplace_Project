@@ -564,6 +564,20 @@ const usersMethods = {
     }
   },
 
+  async getComment(itemId, userId) {
+    itemId = validation.checkId(itemId, "itemId");
+    userId = validation.checkCity(userId, "userId");
+    const itemsCollection = await items();
+    const existingComment = await itemsCollection.findOne(
+      { "comments.userId": userId },
+      { projection: { _id: 0, "comments.$": 1 } },
+    );
+    if (!existingComment) {
+      throw "You haven't submitted a comment for this item";
+    }
+    return existingComment.comments[0];
+  },
+
   async editComment(itemId, rating, comment, userId) {
     itemId = validation.checkId(itemId, "itemId");
     rating = validation.checkRating(rating, "rating");

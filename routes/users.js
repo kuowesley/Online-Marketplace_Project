@@ -235,6 +235,23 @@ router.route("/submitComment").post(async (req, res) => {
   }
 });
 
+router.route("/getComment").post(async (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/users/login");
+  }
+  const body = req.body;
+  let itemId = xss(body.itemId);
+  let userId = xss(req.session.user.userId);
+  try {
+    itemId = validation.checkId(itemId, "itemId");
+    userId = validation.checkId(userId, "userId");
+    const comment = await usersData.getComment(itemId, userId);
+    return res.status(200).json({ message: true, comment: comment });
+  } catch (e) {
+    return res.status(400).json({ message: e });
+  }
+});
+
 router.route("/editComment").post(async (req, res) => {
   if (!req.session.user) {
     return res.status(403).json({ message: false });

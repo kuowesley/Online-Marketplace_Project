@@ -157,7 +157,21 @@ const itemsMethods = {
     if (!itemList) throw "Could not get items";
     itemList = itemList.map((element) => {
       element._id = element._id.toString();
-      element.picture = element.picture[0];
+      const currentFilePath = fileURLToPath(import.meta.url);
+      const currentDirPath = path.dirname(currentFilePath);
+      const uploadDirPath = path.join(currentDirPath, "..", "public", "img");
+      const filePath = path.join(uploadDirPath, imageCount.toString() + ".png");
+      fs.writeFile(filePath, element.picture[0].buffer, (err) => {
+        if (err) {
+          console.error("Error writing file:", err);
+        } else {
+          console.log("File written successfully");
+          // Here you can further process or serve the image file as needed
+        }
+      });
+      element.picture = "/public/img/" + imageCount.toString() + ".png"; // only the first picture would be displayed
+      imageCount += 1;
+
       return element;
     });
     return itemList;

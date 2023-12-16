@@ -225,7 +225,7 @@ router.route("/items/purchase").post(async (req, res) => {
   let itemId = xss(body.itemId);
   let quantity = xss(body.quantity);
   if (!req.session.user) {
-    return res.status(403).json({ message: false });
+    return res.redirect("/users/login");
   }
   try {
     await items.purchaseItem(req.session.user.userId, itemId, quantity);

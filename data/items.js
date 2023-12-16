@@ -233,7 +233,7 @@ const itemsMethods = {
     // Add itemId to historical_purchased_item of the user
     let purchaseedItem = {
       itemId: soldItemId,
-      quantity: quantity,
+      quantity: parseInt(quantity),
     };
     const update_historical_purchased_item =
       await usersCollection.findOneAndUpdate(

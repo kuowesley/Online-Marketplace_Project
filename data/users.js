@@ -254,6 +254,7 @@ const usersMethods = {
     let shopping_cart = user.shopping_cart;
     try {
       for (let item of shopping_cart) {
+        await this.checkItemAvaliable(item.itemId, item.quantity);
         // Make sure user can't purchase items they posted
         const seller = await usersCollection.findOne(
           {
@@ -266,7 +267,6 @@ const usersMethods = {
         if (seller._id.toString() === userId) {
           throw `You cannot purchase items you posted`;
         }
-        await this.checkItemAvaliable(item.itemId, item.quantity);
       }
     } catch (e) {
       throw `${e}`;
@@ -291,9 +291,21 @@ const usersMethods = {
         { _id: new ObjectId(sellerId) },
         { $addToSet: { historical_sold_item: soldItemId } }, // prevent duplicate item IDs
       );
-
       if (!updateResult) {
         throw "Failed to update historical_sold_item for the seller.";
+      }
+
+      let purchaseedItem = {
+        itemId: soldItemId,
+        quantity: parseInt(shoppingItem.quantity),
+      };
+      const update_historical_purchased_item =
+        await usersCollection.findOneAndUpdate(
+          { _id: new ObjectId(userId) },
+          { $push: { historical_purchased_item: purchaseedItem } },
+        );
+      if (!update_historical_purchased_item) {
+        throw `Update historical_purchased_item fail`;
       }
     }
     const cleanShoppingCart = await usersCollection.findOneAndUpdate(
@@ -305,21 +317,13 @@ const usersMethods = {
     }
 
     // add items to historical_purchased_item
-    let historical_purchased_item = user.historical_purchased_item;
-    let itemIdsFromCart = shopping_cart.map((cartItem) => cartItem.itemId);
-    const uniqueItemIds = new Set([
-      ...historical_purchased_item,
-      ...itemIdsFromCart,
-    ]); // prevent duplicate IDs
-    historical_purchased_item = Array.from(uniqueItemIds);
-    const update_historical_purchased_item =
-      await usersCollection.findOneAndUpdate(
-        { _id: new ObjectId(userId) },
-        { $set: { historical_purchased_item: historical_purchased_item } },
-      );
-    if (!update_historical_purchased_item) {
-      throw `Update historical_purchased_item fail`;
-    }
+    //let historical_purchased_item = user.historical_purchased_item;
+    //let itemIdsFromCart = shopping_cart.map((cartItem) => cartItem.itemId);
+    // const uniqueItemIds = new Set([
+    //   ...historical_purchased_item,
+    //   ...itemIdsFromCart,
+    // ]); // prevent duplicate IDs
+    //historical_purchased_item = Array.from(uniqueItemIds);
   },
 
   async checkItemAvaliable(itemId, quantity) {
@@ -506,10 +510,10 @@ const usersMethods = {
     const itemsCollection = await items();
     for (let item of purchasedItems) {
       const itemInfo = await itemsCollection.findOne({
-        _id: new ObjectId(item),
+        _id: new ObjectId(item.itemId),
       });
       if (!itemInfo) {
-        throw `Item: ${item} not found`;
+        throw `Item: ${item.itemId} not found`;
       } else {
         let picturesPath;
         const currentFilePath = fileURLToPath(import.meta.url);
@@ -531,7 +535,7 @@ const usersMethods = {
         });
         itemInfo.picture = picturesPath;
       }
-      AllItems.push(itemInfo);
+      AllItems.push({ item: itemInfo, quantity: item.quantity });
     }
 
     return AllItems;
@@ -551,6 +555,16 @@ const usersMethods = {
     if (existingComment) {
       throw "You have already submitted a comment for this item";
     }
+
+    // //check if the user bought the item or not
+    // const usersCollection = await users()
+    // const userPurchase = usersCollection.findOne(
+    //   {
+    //     _id: new ObjectId(userId),
+
+    //   }
+    // )
+
     const comment_submission = await itemsCollection.findOneAndUpdate(
       { _id: new ObjectId(itemId) },
       {
@@ -569,7 +583,7 @@ const usersMethods = {
     userId = validation.checkCity(userId, "userId");
     const itemsCollection = await items();
     const existingComment = await itemsCollection.findOne(
-      { "comments.userId": userId },
+      { $and: [{ _id: new ObjectId(itemId) }, { "comments.userId": userId }] },
       { projection: { _id: 0, "comments.$": 1 } },
     );
     if (!existingComment) {

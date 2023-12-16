@@ -5,6 +5,7 @@
   let submitComment = $("#submitComment");
   let ratingSelect = $("#ratingSelect");
   let commentTextArea = $("#commentTextArea");
+  let h2_rate = $("#h2_rate");
 
   let commentFormEdit = $("#rateCommentModal-edit");
   let editCommentButton = $(".edit");
@@ -12,6 +13,7 @@
   let submitCommentEdit = $("#submitComment-edit");
   let ratingSelectEdit = $("#ratingSelect-edit");
   let commentTextAreaEdit = $("#commentTextArea-edit");
+  let h2_edit = $("#h2_edit");
 
   let isCommentFormOpen = false; //
   let isEditFormOpen = false; //
@@ -47,6 +49,7 @@
       );
       return;
     }
+    h2_rate.text("Rating and Comment for " + $(this).data("itemname"));
     isCommentFormOpen = true;
     ratingSelect.val("5 stars"); // Set it to the default value or any initial value
     commentTextArea.val(""); // Clear the text area
@@ -106,8 +109,10 @@
       return;
     }
     isEditFormOpen = true;
+    h2_edit.text("Change Rating and Comment for " + $(this).data("itemname"));
     commentFormEdit.show();
     let itemId = $(this).val();
+    console.log(itemId);
 
     // ratingSelectEdit.val("5 stars"); // Set it to the default value or any initial value
     // commentTextAreaEdit.val(""); // Clear the text area

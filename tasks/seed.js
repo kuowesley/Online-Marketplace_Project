@@ -443,6 +443,7 @@ try {
   console.log(e);
 }
 
+//      user2
 try {
   await users.getItemToCart(
     user2._id.toString(),
@@ -502,3 +503,71 @@ try {
 } catch (e) {
   console.log(e);
 }
+
+//          user3
+try {
+  await users.getItemToCart(
+    user3._id.toString(),
+    item5.insertedId.toString(),
+    7,
+  );
+} catch (e) {
+  console.log(e);
+}
+try {
+  await users.getItemToCart(
+    user3._id.toString(),
+    item6.insertedId.toString(),
+    1,
+  );
+} catch (e) {
+  console.log(e);
+}
+try {
+  await users.checkOutItems(user3._id.toString());
+} catch (e) {
+  console.log(e);
+}
+try {
+  await users.getItemToCart(
+    user3._id.toString(),
+    item1.insertedId.toString(),
+    1,
+  );
+} catch (e) {
+  console.log(e);
+}
+try {
+  await users.getItemToCart(
+    user3._id.toString(),
+    item1.insertedId.toString(),
+    1,
+  );
+} catch (e) {
+  console.log(e);
+}
+
+//add Rating and Comment
+try {
+  await users.submitComment(
+    item5.insertedId.toString(),
+    "4 stars",
+    "SUPERRRRRRRR!!!",
+    user3._id.toString(),
+  );
+} catch (e) {
+  console.log(e);
+}
+
+try {
+  await users.submitComment(
+    item7.insertedId.toString(),
+    "2 stars",
+    "NOT SO GOOD",
+    user3._id.toString(),
+  );
+} catch (e) {
+  console.log(e);
+}
+
+console.log("Done");

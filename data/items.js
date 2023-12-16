@@ -231,10 +231,14 @@ const itemsMethods = {
     }
 
     // Add itemId to historical_purchased_item of the user
+    let purchaseedItem = {
+      itemId: soldItemId,
+      quantity: quantity,
+    };
     const update_historical_purchased_item =
       await usersCollection.findOneAndUpdate(
         { _id: new ObjectId(userId) },
-        { $addToSet: { historical_purchased_item: soldItemId } }, // prevent duplicate item IDs
+        { $push: { historical_purchased_item: purchaseedItem } },
       );
     if (!update_historical_purchased_item) {
       throw `Update historical_purchased_item fail`;

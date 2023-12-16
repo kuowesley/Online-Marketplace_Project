@@ -1,0 +1,69 @@
+/* Styles for ItemForSale */
+
+/* Table styles */
+.itemForSaleTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+.itemForSaleTh,
+.itemForSaleTd {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.itemForSaleTh {
+    background-color: #f7f7f7;
+}
+
+.itemForSaleTr:hover {
+    background-color: #f0f0f0;
+}
+
+/* Button styles */
+.itemForSaleButton {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.itemForSaleButton:hover {
+    background-color: #c82333;
+}
+
+/* Image styles */
+.itemForSaleImg {
+    display: block;
+    margin: 0 auto;
+}
+
+/* No item listing message */
+.itemForSaleNoListing {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Comments styles */
+.itemForSaleUl {
+    list-style: none;
+    padding: 0;
+}
+
+.itemForSaleLi {
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+
+.itemForSaleLi:last-child {
+    border-bottom: none;
+}
+
+.itemForSaleLi p {
+    margin: 0;
+}

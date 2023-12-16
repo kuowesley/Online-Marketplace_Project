@@ -111,12 +111,14 @@ router
       );
 
       // TODO file validation
-      if (!files) {
-        throw `Image Files is empty`;
-      }
+      if (!files) throw `Do not get any Image Files`;
+
       if (!Array.isArray(files)) {
-        throw `files should be array`;
+        throw `Files should be array`;
       } else {
+        if (files.length === 0) {
+          throw `Files could not be empty array`;
+        }
         for (let i = 0; i < files.length; i++) {
           files[i] = validation.checkFileInput(files[i], `Files[${i}]`);
         }

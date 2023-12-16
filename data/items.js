@@ -33,6 +33,7 @@ const itemsMethods = {
     if (!Array.isArray(picture)) {
       throw `Pictures should be array all multiple image`;
     } else {
+      if (picture.length === 0) throw `Pictures could not be empty array`;
       for (let i in picture) {
         if (!Buffer.isBuffer(picture[i])) {
           throw `image should be buffer`;

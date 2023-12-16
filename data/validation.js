@@ -310,10 +310,13 @@ const validation = {
   checkDeliveryMethod(str, varName) {
     // check string
     str = this.checkString(str, varName);
+    str = str.toLowerCase();
 
-    if (str.length < 5) {
-      throw `Should ${varName} contain over 5 characters`;
-    }
+    // validate input value
+    if (str !== "meetup" && str !== "shipping")
+      throw `${varName} is not Valid Value: ${str}, only accept "meetup","shipping"`;
+
+    return str;
 
     return str;
   },
@@ -321,10 +324,18 @@ const validation = {
   checkCondition(str, varName) {
     // check string
     str = this.checkString(str, varName);
+    str = str.toLowerCase();
 
-    if (str.length < 3) {
-      throw `Should ${varName} contain over 5 characters`;
-    }
+    // validate input value
+    const validConditions = [
+      "new",
+      "usedlikenew",
+      "usedverygood",
+      "usedgood",
+      "usedacceptable",
+    ];
+    if (!validConditions.includes(str))
+      throw `${varName} is not Valid Value: ${str}, only accept "new","usedlikenew", "usedverygood","usedgood","usedacceptable"`;
 
     return str;
   },
@@ -352,7 +363,11 @@ const validation = {
       throw `file.fieldname should be fileInput`;
     if (!file.mimetype.startsWith("image/"))
       throw `file.mimetype should start with image/`;
-    if (file.mimetype !== "image/jpg" && file.mimetype !== "image/png") {
+    if (
+      file.mimetype !== "image/jpg" &&
+      file.mimetype !== "image/png" &&
+      file.mimetype !== "image/jpeg"
+    ) {
       throw `File type should be either JPG or PNG`;
     }
     if (file.destination !== "upload/")

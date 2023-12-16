@@ -82,17 +82,17 @@ if (fileUploadForm) {
       // check File
       if (files.length === 0) throw `Image could not be empty`;
       for (let i = 0; i < files.length; i++) {
-        console.log(files[i]);
-        console.log(files[i].size);
-        console.log(files[i].type);
-        console.log(typeof files[i].type);
         if (files[i].size > 12000000) {
           throw `File size:${files[i].size} over 12 MB!`;
         }
         if (!files[i].type.startsWith("image/")) {
           throw `File type: ${files[i].type} is not accept`;
         }
-        if (files[i].type !== "image/jpg" && files[i].type !== "image/png") {
+        if (
+          files[i].type !== "image/jpg" &&
+          files[i].type !== "image/png" &&
+          files[i].type !== "image/jpeg"
+        ) {
           throw `File type should be either JPG or PNG`;
         }
       }
@@ -470,10 +470,11 @@ const validation = {
   checkDeliveryMethod(str, varName) {
     // check string
     str = this.checkString(str, varName);
+    str = str.toLowerCase();
 
-    if (str.length < 5) {
-      throw `Should ${varName} contain over 5 characters`;
-    }
+    // validate input value
+    if (str !== "meetup" && str !== "shipping")
+      throw `${varName} is not Valid Value: ${str}, only accept "meetup","shipping"`;
 
     return str;
   },
@@ -481,10 +482,18 @@ const validation = {
   checkCondition(str, varName) {
     // check string
     str = this.checkString(str, varName);
+    str = str.toLowerCase();
 
-    if (str.length < 3) {
-      throw `Should ${varName} contain over 3 characters`;
-    }
+    // validate input value
+    const validConditions = [
+      "new",
+      "usedlikenew",
+      "usedverygood",
+      "usedgood",
+      "usedacceptable",
+    ];
+    if (!validConditions.includes(str))
+      throw `${varName} is not Valid Value: ${str}, only accept "new","usedlikenew", "usedverygood","usedgood","usedacceptable"`;
 
     return str;
   },

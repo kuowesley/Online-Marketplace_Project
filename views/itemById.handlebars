@@ -13,7 +13,8 @@
         {{/each}}
     </p>
     <p>Quantity: {{item.quantity}}</p>
-    <p>Location: {{item.location}}</p>
+    <div id="map"></div>
+    <p id="location">Location: {{item.location}}</p>
     <p>Delivery Method: {{item.deliveryMethod}}</p>
     <p>Condition: {{item.condition}}</p>
     {{#if item.quantity}}

@@ -5,6 +5,18 @@
   let buyItNow = $("#buyItNow");
   let itemId = $("#itemId");
   let quantitySelect = $("#quantitySelect");
+  let location = $("#location");
+
+  let forurl = location.text().split(",").join(" ");
+  let forurl2 = forurl.split(":");
+  let forurl3 = forurl2[1].trim().split(" ").join("%20");
+  let url =
+    "https://www.google.com/maps/embed/v1/place?key=AIzaSyDmLGhMKw9fQFfNAX1MCu_jeuoCrBxe3XU&q=" +
+    forurl3;
+  console.log(url);
+  $("#map")
+    .append(`<iframe width="600" height="450" style="border:0" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"
+  src=${url}></iframe>`);
 
   addToCart.on("click", function (event) {
     if (itemId.text()) {

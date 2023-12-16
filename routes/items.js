@@ -20,7 +20,29 @@ const uploadDirPath = path.join(currentDirPath, "..", "upload");
 router
   .route("/")
   .get(async (req, res) => {
-    res.render("home", { title: "Home", user: req.session.user });
+    if (!req.session.user) {
+      res.render("home", { title: "Home" });
+    } else {
+      let userId = xss(req.session.user.userId);
+      try {
+        userId = validation.checkId(userId, "userId");
+      } catch (e) {
+        return res.status(400).json({ message: e });
+      }
+      try {
+        const browseHistory = await usersData.getBrowserHistory(userId);
+        let allitems = [];
+        for (let i of browseHistory) {
+          let tmp = await items.getById(i);
+          // allitems[item] = tmp.item
+          // allitems[url] = i
+          allitems.push(tmp);
+        }
+        return res.status(200).render("home", { items: allitems });
+      } catch (e) {
+        return res.status(404).json({ message: e });
+      }
+    }
   })
   .post(async (req, res) => {});
 
@@ -214,6 +236,14 @@ router.route("/items/:id").get(async (req, res) => {
     if (!thisItem) {
       res.status(404).render("error", { errorMessage: e });
     }
+    // to do
+    // add itemid to users.browserHistory
+    if (req.session.user) {
+      let userId = xss(req.session.user.userId);
+      userId = validation.checkId(userId, "UserId");
+      await usersData.addBrowserHistory(userId, id);
+    }
+
     res.render("itemById", { item: thisItem, user: req.session.user });
   } catch (e) {
     res.status(500).render("error", { errorMessage: e });

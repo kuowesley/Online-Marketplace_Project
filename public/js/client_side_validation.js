@@ -80,6 +80,7 @@ if (fileUploadForm) {
       conditionValue = validation.checkCondition(conditionValue, `condition`);
 
       // check File
+      if (files.length === 0) throw `Image could not be empty`;
       for (let i = 0; i < files.length; i++) {
         console.log(files[i]);
         console.log(files[i].size);

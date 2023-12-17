@@ -5,7 +5,9 @@
         This website is designed to serve as a one-stop virtual marketplace, catering exclusively to the needs of
         students who are setting up a new life.
     </p>
-    <h3 class="history-items">Browsing History</h3>
+    {{#if items}}
+    <h2 class="history-items">Browsing History</h3>
+    {{/if}}
     <ol class="history-items" type="1">
         {{#each items}}
         <li>

@@ -718,7 +718,7 @@ const usersMethods = {
       throw "User is not registed to generate browse history";
     }
     if (!user.browserHistory) {
-      throw "User do not have browse history field";
+      return false;
     }
     if (user.browserHistory) {
       return user.browserHistory;

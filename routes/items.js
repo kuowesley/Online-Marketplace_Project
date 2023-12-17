@@ -31,6 +31,11 @@ router
       }
       try {
         const browseHistory = await usersData.getBrowserHistory(userId);
+        if (!browseHistory) {
+          return res
+            .status(200)
+            .render("home", { title: "Home", user: req.session.user });
+        }
         let allitems = [];
         for (let i of browseHistory) {
           let tmp = await items.getById(i);

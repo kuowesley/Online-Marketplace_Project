@@ -1,6 +1,7 @@
 // upload item
-import users from "../data/users.js";
+import usersData from "../data/users.js";
 import items from "../data/items.js";
+import { users } from "../config/mongoCollections.js";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -29,7 +30,7 @@ const currentDirPath = path.dirname(currentFilePath);
 const uploadDirPath = path.join(currentDirPath, "..", "img");
 
 try {
-  user1 = await users.addUser(
+  user1 = await usersData.addUser(
     "user1FirstName",
     "user1LastName",
     "user1",
@@ -47,7 +48,7 @@ try {
 }
 
 try {
-  user2 = await users.addUser(
+  user2 = await usersData.addUser(
     "user2FirstName",
     "user2LastName",
     "user2",
@@ -65,7 +66,7 @@ try {
 }
 
 try {
-  user3 = await users.addUser(
+  user3 = await usersData.addUser(
     "user3FirstName",
     "user3LastName",
     "user3",
@@ -96,11 +97,11 @@ try {
     imagesList,
     10,
     "Brooklyn, NY",
-    "shipping",
+    "meetup",
     "new",
     user1._id.toString(),
   );
-  await users.getItemToItemsForSale(
+  await usersData.getItemToItemsForSale(
     user1._id.toString(),
     item1.insertedId.toString(),
   );
@@ -127,7 +128,7 @@ try {
     "new",
     user1._id.toString(),
   );
-  await users.getItemToItemsForSale(
+  await usersData.getItemToItemsForSale(
     user1._id.toString(),
     item2.insertedId.toString(),
   );
@@ -154,7 +155,7 @@ try {
     "new",
     user1._id.toString(),
   );
-  await users.getItemToItemsForSale(
+  await usersData.getItemToItemsForSale(
     user1._id.toString(),
     item3.insertedId.toString(),
   );
@@ -177,11 +178,11 @@ try {
     imagesList,
     5,
     "West New York, NJ",
-    "shipping",
+    "meetup",
     "new",
     user2._id.toString(),
   );
-  await users.getItemToItemsForSale(
+  await usersData.getItemToItemsForSale(
     user2._id.toString(),
     item4.insertedId.toString(),
   );
@@ -208,7 +209,7 @@ try {
     "new",
     user2._id.toString(),
   );
-  await users.getItemToItemsForSale(
+  await usersData.getItemToItemsForSale(
     user2._id.toString(),
     item5.insertedId.toString(),
   );
@@ -235,7 +236,7 @@ try {
     "new",
     user2._id.toString(),
   );
-  await users.getItemToItemsForSale(
+  await usersData.getItemToItemsForSale(
     user2._id.toString(),
     item6.insertedId.toString(),
   );
@@ -262,7 +263,7 @@ try {
     250,
     "kitchen chairs",
     imagesList,
-    10,
+    12,
     "Hoboken, NJ",
 
     "meetup",
@@ -270,7 +271,7 @@ try {
     "new",
     user3._id.toString(),
   );
-  await users.getItemToItemsForSale(
+  await usersData.getItemToItemsForSale(
     user3._id.toString(),
     item7.insertedId.toString(),
   );
@@ -297,7 +298,7 @@ try {
     "new",
     user3._id.toString(),
   );
-  await users.getItemToItemsForSale(
+  await usersData.getItemToItemsForSale(
     user3._id.toString(),
     item8.insertedId.toString(),
   );
@@ -324,7 +325,7 @@ try {
     "new",
     user3._id.toString(),
   );
-  await users.getItemToItemsForSale(
+  await usersData.getItemToItemsForSale(
     user3._id.toString(),
     item9.insertedId.toString(),
   );
@@ -350,11 +351,11 @@ try {
     imagesList,
     30,
     "Hoboken, NJ",
-    "shipping",
+    "meetup",
     "new",
     user3._id.toString(),
   );
-  await users.getItemToItemsForSale(
+  await usersData.getItemToItemsForSale(
     user3._id.toString(),
     item10.insertedId.toString(),
   );
@@ -384,7 +385,7 @@ try {
     "new",
     user3._id.toString(),
   );
-  await users.getItemToItemsForSale(
+  await usersData.getItemToItemsForSale(
     user3._id.toString(),
     item11.insertedId.toString(),
   );
@@ -397,7 +398,7 @@ try {
 
 //user1
 try {
-  await users.getItemToCart(
+  await usersData.getItemToCart(
     user1._id.toString(),
     item4.insertedId.toString(),
     4,
@@ -406,7 +407,7 @@ try {
   console.log(e);
 }
 try {
-  await users.getItemToCart(
+  await usersData.getItemToCart(
     user1._id.toString(),
     item5.insertedId.toString(),
     2,
@@ -415,12 +416,30 @@ try {
   console.log(e);
 }
 try {
-  await users.checkOutItems(user1._id.toString());
+  await usersData.getItemToCart(
+    user1._id.toString(),
+    item10.insertedId.toString(),
+    1,
+  );
 } catch (e) {
   console.log(e);
 }
 try {
-  await users.getItemToCart(
+  await usersData.getItemToCart(
+    user1._id.toString(),
+    item11.insertedId.toString(),
+    1,
+  );
+} catch (e) {
+  console.log(e);
+}
+try {
+  await usersData.checkOutItems(user1._id.toString());
+} catch (e) {
+  console.log(e);
+}
+try {
+  await usersData.getItemToCart(
     user1._id.toString(),
     item6.insertedId.toString(),
     3,
@@ -429,7 +448,7 @@ try {
   console.log(e);
 }
 try {
-  await users.getItemToCart(
+  await usersData.getItemToCart(
     user1._id.toString(),
     item7.insertedId.toString(),
     3,
@@ -438,7 +457,7 @@ try {
   console.log(e);
 }
 try {
-  await users.getItemToCart(
+  await usersData.getItemToCart(
     user1._id.toString(),
     item8.insertedId.toString(),
     1,
@@ -449,7 +468,7 @@ try {
 
 //      user2
 try {
-  await users.getItemToCart(
+  await usersData.getItemToCart(
     user2._id.toString(),
     item1.insertedId.toString(),
     7,
@@ -458,7 +477,7 @@ try {
   console.log(e);
 }
 try {
-  await users.getItemToCart(
+  await usersData.getItemToCart(
     user2._id.toString(),
     item3.insertedId.toString(),
     4,
@@ -467,12 +486,30 @@ try {
   console.log(e);
 }
 try {
-  await users.checkOutItems(user2._id.toString());
+  await usersData.getItemToCart(
+    user2._id.toString(),
+    item8.insertedId.toString(),
+    2,
+  );
 } catch (e) {
   console.log(e);
 }
 try {
-  await users.getItemToCart(
+  await usersData.getItemToCart(
+    user2._id.toString(),
+    item9.insertedId.toString(),
+    6,
+  );
+} catch (e) {
+  console.log(e);
+}
+try {
+  await usersData.checkOutItems(user2._id.toString());
+} catch (e) {
+  console.log(e);
+}
+try {
+  await usersData.getItemToCart(
     user2._id.toString(),
     item2.insertedId.toString(),
     4,
@@ -481,7 +518,7 @@ try {
   console.log(e);
 }
 try {
-  await users.getItemToCart(
+  await usersData.getItemToCart(
     user2._id.toString(),
     item9.insertedId.toString(),
     4,
@@ -490,7 +527,7 @@ try {
   console.log(e);
 }
 try {
-  await users.getItemToCart(
+  await usersData.getItemToCart(
     user2._id.toString(),
     item10.insertedId.toString(),
     7,
@@ -499,7 +536,7 @@ try {
   console.log(e);
 }
 try {
-  await users.getItemToCart(
+  await usersData.getItemToCart(
     user2._id.toString(),
     item11.insertedId.toString(),
     7,
@@ -510,7 +547,7 @@ try {
 
 //          user3
 try {
-  await users.getItemToCart(
+  await usersData.getItemToCart(
     user3._id.toString(),
     item5.insertedId.toString(),
     7,
@@ -519,7 +556,7 @@ try {
   console.log(e);
 }
 try {
-  await users.getItemToCart(
+  await usersData.getItemToCart(
     user3._id.toString(),
     item6.insertedId.toString(),
     1,
@@ -528,12 +565,12 @@ try {
   console.log(e);
 }
 try {
-  await users.checkOutItems(user3._id.toString());
+  await usersData.checkOutItems(user3._id.toString());
 } catch (e) {
   console.log(e);
 }
 try {
-  await users.getItemToCart(
+  await usersData.getItemToCart(
     user3._id.toString(),
     item1.insertedId.toString(),
     1,
@@ -542,7 +579,7 @@ try {
   console.log(e);
 }
 try {
-  await users.getItemToCart(
+  await usersData.getItemToCart(
     user3._id.toString(),
     item1.insertedId.toString(),
     1,
@@ -552,8 +589,68 @@ try {
 }
 
 //add Rating and Comment
+
+// user1
+
 try {
-  await users.submitComment(
+  await usersData.submitComment(
+    item5.insertedId.toString(),
+    "2 stars",
+    "NOT SO GOOD",
+    user1._id.toString(),
+  );
+} catch (e) {
+  console.log(e);
+}
+
+try {
+  await usersData.submitComment(
+    item11.insertedId.toString(),
+    "3 stars",
+    "Not so BAD",
+    user1._id.toString(),
+  );
+} catch (e) {
+  console.log(e);
+}
+
+//    user2
+try {
+  await usersData.submitComment(
+    item3.insertedId.toString(),
+    "1 stars",
+    "Broken items!!!",
+    user2._id.toString(),
+  );
+} catch (e) {
+  console.log(e);
+}
+
+try {
+  await usersData.submitComment(
+    item8.insertedId.toString(),
+    "1 stars",
+    "Waste my money",
+    user2._id.toString(),
+  );
+} catch (e) {
+  console.log(e);
+}
+try {
+  await usersData.submitComment(
+    item9.insertedId.toString(),
+    "1 stars",
+    "DOG SHIT",
+    user2._id.toString(),
+  );
+} catch (e) {
+  console.log(e);
+}
+
+//    user3
+
+try {
+  await usersData.submitComment(
     item5.insertedId.toString(),
     "4 stars",
     "SUPERRRRRRRR!!!",
@@ -564,8 +661,47 @@ try {
 }
 
 try {
-  await users.submitComment(
-    item7.insertedId.toString(),
+  const usersDataCollection = await users();
+  let transactionInfo = await usersDataCollection.findOne(
+    {
+      $and: [
+        { _id: user3._id },
+        { "timeToBeDetermined.itemId": item6.insertedId.toString() },
+      ],
+    },
+    { projection: { _id: 0, "timeToBeDetermined.$": 1 } },
+  );
+  if (transactionInfo) {
+    transactionInfo = transactionInfo.timeToBeDetermined[0];
+    await usersData.submitMeetUpTimeToSeller(
+      user3._id.toString(),
+      transactionInfo.transactionId.toString(),
+      "2024-12-28T16:23",
+    );
+
+    let sellTransactionInfo = await usersDataCollection.findOne(
+      {
+        $and: [
+          { _id: user2._id },
+          { "confirmMeetUpTime.itemId": item6.insertedId.toString() },
+        ],
+      },
+      { projection: { _id: 0, "confirmMeetUpTime.$": 1 } },
+    );
+    sellTransactionInfo = sellTransactionInfo.confirmMeetUpTime[0];
+    await usersData.confirmMeetUpTime(
+      sellTransactionInfo.transactionId.toString(),
+      user2._id.toString(),
+      user3._id.toString(),
+    );
+  }
+} catch (e) {
+  console.log(e);
+}
+
+try {
+  await usersData.submitComment(
+    item6.insertedId.toString(),
     "2 stars",
     "NOT SO GOOD",
     user3._id.toString(),

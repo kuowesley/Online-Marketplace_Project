@@ -386,8 +386,13 @@ const validation = {
   checkTime(time, varName) {
     time = this.checkString(time, varName);
     let dateObject = new Date(time);
+    let now = new Date();
+    let oneDaysLater = new Date(now.getTime() + 1 * 24 * 60 * 60 * 1000);
     if (dateObject.toString() === "Invalid Date") {
       throw `${varName} is not a valid time`;
+    }
+    if (dateObject < oneDaysLater) {
+      throw `Time should be at least 1 day later than now`;
     }
     return time;
   },

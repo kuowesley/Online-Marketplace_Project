@@ -56,6 +56,7 @@ const usersMethods = {
       items_for_sale: [],
       historical_sold_item: [],
       historical_purchased_item: [],
+      browserHistory: [],
     };
 
     const insertInfo = await usersCollection.insertOne(newUser);
@@ -657,6 +658,71 @@ const usersMethods = {
       throw `Seller with id ${id} not found`;
     }
     return seller;
+  },
+
+  async addBrowserHistory(userId, itemId) {
+    //to do check itemId limit 5
+    userId = validation.checkId(userId, "UserId");
+    itemId = validation.checkId(itemId, "ItemId");
+    const usersCollection = await users();
+    const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+
+    if (!user) {
+      throw "User is not registerd to add browse history";
+    }
+    // if not browserhistory field create one
+
+    if (!user.browserHistory) {
+      await usersCollection.updateOne(
+        { _id: new ObjectId(userId) },
+        { $set: { browserHistory: [itemId] } },
+      );
+    }
+    if (!user.browserHistory.includes(itemId)) {
+      if (user.browserHistory.length < 5) {
+        await usersCollection.updateOne(
+          { _id: new ObjectId(userId) },
+          { $push: { browserHistory: itemId } },
+        );
+      } else if (user.browserHistory.length == 5) {
+        await usersCollection.updateOne(
+          { _id: new ObjectId(userId) },
+          { $pop: { browserHistory: -1 } },
+        );
+        await usersCollection.updateOne(
+          { _id: new ObjectId(userId) },
+          { $push: { browserHistory: itemId } },
+        );
+      } else if (user.browserHistory.length > 5) {
+        for (let i = 0; i < user.browserHistory.length - 4; i++) {
+          await usersCollection.updateOne(
+            { _id: new ObjectId(userId) },
+            { $pop: { browserHistory: -1 } },
+          );
+        }
+        await usersCollection.updateOne(
+          { _id: new ObjectId(userId) },
+          { $push: { browserHistory: itemId } },
+        );
+      }
+    }
+  },
+
+  async getBrowserHistory(userId) {
+    // to do
+    userId = validation.checkId(userId, "UserId");
+    const usersCollection = await users();
+    const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+
+    if (!user) {
+      throw "User is not registed to generate browse history";
+    }
+    if (!user.browserHistory) {
+      throw "User do not have browse history field";
+    }
+    if (user.browserHistory) {
+      return user.browserHistory;
+    }
   },
 };
 

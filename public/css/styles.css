@@ -44,26 +44,20 @@
 .item {
     display: inline-block;
     margin-right: 20px;
-    /* Adjust the margin as needed */
     border: 1px solid #ccc;
-    /* Add a border for better visibility */
 }
 
 .item-row {
     margin-bottom: 20px;
-    /*Adjust the margin as needed between rows*/
 }
 
 .item-details {
     text-align: center;
-    /* Center-align the text content */
 }
 
 .item-details img {
     display: block;
-    /* Make sure images are centered as well */
     margin: 0 auto;
-    /* Center-align images using margin */
 }
 
 .inline-block-nav>li {

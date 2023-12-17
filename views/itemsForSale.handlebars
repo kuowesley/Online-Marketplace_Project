@@ -1,11 +1,20 @@
+<link rel="stylesheet" href="/public/css/itemsForSaleStyles.css">
 <h1>Items For Sale</h1>
 {{#if items}}
 <table>
     <thead>
+        <th id="ItemName">ItemName</th>
+        <th id="Price">Price</th>
+        <th id="Picture">Picture</th>
+        <th id="Location">Location</th>
+        <th id="Condition">Condition</th>
+        <th id="Quantity">Quantity</th>
+        <th id="RatingComment">Rating and Comment</th>
+        <th id="Review">Review</th>
     </thead>
     <tbody>
         {{#each items}}
-        <tr class="item">
+        <tr>
             <td><a href="/items/{{this._id}}">{{this.item}}</a></td>
             <td>${{this.price}}</td>
             <td>

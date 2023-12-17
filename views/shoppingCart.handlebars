@@ -15,12 +15,12 @@
     </thead>
     <tbody>
         {{#each items}}
-        <tr class="item">
+        <tr>
             <td headers="ItemName"><a href="/items/{{this.item._id}}">{{this.item.item}}</a></td>
             <td headers="Price">${{this.item.price}}</td>
             <td headers="Picture">
 
-                <img alt="{{this.item.item}}" src="{{this.item.picture}}" width="50" height="50">
+                <img alt="{{this.item.item}}" src="{{this.item.picture}}" width="75" height="75">
 
             </td>
             <td headers="Location">{{this.item.location}}</td>

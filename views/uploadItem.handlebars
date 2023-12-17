@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="/public/css/uploadItemStyles.css">
 <form id="fileUploadForm" action="/upload" method="post" enctype="multipart/form-data">
     <div>
         <label for="itemName">Item Name:</label>
@@ -20,7 +21,7 @@
     </div>
 
     <div>
-        <label for="transaction_date">Transaction Date:</label>
+        <label for="transaction_date">Transaction Date (mm/dd/yyyy):</label>
         <input type="text" id="transaction_date" name="transaction_date" value="{{transaction_date}}" required>
     </div>
 
@@ -31,12 +32,23 @@
 
     <div>
         <label for="deliveryMethod">DeliveryMethod:</label>
-        <input type="text" id="deliveryMethod" name="deliveryMethod" value="{{deliveryMethod}}" required>
+        <select id="deliveryMethod" name="deliveryMethod" required>
+            <option value="" disabled selected>Select a DeliveryMethod</option>
+            <option value="meetup">MeetUp</option>
+            <option value="shipping">Shipping</option>
+        </select>
     </div>
 
     <div>
         <label for="condition">Condition:</label>
-        <input type="text" id="condition" name="condition" value="{{condition}}" required>
+        <select id="condition" name="condition" required>
+            <option value="" disabled selected>Select a Condition</option>
+            <option value="new">New</option>
+            <option value="usedlikenew">Used-Like New</option>
+            <option value="usedverygood">Used-Very Good</option>
+            <option value="usedgood">Used-Good</option>
+            <option value="usedacceptable">Used-Acceptable</option>
+        </select>
     </div>
 
     <input type="file" id="fileInput" name="fileInput" accept="image/*" style="display:none" multiple>

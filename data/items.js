@@ -33,6 +33,7 @@ const itemsMethods = {
     if (!Array.isArray(picture)) {
       throw `Pictures should be array all multiple image`;
     } else {
+      if (picture.length === 0) throw `Pictures could not be empty array`;
       for (let i in picture) {
         if (!Buffer.isBuffer(picture[i])) {
           throw `image should be buffer`;
@@ -233,7 +234,7 @@ const itemsMethods = {
     // Add itemId to historical_purchased_item of the user
     let purchaseedItem = {
       itemId: soldItemId,
-      quantity: quantity,
+      quantity: parseInt(quantity),
     };
     const update_historical_purchased_item =
       await usersCollection.findOneAndUpdate(

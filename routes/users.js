@@ -164,12 +164,10 @@ router.route("/determineMeetUpTime").get(async (req, res) => {
     const meetUpItems = await usersData.getTimeToBeDetermined(
       req.session.user.userId,
     );
-    return res
-      .status(200)
-      .render("determineMeetUpTime", {
-        items: meetUpItems,
-        user: req.session.user,
-      });
+    return res.status(200).render("determineMeetUpTime", {
+      items: meetUpItems,
+      user: req.session.user,
+    });
   } catch (e) {
     return res
       .status(400)
@@ -216,9 +214,9 @@ router.route("/confirmMeetUpTime/confirm").post(async (req, res) => {
   try {
     const body = req.body;
     let transactionId = xss(body.transactionId);
-    let userId = xss(req.session.user.userId);
+    let seller = xss(req.session.user.userId);
     let buyerId = xss(body.buyerId);
-    await usersData.confirmMeetUpTime(transactionId, userId, buyerId);
+    await usersData.confirmMeetUpTime(transactionId, seller, buyerId);
     return res.status(200).json({ status: true });
   } catch (e) {
     return res.status(400).json({ status: false, message: e });
@@ -231,13 +229,9 @@ router.route("/confirmMeetUpTime/deny").post(async (req, res) => {
   try {
     const body = req.body;
     let transactionId = xss(body.transactionId);
-    let userId = xss(req.session.user.userId);
-    await usersData.submitMeetUpTimeToSeller(
-      userId,
-      itemId,
-      meetUpTime,
-      quantity,
-    );
+    let seller = xss(req.session.user.userId);
+    let buyerId = xss(body.buyerId);
+    await usersData.denyMeetUpTime(transactionId, seller, buyerId);
     return res.status(200).json({ status: true });
   } catch (e) {
     return res.status(400).json({ status: false, message: e });
@@ -299,9 +293,7 @@ router.get("/historicalSoldItems", async (req, res) => {
     return res.redirect("/users/login");
   }
   try {
-    const items = await usersData.getHistoricalSoldItems(
-      req.session.user.userId,
-    );
+    const items = await usersData.getSaleRecord(req.session.user.userId);
     return res
       .status(200)
       .render("historicalSoldItems", { user: req.session.user, items: items });

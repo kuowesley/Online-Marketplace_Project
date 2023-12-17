@@ -50,7 +50,7 @@
       return false;
     }
     if (dateObj < oneDaysLater) {
-      alert("Time should be at least 1 days later than now");
+      alert("Time should be at least 1 day later than now");
       return false;
     }
     return true;

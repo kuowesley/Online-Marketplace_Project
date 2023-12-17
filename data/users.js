@@ -1006,6 +1006,11 @@ const usersMethods = {
     }
     transactionInfo = transactionInfo.confirmMeetUpTime[0];
 
+    transactionInfo.meetUpTime = validation.checkTime(
+      transactionInfo.meetUpTime,
+      "meetUpTime",
+    );
+
     let removeTransaction = await usersCollection.findOneAndUpdate(
       { "confirmMeetUpTime.transactionId": new ObjectId(transactionId) },
       {

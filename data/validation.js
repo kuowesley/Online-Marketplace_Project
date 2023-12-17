@@ -392,7 +392,7 @@ const validation = {
       throw `${varName} is not a valid time`;
     }
     if (dateObject < oneDaysLater) {
-      throw `Time should be at least 1 days later than now`;
+      throw `Time should be at least 1 day later than now`;
     }
     return time;
   },

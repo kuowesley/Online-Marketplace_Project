@@ -4,23 +4,22 @@
 <p>View comments about the seller, <a href="../users/getSellerInformation/{{item.seller_id}}">click here</a>.</p>
 
 <div class="item-details">
-    <h1>{{item.item}}</h1>
+    <h1 class="itemName">{{item.item}}</h1>
     <p id="itemId" hidden>{{item._id}}</p>
-    <p>{{item.description}}</p>
-    <p>Price: ${{item.price}}</p>
-    <p>
+    <p class="itemDescription">{{item.description}}</p>
+    <p class="itemPrice">Price: ${{item.price}}</p>
+    <p class="itemPicture">
         {{#each item.picture}}
         <img alt="Item Picture {{item.item}}" src="{{this}}" style="width:600px;height:450px;">
         {{/each}}
     </p>
-    <p>Quantity: {{item.quantity}}</p>
-    <div id="map"></div>
-    <p id="location">Location: {{item.location}}</p>
-    <p>Delivery Method: {{item.deliveryMethod}}</p>
-    <p>{{rating}} Stars ({{allrates}} ratings)</p>
-    <p>Condition: {{item.condition}}</p>
+    <p class="itemQuantity">Quantity: {{item.quantity}}</p>
+    <p id="location" class="itemLocation">Location: {{item.location}}</p>
+    <p class="itemDeliveryMethod">Delivery Method: {{item.deliveryMethod}}</p>
+    <p class="itemRating">{{rating}} Stars ({{allrates}} ratings)</p>
+    <p class="itemCondition">Condition: {{item.condition}}</p>
     {{#if item.quantity}}
-    <select id="quantitySelect" name="quantitySelect">
+    <select id="quantitySelect" name="quantitySelect" class="itemQuantitySelect">
         {{#each (range (min item.quantity 30))}}
         <option value="{{this}}">{{this}}</option>
         {{/each}}
@@ -30,6 +29,7 @@
     {{else}}
     <p>item currently unavailable</p>
     {{/if}}
+    <div id="map" class="map"></div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="

@@ -1,0 +1,79 @@
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.item-details {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.itemName {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.itemDescription {
+    margin-top: 10px;
+}
+
+.itemPrice {
+    font-weight: bold;
+    color: #555;
+}
+
+.itemPicture img {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    margin-top: 10px;
+}
+
+.itemQuantity {
+    margin-top: 10px;
+}
+
+.itemLocation {
+    margin-top: 10px;
+}
+
+.itemDeliveryMethod {
+    margin-top: 10px;
+}
+
+.itemRating {
+    margin-top: 10px;
+}
+
+.itemCondition {
+    margin-top: 10px;
+}
+
+.itemQuantitySelect {
+    margin-top: 10px;
+}
+
+#addToCart,
+#buyItNow {
+    margin-top: 10px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#addToCart:hover,
+#buyItNow:hover {
+    background-color: #0056b3;
+}
+
+.map {
+    margin-top: 20px;
+}

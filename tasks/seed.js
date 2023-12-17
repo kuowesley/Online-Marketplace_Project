@@ -264,7 +264,9 @@ try {
     imagesList,
     10,
     "Hoboken, NJ",
+
     "meetup",
+
     "new",
     user3._id.toString(),
   );

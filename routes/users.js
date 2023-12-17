@@ -114,7 +114,9 @@ router.get("/shoppingCart", async (req, res) => {
       items: items,
     });
   } catch (e) {
-    return res.status(404).render("error", { errorMessage: e });
+    return res
+      .status(404)
+      .render("error", { errorMessage: e, user: req.session.user });
   }
 });
 
@@ -288,7 +290,9 @@ router.get("/historicalPurchase", async (req, res) => {
       .status(200)
       .render("historicalPurchase", { user: req.session.user, items: items });
   } catch (e) {
-    return res.status(404).render("error", { errorMessage: e });
+    return res
+      .status(404)
+      .render("error", { errorMessage: e, user: req.session.user });
   }
 });
 
@@ -304,7 +308,9 @@ router.get("/historicalSoldItems", async (req, res) => {
       .status(200)
       .render("historicalSoldItems", { user: req.session.user, items: items });
   } catch (e) {
-    return res.status(404).render("error", { errorMessage: e });
+    return res
+      .status(404)
+      .render("error", { errorMessage: e, user: req.session.user });
   }
 });
 
@@ -394,7 +400,9 @@ router.get("/itemsForSale", async (req, res) => {
       .status(200)
       .render("itemsForSale", { user: req.session.user, items: items });
   } catch (e) {
-    return res.status(404).render("error", { errorMessage: e });
+    return res
+      .status(404)
+      .render("error", { errorMessage: e, user: req.session.user });
   }
 });
 
@@ -404,14 +412,18 @@ router.get("/getSellerInformation/:id", async (req, res) => {
     id = validation.checkId(id, "userId");
     let thisSeller = await usersData.getSellerInformation(id);
     if (!thisSeller) {
-      res.status(404).render("error", { errorMessage: e });
+      res
+        .status(404)
+        .render("error", { errorMessage: e, user: req.session.user });
     }
     let items = [];
     for (let i = 0; i < thisSeller.historical_sold_item.length; i++) {
       let itemId = thisSeller.historical_sold_item[i];
       let currentItem = await itemData.getById(itemId);
       if (!currentItem) {
-        res.status(404).render("error", { errorMessage: e });
+        res
+          .status(404)
+          .render("error", { errorMessage: e, user: req.session.user });
       }
       items.push(currentItem);
     }
@@ -421,7 +433,9 @@ router.get("/getSellerInformation/:id", async (req, res) => {
       user: req.session.user,
     });
   } catch (e) {
-    res.status(500).render("error", { errorMessage: e });
+    res
+      .status(500)
+      .render("error", { errorMessage: e, user: req.session.user });
   }
 });
 

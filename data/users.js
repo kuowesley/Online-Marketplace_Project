@@ -713,12 +713,12 @@ const usersMethods = {
       );
     }
     if (!user.browserHistory.includes(itemId)) {
-      if (user.browserHistory.length < 5) {
+      if (user.browserHistory.length < 6) {
         await usersCollection.updateOne(
           { _id: new ObjectId(userId) },
           { $push: { browserHistory: itemId } },
         );
-      } else if (user.browserHistory.length == 5) {
+      } else if (user.browserHistory.length == 6) {
         await usersCollection.updateOne(
           { _id: new ObjectId(userId) },
           { $pop: { browserHistory: -1 } },
@@ -727,8 +727,8 @@ const usersMethods = {
           { _id: new ObjectId(userId) },
           { $push: { browserHistory: itemId } },
         );
-      } else if (user.browserHistory.length > 5) {
-        for (let i = 0; i < user.browserHistory.length - 4; i++) {
+      } else if (user.browserHistory.length > 6) {
+        for (let i = 0; i < user.browserHistory.length - 5; i++) {
           await usersCollection.updateOne(
             { _id: new ObjectId(userId) },
             { $pop: { browserHistory: -1 } },

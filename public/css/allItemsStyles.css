@@ -2,7 +2,10 @@
 #searchItems {
     margin-bottom: 20px;
     /* Add your custom styles here for the search form */
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Center items vertically (optional) */
   }
+  
   
   .search-form-label {
     padding: 13px 8px;

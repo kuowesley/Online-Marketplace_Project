@@ -19,8 +19,8 @@
     <p class="itemRating">{{rating}} Stars ({{allrates}} ratings)</p>
     <p class="itemCondition">Condition: {{item.condition}}</p>
     {{#if item.quantity}}
-    <select id="quantitySelect" name="quantitySelect" class="itemQuantitySelect">
-        {{#each (range item.quantity)}}
+    <select id="quantitySelect" name="quantitySelect">
+        {{#each (range (min item.quantity 30))}}
         <option value="{{this}}">{{this}}</option>
         {{/each}}
     </select>

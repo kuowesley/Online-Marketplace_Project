@@ -140,9 +140,107 @@ router.route("/checkOutShoppingCart").post(async (req, res) => {
   }
   try {
     await usersData.checkOutItems(req.session.user.userId);
-    return res.status(200).json({ message: "Check out successful!" });
+    if (await usersData.checkTimeToBeDetermined(req.session.user.userId)) {
+      return res
+        .status(200)
+        .json({ message: "Check out successful!", redirect: true });
+    }
+    return res
+      .status(200)
+      .json({ message: "Check out successful!", redirect: false });
   } catch (e) {
     return res.status(400).json({ message: e });
+  }
+});
+
+router.route("/determineMeetUpTime").get(async (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/users/login");
+  }
+  try {
+    // if(!await usersData.checkTimeToBeDetermined(req.session.user.userId)){
+    //   return res.redirect('/users/historicalPurchase')
+    // }
+    const meetUpItems = await usersData.getTimeToBeDetermined(
+      req.session.user.userId,
+    );
+    return res
+      .status(200)
+      .render("determineMeetUpTime", {
+        items: meetUpItems,
+        user: req.session.user,
+      });
+  } catch (e) {
+    return res
+      .status(400)
+      .render("error", { message: e, user: req.session.user });
+  }
+});
+
+router.route("/determineMeetUpTime").post(async (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/users/login");
+  }
+  try {
+    const body = req.body;
+    let meetUpTime = xss(body.time);
+    let transactionId = xss(body.transactionId);
+    let userId = xss(req.session.user.userId);
+    await usersData.submitMeetUpTimeToSeller(userId, transactionId, meetUpTime);
+    return res.status(200).json({ status: true });
+  } catch (e) {
+    return res.status(400).json({ status: false, message: e });
+  }
+});
+
+router.route("/confirmMeetUpTime").get(async (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/users/login");
+  }
+  try {
+    let items = await usersData.getConfirmMeetUpTime(req.session.user.userId);
+    return res
+      .status(200)
+      .render("confirmMeetUpTime", { items: items, user: req.session.user });
+  } catch (e) {
+    return res
+      .status(400)
+      .render("error", { message: e, user: req.session.user });
+  }
+});
+
+router.route("/confirmMeetUpTime/confirm").post(async (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/users/login");
+  }
+  try {
+    const body = req.body;
+    let transactionId = xss(body.transactionId);
+    let userId = xss(req.session.user.userId);
+    let buyerId = xss(body.buyerId);
+    await usersData.confirmMeetUpTime(transactionId, userId, buyerId);
+    return res.status(200).json({ status: true });
+  } catch (e) {
+    return res.status(400).json({ status: false, message: e });
+  }
+});
+router.route("/confirmMeetUpTime/deny").post(async (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/users/login");
+  }
+  try {
+    const body = req.body;
+    let transactionId = xss(body.transactionId);
+    let userId = xss(req.session.user.userId);
+    await usersData.submitMeetUpTimeToSeller(
+      userId,
+      itemId,
+      meetUpTime,
+      quantity,
+    );
+    return res.status(200).json({ status: true });
+  } catch (e) {
+    return res.status(400).json({ status: false, message: e });
   }
 });
 

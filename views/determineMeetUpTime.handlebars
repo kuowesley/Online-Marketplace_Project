@@ -1,0 +1,42 @@
+<h1>Determine Meet Up Time</h1>
+{{#if items}}
+<table>
+    <thead>
+
+    </thead>
+    <tbody>
+        {{#each items}}
+        <tr class="item">
+            <td><a href="/items/{{this.item._id}}">{{this.item.item}}</a></td>
+            <td>${{this.item.price}}</td>
+            <td>
+
+                <img alt="{{this.item.item}}" src="{{this.item.picture}}" width="50" height="50">
+
+            </td>
+            <td>{{this.item.location}}</td>
+            <td>{{this.item.condition}}</td>
+            <td>{{this.transactionInfo.quantity}}</td>
+            <td>
+                <div id="time_div">
+                    <label for="dateInput">meet up time</label>
+                    <input type="datetime-local" id="{{this.transactionInfo.transactionId}}">
+                </div>
+            </td>
+            <td>
+                <button class="submit" type="button" value="{{this.transactionInfo.transactionId}}" data-quantity="{{this.transactionInfo.quantity}}">submit</button>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+{{else}}
+<div>
+    <p>No item need for meet up!</p>
+    <a href="/users/historicalPurchase"> Go see your orders</a>
+</div>
+{{/if}}
+
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"></script>
+<script src="/public/js/determineMeetUpTime.js"></script>

@@ -231,7 +231,7 @@ try {
     imagesList,
     10,
     "Hoboken, NJ",
-    "shipping",
+    "meetup",
     "new",
     user2._id.toString(),
   );
@@ -264,7 +264,7 @@ try {
     imagesList,
     10,
     "Hoboken, NJ",
-    "shipping",
+    "meetup",
     "new",
     user3._id.toString(),
   );
@@ -392,6 +392,8 @@ try {
 }
 
 // shopping cart and checkout test casse
+
+//user1
 try {
   await users.getItemToCart(
     user1._id.toString(),

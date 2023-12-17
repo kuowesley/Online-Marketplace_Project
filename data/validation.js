@@ -378,6 +378,15 @@ const validation = {
 
     return file;
   },
+
+  checkTime(time, varName) {
+    time = this.checkString(time, varName);
+    let dateObject = new Date(time);
+    if (dateObject.toString() === "Invalid Date") {
+      throw `${varName} is not a valid time`;
+    }
+    return time;
+  },
 };
 
 export default validation;

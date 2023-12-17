@@ -57,6 +57,8 @@ const usersMethods = {
       historical_sold_item: [],
       historical_purchased_item: [],
       browserHistory: [],
+      confirmMeetUpTime: [],
+      timeToBeDetermined: [],
     };
 
     const insertInfo = await usersCollection.insertOne(newUser);
@@ -275,8 +277,30 @@ const usersMethods = {
     // for (let item of shopping_cart) {
     //   this.checkItemAvaliable(item.itemId, item.quantity)
     // }
-
+    let meetUpItems = [];
+    let shippingItems = [];
     for (let shoppingItem of shopping_cart) {
+      const item = await itemsCollection.findOne({
+        _id: new ObjectId(shoppingItem.itemId),
+      });
+      if (!item) {
+        throw `item:${shoppingItem.itemId} not found`;
+      }
+      if (item.deliveryMethod === "meetup") {
+        meetUpItems.push({
+          transactionId: new ObjectId(),
+          itemId: shoppingItem.itemId,
+          quantity: shoppingItem.quantity,
+        });
+      } else {
+        shippingItems.push({
+          itemId: shoppingItem.itemId,
+          quantity: shoppingItem.quantity,
+        });
+      }
+    }
+
+    for (let shoppingItem of shippingItems) {
       const item = await itemsCollection.findOneAndUpdate(
         { _id: new ObjectId(shoppingItem.itemId) },
         { $inc: { quantity: -parseInt(shoppingItem.quantity) } },
@@ -315,6 +339,16 @@ const usersMethods = {
     );
     if (!cleanShoppingCart) {
       throw `Fail to clean Shopping Cart`;
+    }
+
+    for (let meetUpItem of meetUpItems) {
+      const user = await usersCollection.findOneAndUpdate(
+        { _id: new ObjectId(userId) },
+        { $push: { timeToBeDetermined: meetUpItem } },
+      );
+      if (!user) {
+        throw `update timeToBeDetermined fail`;
+      }
     }
 
     // add items to historical_purchased_item
@@ -717,13 +751,189 @@ const usersMethods = {
     if (!user) {
       throw "User is not registed to generate browse history";
     }
-    if (!user.browserHistory) {
-      return false;
+
+    if (user.browserHistory.length === 0) {
+      return;
+
     }
     if (user.browserHistory) {
       return user.browserHistory;
     }
   },
-};
 
+  async getTimeToBeDetermined(userId) {
+    const usersCollection = await users();
+    let user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+    if (!user) {
+      throw `user not found`;
+    }
+    let timeToBeDeterminedItems = user.timeToBeDetermined;
+    let itemsCollection = await items();
+    let allItems = [];
+    for (let obj of timeToBeDeterminedItems) {
+      let itemInfo = await itemsCollection.findOne({
+        _id: new ObjectId(obj.itemId),
+      });
+      if (!itemInfo) {
+        throw `Item not found`;
+      }
+      let picturesPath;
+      const currentFilePath = fileURLToPath(import.meta.url);
+      const currentDirPath = path.dirname(currentFilePath);
+      const uploadDirPath = path.join(currentDirPath, "..", "public", "img");
+      const filePath = path.join(uploadDirPath, imageCount.toString() + ".png");
+      picturesPath = "/public/img/" + imageCount.toString() + ".png";
+      imageCount += 1;
+      fs.writeFile(filePath, itemInfo.picture[0].buffer, (err) => {
+        if (err) {
+          console.error("Error writing file:", err);
+        } else {
+          console.log("File written successfully");
+          // Here you can further process or serve the image file as needed
+        }
+      });
+      itemInfo.picture = picturesPath;
+      obj.transactionId = obj.transactionId.toString();
+      allItems.push({ item: itemInfo, transactionInfo: obj });
+    }
+    return allItems;
+  },
+
+  async submitMeetUpTimeToSeller(buyerId, transactionId, meetUpTime) {
+    buyerId = validation.checkId(buyerId, "buyerId");
+    transactionId = validation.checkId(transactionId, "transactionId");
+    meetUpTime = validation.checkTime(meetUpTime, "meetUpTime");
+    const itemsCollection = await items();
+    const usersCollection = await users();
+
+    let transactionInfo = await usersCollection.findOne(
+      { "timeToBeDetermined.transactionId": new ObjectId(transactionId) },
+      { projection: { _id: 0, "timeToBeDetermined.$": 1 } },
+    );
+    if (!transactionInfo) {
+      throw `fail to find transactionInfo`;
+    }
+    let itemId = transactionInfo.timeToBeDetermined[0].itemId;
+
+    const item = await itemsCollection.findOne({ _id: new ObjectId(itemId) });
+    if (!item) {
+      throw `item not found`;
+    }
+    let sellerId = item.seller_id;
+    let confirmMeetUpTime = {
+      transactionId: new ObjectId(),
+      itemId: itemId,
+      meetUpTime: meetUpTime,
+      quantity: transactionInfo.timeToBeDetermined[0].quantity,
+      buyerId: buyerId,
+    };
+    let seller = await usersCollection.findOneAndUpdate(
+      { _id: new ObjectId(sellerId) },
+      { $push: { confirmMeetUpTime: confirmMeetUpTime } },
+      { returnDocument: "after" },
+    );
+    if (!seller) {
+      throw `update confirmMeetUpTime to seller fail`;
+    }
+
+    let buyer = await usersCollection.findOneAndUpdate(
+      { "timeToBeDetermined.transactionId": new ObjectId(transactionId) },
+      {
+        $pull: {
+          timeToBeDetermined: { transactionId: new ObjectId(transactionId) },
+        },
+      },
+    );
+    if (!buyer) {
+      throw `remove item from timeToBeDetermined fail`;
+    }
+  },
+
+  async checkTimeToBeDetermined(userId) {
+    const usersCollection = await users();
+    const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+    if (!user) {
+      throw `user not found`;
+    }
+    if (user.timeToBeDetermined.length === 0) {
+      return false;
+    }
+    return true;
+  },
+
+  async getConfirmMeetUpTime(userId) {
+    userId = validation.checkId(userId, "userId");
+    const usersCollection = await users();
+    const itemsCollection = await items();
+    let user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+    if (!user) {
+      throw `user not found`;
+    }
+    let allItems = [];
+    let confirmMeetUpTime = user.confirmMeetUpTime;
+    for (let obj of confirmMeetUpTime) {
+      let itemInfo = await itemsCollection.findOne({
+        _id: new ObjectId(obj.itemId),
+      });
+      if (!itemInfo) {
+        throw `item not found`;
+      }
+      let picturesPath;
+      const currentFilePath = fileURLToPath(import.meta.url);
+      const currentDirPath = path.dirname(currentFilePath);
+      const uploadDirPath = path.join(currentDirPath, "..", "public", "img");
+      const filePath = path.join(uploadDirPath, imageCount.toString() + ".png");
+      picturesPath = "/public/img/" + imageCount.toString() + ".png";
+      imageCount += 1;
+      fs.writeFile(filePath, itemInfo.picture[0].buffer, (err) => {
+        if (err) {
+          console.error("Error writing file:", err);
+        } else {
+          console.log("File written successfully");
+          // Here you can further process or serve the image file as needed
+        }
+      });
+      itemInfo.picture = picturesPath;
+
+      let buyer = await usersCollection.findOne({
+        _id: new ObjectId(obj.buyerId),
+      });
+      if (!buyer) {
+        throw `buyer not found`;
+      }
+      let buyerName = buyer.userName;
+      obj.meetUpTime = obj.meetUpTime.split("T").join(" ");
+      allItems.push({ item: itemInfo, meetUpInfo: obj, buyerName: buyerName });
+    }
+    return allItems;
+  },
+
+  async confirmMeetUpTime(transactionId, sellerId, buyerId) {
+    transactionId = validation.checkId(transactionId, "transactionId");
+    sellerId = validation.checkId(sellerId, "sellerId");
+    buyerId = validation.checkId(buyerId, "buyerId");
+    const usersCollection = await users();
+    const itemsCollection = await items();
+    let transactionInfo = await usersCollection.findOne(
+      { "confirmMeetUpTime.transactionId": new ObjectId(transactionId) },
+      { projection: { _id: 0, "confirmMeetUpTime.$": 1 } },
+    );
+    if (!transactionInfo) {
+      throw `transactionInfo not found`;
+    }
+    transactionInfo = transactionInfo.confirmMeetUpTime[0];
+
+    let removeTransaction = await usersCollection.findOneAndUpdate(
+      { "confirmMeetUpTime.transactionId": new ObjectId(transactionId) },
+      {
+        $pull: {
+          confirmMeetUpTime: { transactionId: new ObjectId(transactionId) },
+        },
+      },
+    );
+    if (!removeTransaction) {
+      throw `removeTransaction from confirmMeetUpTime fail`;
+    }
+  },
+};
 export default usersMethods;

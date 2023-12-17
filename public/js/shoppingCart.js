@@ -15,7 +15,13 @@
           alert("Fail to check out");
         } else {
           alert(data.message);
-          window.location.href = "/users/historicalPurchase";
+          if (data.redirect) {
+            window.location.href = "/users/determineMeetUpTime";
+          } else {
+            window.location.href = "/users/historicalPurchase";
+          }
+
+          //window.location.href = "/users/historicalPurchase";
         }
       },
       error: function (xhr, status, error) {

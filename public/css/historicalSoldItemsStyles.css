@@ -1,4 +1,3 @@
-/* historicalSoldItemsStyles.css */
 
 h1 {
     text-align: center;
@@ -29,14 +28,12 @@ h1 {
     margin: 0 auto;
   }
   
-  /* Specific styles for meetUp items */
   .item.meet-up {
-    background-color: #dff0d8; /* Change background color for meet-up items */
+    background-color: #dff0d8;
   }
   
-  /* Additional styles for specific columns */
   td:nth-child(5),
   td:nth-child(6) {
-    font-weight: bold; /* Make columns bold */
+    font-weight: bold; 
   }
   

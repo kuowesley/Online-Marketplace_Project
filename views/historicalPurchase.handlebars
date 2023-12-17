@@ -14,6 +14,9 @@
             <td>{{this.item.location}}</td>
             <td>{{this.item.condition}}</td>
             <td>quantity:{{this.quantity}}</td>
+            {{#if this.meetUp}}
+            <td>Meet Up Time:{{this.meetUp}}</td>
+            {{/if}}
             <td>
                 <button class="rate" type="button" id="{{this.item._id}} rate" value="{{this.item._id}}" data-itemname="{{this.item.item}}">Rate&Comment</button>
             </td>

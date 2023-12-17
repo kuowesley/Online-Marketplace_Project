@@ -1,6 +1,4 @@
-/* shoppingCartStyles.css */
 
-/* Style for the shopping cart header */
 .shoppingCart {
     text-align: center;
     font-size: 24px;
@@ -14,21 +12,18 @@ table {
     margin-bottom: 20px;
 }
 
-/* Style for table header cells */
 th {
     background-color: #007bff;
     color: white;
     padding: 10px;
 }
 
-/* Style for table body cells */
 td {
     border: 1px solid #ccc;
     padding: 10px;
     text-align: center;
 }
 
-/* Style for the Remove button */
 .removeItem {
     background-color: #ff4d4d;
     color: white;

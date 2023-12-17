@@ -49,8 +49,6 @@
     font-weight: bold;
 }
 
-/* Main */
-/* Reset default margin and padding */
 body,
 ul,
 li {
@@ -59,7 +57,6 @@ li {
     list-style: none;
 }
 
-/* Global styles */
 body {
     font-family: 'Arial', sans-serif;
     line-height: 1.6;

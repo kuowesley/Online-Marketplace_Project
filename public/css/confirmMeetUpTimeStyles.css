@@ -1,4 +1,3 @@
-/* Styles for the 'Confirm Meet Up Time' section */
 h1 {
     margin-bottom: 20px;
 }
@@ -40,5 +39,4 @@ table td button:hover {
 
 table td button.deny {
     background-color: red;
-    /* Changed color for the deny button */
 }

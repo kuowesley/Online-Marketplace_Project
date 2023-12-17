@@ -8,7 +8,9 @@
     {{#if items}}
     <h2 class="history-items">Browsing History</h3>
     {{/if}}
+
     <div id="all-items">
+
         {{#each items}}
         {{#if (eq (mod @index 2) 0)}}
         <div class="item-row">

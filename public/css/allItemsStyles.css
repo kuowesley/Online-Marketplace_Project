@@ -1,105 +1,99 @@
 /* Search form */
 #searchItems {
-    margin-bottom: 20px;
-    /* Add your custom styles here for the search form */
-  }
-  
-  .search-form-label {
-    padding: 13px 8px;
-    display: block;
-    /* Style the search form label */
-  }
-  
-  .search-input {
-    width: 200px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    /* Input box styling */
-  }
-  
-  .search-submit {
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    /* Submit button styling */
-  }
-  
-  /* Filter form */
-  #filterSearch {
-    margin-bottom: 20px;
-    /* Custom styles for the filter form */
-  }
-  
-  .filter-search-label {
-    display: block;
-    margin-bottom: 5px;
-    /* Style the filter form label */
-  }
-  
-  #sort_order {
-    width: 150px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    /* Select dropdown styling */
-  }
-  
-  .filter-submit {
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    /* Filter submit button styling */
-  }
-  
-  /* All Items display */
-  #all-items {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    grid-gap: 20px;
-    /* Grid layout for items */
-  }
-  
-  .item {
-    border: 1px solid #ccc;
-    padding: 20px;
-    /* Individual item box styling */
-  }
-  
-  .item p {
-    margin-bottom: 10px;
-    /* Style paragraphs inside items */
-  }
-  
-  .item a {
-    color: #007bff;
-    text-decoration: none;
-    /* Style links inside items */
-  }
-  
-  .item img {
-    max-width: 100%;
-    height: auto;
-    /* Style images inside items */
-  }
-  
-  .item-row {
-    display: flex;
-    /* Adjust item row display */
-    margin-bottom: 20px;
-  }
+  margin-bottom: 20px;
+  display: flex; /* Use flexbox layout */
+  justify-content: center; /* Align items horizontally in the center */
+}
 
-  #searchItems {
-    display: flex; /* Use flexbox layout */
-    align-items: center; /* Align items vertically in the center */
-  }
-  
-  /* Other sections (search result, price sorting, etc.) */
-  /* Style these sections as needed */
-  
+.search-form-label {
+  padding: 10px; /* Match the padding with the input */
+  display: block;
+  font-weight: bold;
+}
+
+.search-input {
+  width: 250px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.search-submit {
+  padding: 10px 20px; /* Adjust button padding */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Filter form */
+#filterSearch {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Align items vertically in the center */
+}
+
+.filter-search-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  margin-right: 10px; /* Increase label font weight */
+}
+
+#sort_order {
+  width: 200px; /* Adjust select dropdown width */
+  padding: 10px; /* Adjust select padding */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px; /* Add margin for separation */
+}
+
+.filter-submit {
+  padding: 10px 20px; /* Adjust button padding */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* All Items display */
+#all-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 20px;
+  padding: 20px; /* Add padding for better spacing */
+}
+
+#all-items .item {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px; /* Round the corners of the item boxes */
+  background-color: #fff; /* Add a white background color */
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+  transition: transform 0.3s ease-in-out; /* Add a smooth hover effect */
+}
+
+#all-items .item:hover {
+  transform: translateY(-5px); /* Adjust item hover effect */
+}
+
+#all-items .item p {
+  margin-bottom: 15px; /* Increase margin between paragraphs */
+  line-height: 1.4; /* Adjust line height for better readability */
+}
+
+#all-items .item a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold; /* Increase link font weight */
+}
+
+#all-items .item img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px; /* Round the corners of images */
+}

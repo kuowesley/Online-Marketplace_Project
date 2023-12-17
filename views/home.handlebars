@@ -1,26 +1,38 @@
-<!-- 
-This handlebar file will be rendered when the following route is hit: GET http://localhost:3000/
- 
- The title of the document should be "Marvel Character Finder". You should have the title set as the <title> element of the HTML document and as an h1 in your document.
-
-Your page should reference a CSS file, /public/site.css; this file should have at least 10 rulesets you must use at least 5 of them on this page. 
-
-You should have a main element, and inside of the main element have a p element with a brief (2-3 sentence description) of what your website does.
-
-Also inside the main element, you will have a form; this form will POST to /searchmarvelcharacters. This form will have an input and a label; You will give the input and name AND id of "searchCharacterByName".  The label should properly reference the same id as the input. You should also have a input with a type of submit that submits the form. 
- -->
-<header>
-    {{!-- <nav>
-        <ul>
-            <li><a href="/users/login">Login</a></li>
-            <li><a href="/users/signup">Sign Up</a></li>
-        </ul>
-    </nav> --}}
-</header>
- <h1 class="home-h1">Online Marketplace</h1>
- <main>
-    <p class="home-paragraph">Here, you can buy and sell second hand items. 
-        This website is designed to serve as a one-stop virtual marketplace, catering exclusively to the needs of students who are setting up a new life.
+<link rel="stylesheet" href="/public/css/homeStyles.css">
+<h1 class="home-h1">Online Marketplace</h1>
+<main>
+    <p class="home-paragraph">Here, you can buy and sell second hand items.
+        This website is designed to serve as a one-stop virtual marketplace, catering exclusively to the needs of
+        students who are setting up a new life.
     </p>
-    <a href="/items">View all items</a>
+     <a href="/items">View all items</a>
+    {{#if items}}
+    <h2 class="history-items">Browsing History</h2>
+    {{/if}}
+
+    <div id="all-items">
+
+        {{#each items}}
+        {{#if (eq (mod @index 2) 0)}}
+        <div class="item-row">
+            {{/if}}
+            <div class="item">
+            <p>Item: <a href="/items/{{this._id}}">{{this.item}}</a></p>
+            <p>Price: ${{this.price}}</p>
+            <p><img alt="Item Picture {{this.item}}" src="{{this.picture}}" style="width:500px;height:600px;"></p>
+            <p>Location: {{this.location}}</p>
+            <p>Condition: {{this.condition}}</p>
+            </div>
+            {{#if (eq (mod @index 2) 1)}}
+        </div>
+        {{else if @last}}
+    </div>
+    {{/if}}
+    {{/each}}
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"></script>
+    <script src="/public/js/home.js"></script>
  </main>
+
+

@@ -1,19 +1,19 @@
- <h1 class="signup-h1">Please log in</h1>
- <p class="signup-link">New user? <a href="/users/signup">click here to sign up</a></p>
- <main>
-    <form id="loginForm" action="/users/login" method="POST" class="login-form">
-        <label for="usernameInput" class="username-login-label">Username</label>
-        <input type="text" id="usernameInput" name="usernameInput" class="login-username">
-    
-        <label for="passwordInput" class="password-login-label">Password</label>
-        <input type="password" id="passwordInput" name="passwordInput" class="login-password">
+<link rel="stylesheet" href="/public/css/loginStyles.css">
+<h1 class="signup-h1">Please log in</h1>
+<p class="signup-link">New user? <a href="/users/signup">click here to sign up</a></p>
 
-        <input type="submit" value="Submit" class="login-submit">
-    </form>
-    
-    <p id="error"></p>
+<form id="loginForm" action="/users/login" method="POST" class="login-form">
+  <label for="usernameInput" class="username-login-label">Username</label>
+  <input type="text" id="usernameInput" name="usernameInput" class="login-username">
 
-    <script src="https://code.jquery.com/jquery-3.5.1.js"
-		integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
-    <script src="/public/js/login.js"></script>
- </main>
+  <label for="passwordInput" class="password-login-label">Password</label>
+  <input type="password" id="passwordInput" name="passwordInput" class="login-password">
+
+  <input type="submit" value="Submit" class="login-submit">
+</form>
+
+<p id="error"></p>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+  crossorigin="anonymous"></script>
+<script src="/public/js/login.js"></script>

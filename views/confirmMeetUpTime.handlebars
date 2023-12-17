@@ -1,4 +1,4 @@
-<h1>Shopping Cart</h1>
+<h1>Confirm Meet Up Time</h1>
 {{#if items}}
 <table>
     <thead>
@@ -10,27 +10,29 @@
             <td><a href="/items/{{this.item._id}}">{{this.item.item}}</a></td>
             <td>${{this.item.price}}</td>
             <td>
-                
+
                 <img alt="{{this.item.item}}" src="{{this.item.picture}}" width="50" height="50">
-                
+
             </td>
             <td>{{this.item.location}}</td>
             <td>{{this.item.condition}}</td>
-            <td>{{this.quantity}}</td>
+            <td>quantity: {{this.meetUpInfo.quantity}}</td>
+            <td>buyerName: {{this.buyerName}}</td>
+            <td>Meet Up Time:{{this.meetUpInfo.meetUpTime}}</td>
             <td>
-                <button class="removeItem" type="button" value="{{this.item._id}}">Remove</button>
+                <button class="confirm" type="button" value="{{this.meetUpInfo.transactionId}}" data-buyer="{{this.meetUpInfo.buyerId}}">confirm</button>
+                <button class="deny" type="button" value="{{this.meetUpInfo.transactionId}}" data-buyer="{{this.meetUpInfo.buyerId}}">deny</button>
             </td>
         </tr>
         {{/each}}
     </tbody>
 </table>
-<button id="checkOut" type="submit">Check Out</button>
 {{else}}
 <div>
-    <p>No item in the cart!</p>
+    <p>No meet up need to confirm!</p>
 </div>
 {{/if}}
 
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
     crossorigin="anonymous"></script>
-<script src="/public/js/shoppingCart.js"></script>
+<script src="/public/js/confirmMeetUpTime.js"></script>

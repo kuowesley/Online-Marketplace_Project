@@ -20,7 +20,29 @@ const uploadDirPath = path.join(currentDirPath, "..", "upload");
 router
   .route("/")
   .get(async (req, res) => {
-    res.render("home", { title: "Home", user: req.session.user });
+    if (!req.session.user) {
+      res.render("home", { title: "Home" });
+    } else {
+      let userId = xss(req.session.user.userId);
+      try {
+        userId = validation.checkId(userId, "userId");
+      } catch (e) {
+        return res.status(400).json({ message: e });
+      }
+      try {
+        const browseHistory = await usersData.getBrowserHistory(userId);
+        if (!browseHistory) {
+          return res
+            .status(200)
+            .render("home", { title: "Home", user: req.session.user });
+        }
+        return res
+          .status(200)
+          .render("home", { items: browseHistory, user: req.session.user });
+      } catch (e) {
+        return res.status(404).json({ message: e });
+      }
+    }
   })
   .post(async (req, res) => {});
 
@@ -111,6 +133,18 @@ router
       );
 
       // TODO file validation
+      if (!files) throw `Do not get any Image Files`;
+
+      if (!Array.isArray(files)) {
+        throw `Files should be array`;
+      } else {
+        if (files.length === 0) {
+          throw `Files could not be empty array`;
+        }
+        for (let i = 0; i < files.length; i++) {
+          files[i] = validation.checkFileInput(files[i], `Files[${i}]`);
+        }
+      }
     } catch (e) {
       errors.push(e);
     }
@@ -188,7 +222,7 @@ router
       });
     }
 
-    return res.redirect(`/`);
+    return res.redirect(`users/itemsForSale`);
     // TODO: redirect to item page
     // return res.redirect(`/items/${itemsInfo.insertedId.toString()}`)
   });
@@ -202,7 +236,9 @@ router.route("/items").get(async (req, res) => {
       items: myItems,
     });
   } catch (e) {
-    res.status(500).render("error", { errorMessage: e });
+    res
+      .status(500)
+      .render("error", { errorMessage: e, user: req.session.user });
   }
 });
 
@@ -212,11 +248,40 @@ router.route("/items/:id").get(async (req, res) => {
     id = validation.checkId(id, "itemId");
     let thisItem = await items.getById(id);
     if (!thisItem) {
-      res.status(404).render("error", { errorMessage: e });
+      res
+        .status(404)
+        .render("error", { errorMessage: e, user: req.session.user });
     }
-    res.render("itemById", { item: thisItem, user: req.session.user });
+    // to do
+    // add itemid to users.browserHistory
+    if (req.session.user) {
+      let userId = xss(req.session.user.userId);
+      userId = validation.checkId(userId, "UserId");
+      await usersData.addBrowserHistory(userId, id);
+    }
+    let rating = "N/A";
+    let allrates = 0;
+    if (thisItem.comments.length != 0) {
+      rating = 0;
+      for (let i of thisItem.comments) {
+        allrates += 1;
+        rating += Number(i.rating.split(" ")[0]);
+      }
+    }
+    if (rating !== "N/A") {
+      rating = (rating / allrates).toFixed(1);
+    }
+
+    res.render("itemById", {
+      item: thisItem,
+      user: req.session.user,
+      rating: rating,
+      allrates: allrates,
+    });
   } catch (e) {
-    res.status(500).render("error", { errorMessage: e });
+    res
+      .status(500)
+      .render("error", { errorMessage: e, user: req.session.user });
   }
 });
 
@@ -225,11 +290,21 @@ router.route("/items/purchase").post(async (req, res) => {
   let itemId = xss(body.itemId);
   let quantity = xss(body.quantity);
   if (!req.session.user) {
-    return res.status(403).json({ message: false });
+    return res.redirect("/users/login");
   }
   try {
-    await items.purchaseItem(req.session.user.userId, itemId, quantity);
-    return res.status(200).json({ message: "Purchase successful!" });
+    const result = await items.purchaseItem(
+      req.session.user.userId,
+      itemId,
+      quantity,
+    );
+    if (result === "meetup") {
+      return res
+        .status(200)
+        .json({ message: "Purchase successful!", meetup: true });
+    } else {
+      return res.status(200).json({ message: "Purchase successful!" });
+    }
   } catch (e) {
     return res.status(400).json({ message: e });
   }
@@ -241,11 +316,15 @@ router.route("/items/search/:searchTerm").get(async (req, res) => {
     searchTerm = validation.checkString(searchTerm, "search entry");
     let result = await items.searchByDescription(searchTerm);
     if (!result) {
-      res.status(404).render("error", { errorMessage: e });
+      res
+        .status(404)
+        .render("error", { errorMessage: e, user: req.session.user });
     }
     res.status(200).json(result);
   } catch (e) {
-    res.status(500).render("error", { errorMessage: e });
+    res
+      .status(500)
+      .render("error", { errorMessage: e, user: req.session.user });
   }
 });
 

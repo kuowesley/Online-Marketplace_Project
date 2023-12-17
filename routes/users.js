@@ -27,11 +27,9 @@ router.post("/login", async (req, res) => {
       email: userInfo.email,
     };
 
-    return res
-      .status(200)
-      .render("home", { title: "Home", user: req.session.user });
+    return res.status(200).json({ user: req.session.user });
   } catch (e) {
-    return res.status(400).render("error", { errorMessage: e, title: "Error" });
+    return res.status(400).json({ message: e });
   }
 });
 
@@ -116,7 +114,9 @@ router.get("/shoppingCart", async (req, res) => {
       items: items,
     });
   } catch (e) {
-    return res.status(404).render("error", { errorMessage: e });
+    return res
+      .status(404)
+      .render("error", { errorMessage: e, user: req.session.user });
   }
 });
 
@@ -125,7 +125,7 @@ router.route("/addToCart").post(async (req, res) => {
   let itemId = xss(body.itemId);
   let quantity = xss(body.quantity);
   if (!req.session.user) {
-    return res.status(403).json({ message: false });
+    return res.redirect("/users/login");
   }
   try {
     itemId = validation.checkId(itemId, "itemId");
@@ -142,9 +142,101 @@ router.route("/checkOutShoppingCart").post(async (req, res) => {
   }
   try {
     await usersData.checkOutItems(req.session.user.userId);
-    return res.status(200).json({ message: "Check out successful!" });
+    if (await usersData.checkTimeToBeDetermined(req.session.user.userId)) {
+      return res
+        .status(200)
+        .json({ message: "Check out successful!", redirect: true });
+    }
+    return res
+      .status(200)
+      .json({ message: "Check out successful!", redirect: false });
   } catch (e) {
     return res.status(400).json({ message: e });
+  }
+});
+
+router.route("/determineMeetUpTime").get(async (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/users/login");
+  }
+  try {
+    // if(!await usersData.checkTimeToBeDetermined(req.session.user.userId)){
+    //   return res.redirect('/users/historicalPurchase')
+    // }
+    const meetUpItems = await usersData.getTimeToBeDetermined(
+      req.session.user.userId,
+    );
+    return res.status(200).render("determineMeetUpTime", {
+      items: meetUpItems,
+      user: req.session.user,
+    });
+  } catch (e) {
+    return res
+      .status(400)
+      .render("error", { message: e, user: req.session.user });
+  }
+});
+
+router.route("/determineMeetUpTime").post(async (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/users/login");
+  }
+  try {
+    const body = req.body;
+    let meetUpTime = xss(body.time);
+    let transactionId = xss(body.transactionId);
+    let userId = xss(req.session.user.userId);
+    await usersData.submitMeetUpTimeToSeller(userId, transactionId, meetUpTime);
+    return res.status(200).json({ status: true });
+  } catch (e) {
+    return res.status(400).json({ status: false, message: e });
+  }
+});
+
+router.route("/confirmMeetUpTime").get(async (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/users/login");
+  }
+  try {
+    let items = await usersData.getConfirmMeetUpTime(req.session.user.userId);
+    return res
+      .status(200)
+      .render("confirmMeetUpTime", { items: items, user: req.session.user });
+  } catch (e) {
+    return res
+      .status(400)
+      .render("error", { message: e, user: req.session.user });
+  }
+});
+
+router.route("/confirmMeetUpTime/confirm").post(async (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/users/login");
+  }
+  try {
+    const body = req.body;
+    let transactionId = xss(body.transactionId);
+    let seller = xss(req.session.user.userId);
+    let buyerId = xss(body.buyerId);
+    await usersData.confirmMeetUpTime(transactionId, seller, buyerId);
+    return res.status(200).json({ status: true });
+  } catch (e) {
+    return res.status(400).json({ status: false, message: e });
+  }
+});
+router.route("/confirmMeetUpTime/deny").post(async (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/users/login");
+  }
+  try {
+    const body = req.body;
+    let transactionId = xss(body.transactionId);
+    let seller = xss(req.session.user.userId);
+    let buyerId = xss(body.buyerId);
+    await usersData.denyMeetUpTime(transactionId, seller, buyerId);
+    return res.status(200).json({ status: true });
+  } catch (e) {
+    return res.status(400).json({ status: false, message: e });
   }
 });
 
@@ -194,7 +286,9 @@ router.get("/historicalPurchase", async (req, res) => {
       .status(200)
       .render("historicalPurchase", { user: req.session.user, items: items });
   } catch (e) {
-    return res.status(404).render("error", { errorMessage: e });
+    return res
+      .status(404)
+      .render("error", { errorMessage: e, user: req.session.user });
   }
 });
 
@@ -203,14 +297,14 @@ router.get("/historicalSoldItems", async (req, res) => {
     return res.redirect("/users/login");
   }
   try {
-    const items = await usersData.getHistoricalSoldItems(
-      req.session.user.userId,
-    );
+    const items = await usersData.getSaleRecord(req.session.user.userId);
     return res
       .status(200)
       .render("historicalSoldItems", { user: req.session.user, items: items });
   } catch (e) {
-    return res.status(404).render("error", { errorMessage: e });
+    return res
+      .status(404)
+      .render("error", { errorMessage: e, user: req.session.user });
   }
 });
 
@@ -230,6 +324,23 @@ router.route("/submitComment").post(async (req, res) => {
     userId = validation.checkId(userId, "userId");
     await usersData.submitComment(itemId, rating, comment, userId);
     return res.status(200).json({ message: "Comment Submitted" });
+  } catch (e) {
+    return res.status(400).json({ message: e });
+  }
+});
+
+router.route("/getComment").post(async (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/users/login");
+  }
+  const body = req.body;
+  let itemId = xss(body.itemId);
+  let userId = xss(req.session.user.userId);
+  try {
+    itemId = validation.checkId(itemId, "itemId");
+    userId = validation.checkId(userId, "userId");
+    const comment = await usersData.getComment(itemId, userId);
+    return res.status(200).json({ message: true, comment: comment });
   } catch (e) {
     return res.status(400).json({ message: e });
   }
@@ -283,24 +394,30 @@ router.get("/itemsForSale", async (req, res) => {
       .status(200)
       .render("itemsForSale", { user: req.session.user, items: items });
   } catch (e) {
-    return res.status(404).render("error", { errorMessage: e });
+    return res
+      .status(404)
+      .render("error", { errorMessage: e, user: req.session.user });
   }
 });
 
 router.get("/getSellerInformation/:id", async (req, res) => {
   try {
     let id = xss(req.params.id);
-    id = validation.checkId(id, "itemId");
+    id = validation.checkId(id, "userId");
     let thisSeller = await usersData.getSellerInformation(id);
     if (!thisSeller) {
-      res.status(404).render("error", { errorMessage: e });
+      res
+        .status(404)
+        .render("error", { errorMessage: e, user: req.session.user });
     }
     let items = [];
     for (let i = 0; i < thisSeller.historical_sold_item.length; i++) {
       let itemId = thisSeller.historical_sold_item[i];
       let currentItem = await itemData.getById(itemId);
       if (!currentItem) {
-        res.status(404).render("error", { errorMessage: e });
+        res
+          .status(404)
+          .render("error", { errorMessage: e, user: req.session.user });
       }
       items.push(currentItem);
     }
@@ -310,7 +427,9 @@ router.get("/getSellerInformation/:id", async (req, res) => {
       user: req.session.user,
     });
   } catch (e) {
-    res.status(500).render("error", { errorMessage: e });
+    res
+      .status(500)
+      .render("error", { errorMessage: e, user: req.session.user });
   }
 });
 

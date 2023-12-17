@@ -33,6 +33,7 @@ const itemsMethods = {
     if (!Array.isArray(picture)) {
       throw `Pictures should be array all multiple image`;
     } else {
+      if (picture.length === 0) throw `Pictures could not be empty array`;
       for (let i in picture) {
         if (!Buffer.isBuffer(picture[i])) {
           throw `image should be buffer`;
@@ -157,7 +158,21 @@ const itemsMethods = {
     if (!itemList) throw "Could not get items";
     itemList = itemList.map((element) => {
       element._id = element._id.toString();
-      element.picture = element.picture[0];
+      const currentFilePath = fileURLToPath(import.meta.url);
+      const currentDirPath = path.dirname(currentFilePath);
+      const uploadDirPath = path.join(currentDirPath, "..", "public", "img");
+      const filePath = path.join(uploadDirPath, imageCount.toString() + ".png");
+      fs.writeFile(filePath, element.picture[0].buffer, (err) => {
+        if (err) {
+          console.error("Error writing file:", err);
+        } else {
+          console.log("File written successfully");
+          // Here you can further process or serve the image file as needed
+        }
+      });
+      element.picture = "/public/img/" + imageCount.toString() + ".png"; // only the first picture would be displayed
+      imageCount += 1;
+
       return element;
     });
     return itemList;
@@ -205,6 +220,22 @@ const itemsMethods = {
       throw `Item not found`;
     }
 
+    if (item1.deliveryMethod === "meetup") {
+      let meetUpItem = {
+        transactionId: new ObjectId(),
+        itemId: itemId,
+        quantity: parseInt(quantity),
+      };
+      const user = await usersCollection.findOneAndUpdate(
+        { _id: new ObjectId(userId) },
+        { $push: { timeToBeDetermined: meetUpItem } },
+      );
+      if (!user) {
+        throw `update timeToBeDetermined fail`;
+      }
+      return "meetup";
+    }
+
     // Add itemId to historical_sold_item of the seller
     let soldItemId = item._id.toString();
     let sellerId = item.seller_id;
@@ -217,14 +248,32 @@ const itemsMethods = {
     }
 
     // Add itemId to historical_purchased_item of the user
+    let purchaseedItem = {
+      itemId: soldItemId,
+      quantity: parseInt(quantity),
+    };
     const update_historical_purchased_item =
       await usersCollection.findOneAndUpdate(
         { _id: new ObjectId(userId) },
-        { $addToSet: { historical_purchased_item: soldItemId } }, // prevent duplicate item IDs
+        { $push: { historical_purchased_item: purchaseedItem } },
       );
     if (!update_historical_purchased_item) {
       throw `Update historical_purchased_item fail`;
     }
+
+    let saleRecord = {
+      itemId: itemId,
+      buyerId: userId,
+      quantity: parseInt(quantity),
+    };
+    const updateSaleRecord = await usersCollection.updateOne(
+      { _id: new ObjectId(sellerId) },
+      { $push: { saleRecord: saleRecord } },
+    );
+    if (!updateSaleRecord) {
+      throw `update saleRecord fail`;
+    }
+    return "shipping";
   },
 };
 

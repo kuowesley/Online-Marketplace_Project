@@ -96,8 +96,8 @@ try {
     imagesList,
     10,
     "Brooklyn, NY",
-    "Meetup",
-    "Like New",
+    "shipping",
+    "new",
     user1._id.toString(),
   );
   await users.getItemToItemsForSale(
@@ -123,8 +123,8 @@ try {
     imagesList,
     15,
     "Union City, NJ",
-    "Meetup",
-    "Good",
+    "shipping",
+    "new",
     user1._id.toString(),
   );
   await users.getItemToItemsForSale(
@@ -150,8 +150,8 @@ try {
     imagesList,
     30,
     "Jersey City, NJ",
-    "Meetup",
-    "Good",
+    "shipping",
+    "new",
     user1._id.toString(),
   );
   await users.getItemToItemsForSale(
@@ -177,8 +177,8 @@ try {
     imagesList,
     5,
     "West New York, NJ",
-    "Meetup",
-    "Good",
+    "shipping",
+    "new",
     user2._id.toString(),
   );
   await users.getItemToItemsForSale(
@@ -204,8 +204,8 @@ try {
     imagesList,
     20,
     "Union City, NJ",
-    "Meetup",
-    "Very Good",
+    "shipping",
+    "new",
     user2._id.toString(),
   );
   await users.getItemToItemsForSale(
@@ -231,8 +231,8 @@ try {
     imagesList,
     10,
     "Hoboken, NJ",
-    "Meetup",
-    "Good",
+    "meetup",
+    "new",
     user2._id.toString(),
   );
   await users.getItemToItemsForSale(
@@ -264,8 +264,10 @@ try {
     imagesList,
     10,
     "Hoboken, NJ",
-    "Meetup",
-    "Good",
+
+    "meetup",
+
+    "new",
     user3._id.toString(),
   );
   await users.getItemToItemsForSale(
@@ -291,8 +293,8 @@ try {
     imagesList,
     13,
     "Hoboken, NJ",
-    "Meetup",
-    "Used",
+    "shipping",
+    "new",
     user3._id.toString(),
   );
   await users.getItemToItemsForSale(
@@ -318,8 +320,8 @@ try {
     imagesList,
     30,
     "Hoboken, NJ",
-    "Meetup",
-    "Used",
+    "shipping",
+    "new",
     user3._id.toString(),
   );
   await users.getItemToItemsForSale(
@@ -348,8 +350,8 @@ try {
     imagesList,
     30,
     "Hoboken, NJ",
-    "Meetup",
-    "Used",
+    "shipping",
+    "new",
     user3._id.toString(),
   );
   await users.getItemToItemsForSale(
@@ -378,8 +380,8 @@ try {
     imagesList,
     10,
     "Hoboken, NJ",
-    "Meetup",
-    "Used",
+    "shipping",
+    "new",
     user3._id.toString(),
   );
   await users.getItemToItemsForSale(
@@ -392,6 +394,8 @@ try {
 }
 
 // shopping cart and checkout test casse
+
+//user1
 try {
   await users.getItemToCart(
     user1._id.toString(),
@@ -443,6 +447,7 @@ try {
   console.log(e);
 }
 
+//      user2
 try {
   await users.getItemToCart(
     user2._id.toString(),
@@ -502,3 +507,71 @@ try {
 } catch (e) {
   console.log(e);
 }
+
+//          user3
+try {
+  await users.getItemToCart(
+    user3._id.toString(),
+    item5.insertedId.toString(),
+    7,
+  );
+} catch (e) {
+  console.log(e);
+}
+try {
+  await users.getItemToCart(
+    user3._id.toString(),
+    item6.insertedId.toString(),
+    1,
+  );
+} catch (e) {
+  console.log(e);
+}
+try {
+  await users.checkOutItems(user3._id.toString());
+} catch (e) {
+  console.log(e);
+}
+try {
+  await users.getItemToCart(
+    user3._id.toString(),
+    item1.insertedId.toString(),
+    1,
+  );
+} catch (e) {
+  console.log(e);
+}
+try {
+  await users.getItemToCart(
+    user3._id.toString(),
+    item1.insertedId.toString(),
+    1,
+  );
+} catch (e) {
+  console.log(e);
+}
+
+//add Rating and Comment
+try {
+  await users.submitComment(
+    item5.insertedId.toString(),
+    "4 stars",
+    "SUPERRRRRRRR!!!",
+    user3._id.toString(),
+  );
+} catch (e) {
+  console.log(e);
+}
+
+try {
+  await users.submitComment(
+    item7.insertedId.toString(),
+    "2 stars",
+    "NOT SO GOOD",
+    user3._id.toString(),
+  );
+} catch (e) {
+  console.log(e);
+}
+
+console.log("Done");

@@ -5,6 +5,17 @@
   let buyItNow = $("#buyItNow");
   let itemId = $("#itemId");
   let quantitySelect = $("#quantitySelect");
+  let location = $("#location");
+
+  let forurl = location.text().split(":");
+  let forurl2 = forurl[1].trim().split(" ").join("%20");
+  let url =
+    "https://www.google.com/maps/embed/v1/place?key=AIzaSyDmLGhMKw9fQFfNAX1MCu_jeuoCrBxe3XU&q=" +
+    forurl2;
+  console.log(url);
+  $("#map")
+    .append(`<iframe width="600" height="450" style="border:0" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"
+  src=${url}></iframe>`);
 
   addToCart.on("click", function (event) {
     if (itemId.text()) {
@@ -34,15 +45,6 @@
         },
       };
       $.ajax(requestConfig);
-      // .then(function (responseMessage) {
-      //   console.log("wwwwwww");
-      //   if(!responseMessage.message){
-      //     console.log(responseMessage);
-      //     console.log("ccccc");
-      //     window.location.href = responseMessage
-      //   }
-
-      // });
     }
   });
 
@@ -62,7 +64,11 @@
             window.location.href = "/users/login";
           } else {
             alert(data.message);
-            window.location.href = "/items";
+            if (data.meetup) {
+              window.location.href = "/users/determineMeetUpTime";
+            } else {
+              window.location.href = "/items";
+            }
           }
         },
         error: function (xhr, status, error) {

@@ -1,27 +1,25 @@
 (function ($) {
   // Let's start writing AJAX calls!
 
-  let checkOut = $("#checkOut");
-  let removeItem = $(".removeItem");
+  let confirm = $(".confirm");
+  let deny = $(".deny");
 
-  checkOut.on("click", function (event) {
+  confirm.on("click", function (event) {
+    event.preventDefault();
     let requestConfig = {
       method: "POST",
-      url: "/users/checkOutShoppingCart",
+      url: "/users/confirmMeetUpTime/confirm",
       contentType: "application/json",
-      data: JSON.stringify({}),
+      data: JSON.stringify({
+        transactionId: $(this).val().trim(),
+        buyerId: $(this).data("buyer"),
+      }),
       success: function (data) {
-        if (!data.message) {
-          alert("Fail to check out");
+        if (!data.status) {
+          alert("confirmMeetUpTime fail");
         } else {
-          alert(data.message);
-          if (data.redirect) {
-            window.location.href = "/users/determineMeetUpTime";
-          } else {
-            window.location.href = "/users/historicalPurchase";
-          }
-
-          //window.location.href = "/users/historicalPurchase";
+          alert("confirm time success!");
+          window.location.href = "/users/confirmMeetUpTime";
         }
       },
       error: function (xhr, status, error) {
@@ -35,20 +33,22 @@
     $.ajax(requestConfig);
   });
 
-  removeItem.on("click", function (event) {
-    let itemId = $(this).val();
-    console.log(itemId);
+  deny.on("click", function (event) {
+    event.preventDefault();
     let requestConfig = {
       method: "POST",
-      url: "/users/removeCartItem",
+      url: "/users/confirmMeetUpTime/deny",
       contentType: "application/json",
-      data: JSON.stringify({ itemId: itemId }),
+      data: JSON.stringify({
+        transactionId: $(this).val().trim(),
+        buyerId: $(this).data("buyer"),
+      }),
       success: function (data) {
-        if (!data.message) {
-          alert("Remove Fail");
+        if (!data.status) {
+          alert("denyMeetUpTime fail");
         } else {
-          alert(data.message);
-          window.location.href = "/users/shoppingCart";
+          alert("deny time success!");
+          window.location.href = "/users/confirmMeetUpTime";
         }
       },
       error: function (xhr, status, error) {

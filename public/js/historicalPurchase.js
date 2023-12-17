@@ -5,6 +5,7 @@
   let submitComment = $("#submitComment");
   let ratingSelect = $("#ratingSelect");
   let commentTextArea = $("#commentTextArea");
+  let h2_rate = $("#h2_rate");
 
   let commentFormEdit = $("#rateCommentModal-edit");
   let editCommentButton = $(".edit");
@@ -12,6 +13,7 @@
   let submitCommentEdit = $("#submitComment-edit");
   let ratingSelectEdit = $("#ratingSelect-edit");
   let commentTextAreaEdit = $("#commentTextArea-edit");
+  let h2_edit = $("#h2_edit");
 
   let isCommentFormOpen = false; //
   let isEditFormOpen = false; //
@@ -47,6 +49,7 @@
       );
       return;
     }
+    h2_rate.text("Rating and Comment for " + $(this).data("itemname"));
     isCommentFormOpen = true;
     ratingSelect.val("5 stars"); // Set it to the default value or any initial value
     commentTextArea.val(""); // Clear the text area
@@ -59,14 +62,22 @@
       // commentForm.hide();
       const selectedRating = $("#ratingSelect").val();
       const commentText = $("#commentTextArea").val();
+      if (typeof selectedRating !== "string" || !selectedRating.trim()) {
+        alert("Rating can not be empty");
+        return;
+      }
+      if (typeof commentText !== "string" || !commentText.trim()) {
+        alert("Comment can not be empty");
+        return;
+      }
       let requestConfig = {
         method: "POST",
         url: "/users/submitComment",
         contentType: "application/json",
         data: JSON.stringify({
           itemId: itemId,
-          rating: selectedRating,
-          comment: commentText,
+          rating: selectedRating.trim(),
+          comment: commentText.trim(),
         }),
         success: function (data) {
           if (!data.message) {
@@ -98,10 +109,40 @@
       return;
     }
     isEditFormOpen = true;
-    ratingSelectEdit.val("5 stars"); // Set it to the default value or any initial value
-    commentTextAreaEdit.val(""); // Clear the text area
+    h2_edit.text("Change Rating and Comment for " + $(this).data("itemname"));
     commentFormEdit.show();
     let itemId = $(this).val();
+    console.log(itemId);
+
+    // ratingSelectEdit.val("5 stars"); // Set it to the default value or any initial value
+    // commentTextAreaEdit.val(""); // Clear the text area
+    let getCommentRequestConfig = {
+      method: "POST",
+      url: "/users/getComment",
+      contentType: "application/json",
+      data: JSON.stringify({
+        itemId: itemId,
+      }),
+      success: function (data) {
+        if (!data.message) {
+          alert("get previous Comment Fail");
+        }
+      },
+      error: function (xhr, status, error) {
+        if (xhr.responseJSON && xhr.responseJSON.message) {
+          alert(xhr.responseJSON.message);
+        } else {
+          alert(status);
+        }
+      },
+    };
+
+    $.ajax(getCommentRequestConfig).then(function (responseMessage) {
+      console.log(responseMessage);
+      ratingSelectEdit.val(responseMessage.comment.rating);
+      commentTextAreaEdit.val(responseMessage.comment.comment);
+    });
+
     // Unbind previous click event to prevent multiple bindings
     submitCommentEdit.off("click");
     submitCommentEdit.on("click", function (event) {
@@ -109,14 +150,22 @@
       // commentForm.hide();
       const selectedRating = $("#ratingSelect-edit").val();
       const commentText = $("#commentTextArea-edit").val();
+      if (typeof selectedRating !== "string" || !selectedRating.trim()) {
+        alert("Rating can not be empty");
+        return;
+      }
+      if (typeof commentText !== "string" || !commentText.trim()) {
+        alert("Comment can not be empty");
+        return;
+      }
       let requestConfig = {
         method: "POST",
         url: "/users/editComment",
         contentType: "application/json",
         data: JSON.stringify({
           itemId: itemId,
-          rating: selectedRating,
-          comment: commentText,
+          rating: selectedRating.trim(),
+          comment: commentText.trim(),
         }),
         success: function (data) {
           if (!data.message) {
@@ -136,7 +185,7 @@
           }
         },
       };
-      $.ajax(requestConfig);
+      $.ajax(requestConfig).then(function (responseMessage) {});
     });
   });
 

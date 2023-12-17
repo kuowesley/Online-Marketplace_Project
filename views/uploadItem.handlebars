@@ -1,72 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <title>Upload Item Page</title>
-    <link rel="stylesheet" href="/public/css/styles.css">
-</head>
-
-<body>
-    <form id="fileUploadForm" action="/upload" method="post" enctype="multipart/form-data">
-        <div>
-            <label for="itemName">Item Name:</label>
-            <input type="text" id="itemName" name="itemName" value="{{itemName}}" required>
-        </div>
-
-        <div>
-            <label for="description">Description:</label>
-            <input type="text" id="description" name="description" value="{{description}}" required>
-        </div>
-
-        <div>
-            <label for="price">Price:</label>
-            <input type="number" id="price" name="price" value="{{price}}" required>
-        </div>
-
-        <div>
-            <label for="quantity">Quantity:</label>
-            <input type="number" id="quantity" name="quantity" value="{{quantity}}" required>
-        </div>
-
-        <div>
-            <label for="transaction_date">Transaction Date:</label>
-            <input type="text" id="transaction_date" name="transaction_date" value="{{transaction_date}}" required>
-        </div>
-
-        <div>
-            <label for="location">Location:</label>
-            <input type="text" id="location" name="location" value="{{location}}" required>
-        </div>
-
-        <div>
-            <label for="deliveryMethod">DeliveryMethod:</label>
-            <input type="text" id="deliveryMethod" name="deliveryMethod" value="{{deliveryMethod}}" required>
-        </div>
-
-        <div>
-            <label for="condition">Condition:</label>
-            <input type="text" id="condition" name="condition" value="{{condition}}" required>
-        </div>
-
-        <input type="file" id="fileInput" name="fileInput" accept="image/*" style="display:none" multiple>
-        <a href="#" id="fileSelect" name="fileSelect" multiple>Select some files</a>
-        <button type="submit">Upload</button>
-    </form>
-    <div id="fileList" name="fileList">
-        <p>No files selected!</p>
+<link rel="stylesheet" href="/public/css/uploadItemStyles.css">
+<form id="fileUploadForm" action="/upload" method="post" enctype="multipart/form-data">
+    <div>
+        <label for="itemName">Item Name:</label>
+        <input type="text" id="itemName" name="itemName" value="{{itemName}}" required>
     </div>
-    <ul class="error-list" id="errorsMessage" name="errorsMessage">
-        {{#if hasErrors}}
-        {{#each errors}}
-        <li>
-            {{this}}
-        </li>
-        {{/each}}
-        {{/if}}
-    </ul>
-</body>
 
+    <div>
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description" value="{{description}}" required>
+    </div>
+
+    <div>
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" value="{{price}}" required>
+    </div>
+
+    <div>
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" value="{{quantity}}" required>
+    </div>
+
+    <div>
+        <label for="transaction_date">Transaction Date (mm/dd/yyyy):</label>
+        <input type="text" id="transaction_date" name="transaction_date" value="{{transaction_date}}" required>
+    </div>
+
+    <div>
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" value="{{location}}" required>
+    </div>
+
+    <div>
+        <label for="deliveryMethod">DeliveryMethod:</label>
+        <select id="deliveryMethod" name="deliveryMethod" required>
+            <option value="" disabled selected>Select a DeliveryMethod</option>
+            <option value="meetup">MeetUp</option>
+            <option value="shipping">Shipping</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="condition">Condition:</label>
+        <select id="condition" name="condition" required>
+            <option value="" disabled selected>Select a Condition</option>
+            <option value="new">New</option>
+            <option value="usedlikenew">Used-Like New</option>
+            <option value="usedverygood">Used-Very Good</option>
+            <option value="usedgood">Used-Good</option>
+            <option value="usedacceptable">Used-Acceptable</option>
+        </select>
+    </div>
+
+    <input type="file" id="fileInput" name="fileInput" accept="image/*" style="display:none" multiple>
+    <a href="#" id="fileSelect">Select some files</a>
+    <button type="submit">Upload</button>
+</form>
+<div id="fileList">
+    <p>No files selected!</p>
+</div>
+<ul class="error-list" id="errorsMessage">
+    {{#if hasErrors}}
+    {{#each errors}}
+    <li>
+        {{this}}
+    </li>
+    {{/each}}
+    {{/if}}
+</ul>
 <script src="/public/js/client_side_validation.js"></script>
-
-</html>

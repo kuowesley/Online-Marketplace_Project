@@ -1,0 +1,16 @@
+h1 {
+    text-align: center;   
+}
+
+body {
+    text-align: center; /* Center text within the body */
+}
+
+a { 
+    text-decoration: none;
+    color: #007bff;
+    margin-right: 20px
+  }
+  a:hover {
+    text-decoration: underline;
+  }

@@ -34,6 +34,14 @@ hbs.handlebars.registerHelper("range", function (value) {
   return new Array(value).fill().map((_, index) => index + 1);
 });
 
+hbs.handlebars.registerHelper("checkBoolean", function (value) {
+  if (value) {
+    return false;
+  } else {
+    return true;
+  }
+});
+
 // clean pictrues from public/img
 function cleanImageFolder() {
   const currentFilePath = fileURLToPath(import.meta.url);
@@ -142,6 +150,16 @@ app.use("/users/profile", async (req, res, next) => {
   }
   next();
 });
+
+app.use("/upload", async (req, res, next) => {
+  if (req.method === "GET") {
+    if (!req.session.user) {
+      return res.redirect("/users/login");
+    }
+  }
+  next();
+});
+
 // ---------------------------------------------
 
 /**

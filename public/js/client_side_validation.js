@@ -414,6 +414,10 @@ const validation = {
       throw `${varName} could not be 0 or negative`;
     }
 
+    if (num > 100) {
+      throw `${varName} could not over`;
+    }
+
     return num;
   },
 

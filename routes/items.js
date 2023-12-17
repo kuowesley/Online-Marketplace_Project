@@ -34,11 +34,11 @@ router
         let allitems = [];
         for (let i of browseHistory) {
           let tmp = await items.getById(i);
-          // allitems[item] = tmp.item
-          // allitems[url] = i
           allitems.push(tmp);
         }
-        return res.status(200).render("home", { items: allitems });
+        return res
+          .status(200)
+          .render("home", { items: allitems, user: req.session.user });
       } catch (e) {
         return res.status(404).json({ message: e });
       }
@@ -243,8 +243,25 @@ router.route("/items/:id").get(async (req, res) => {
       userId = validation.checkId(userId, "UserId");
       await usersData.addBrowserHistory(userId, id);
     }
+    let rating = "N/A";
+    let allrates = 0;
+    if (thisItem.comments.length != 0) {
+      rating = 0;
+      for (let i of thisItem.comments) {
+        allrates += 1;
+        rating += Number(i.rating.split(" ")[0]);
+      }
+    }
+    if (rating !== "N/A") {
+      rating = (rating / allrates).toFixed(1);
+    }
 
-    res.render("itemById", { item: thisItem, user: req.session.user });
+    res.render("itemById", {
+      item: thisItem,
+      user: req.session.user,
+      rating: rating,
+      allrates: allrates,
+    });
   } catch (e) {
     res.status(500).render("error", { errorMessage: e });
   }

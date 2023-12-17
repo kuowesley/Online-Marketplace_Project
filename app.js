@@ -142,6 +142,33 @@ app.use("/users/profile", async (req, res, next) => {
   }
   next();
 });
+
+app.use("/upload", async (req, res, next) => {
+  if (req.method === "GET") {
+    if (!req.session.user) {
+      return res.redirect("/users/login");
+    }
+  }
+  next();
+});
+
+app.use("/items/purchase", async (req, res, next) => {
+  if (req.method === "GET") {
+    if (!req.session.user) {
+      return res.redirect("/users/login");
+    }
+  }
+  next();
+});
+
+app.use("/items/:id", async (req, res, next) => {
+  if (req.method === "GET") {
+    if (!req.session.user) {
+      return res.redirect("/users/login");
+    }
+  }
+  next();
+});
 // ---------------------------------------------
 
 /**

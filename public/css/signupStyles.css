@@ -1,0 +1,103 @@
+/* Additional styles for the signup page */
+
+/* Styles for signup header */
+.signup-h1 {
+    text-align: center;
+    margin-top: 20px;
+    /* Additional styles for the h1 */
+}
+
+/* Styles for signup link */
+.signup-link {
+    text-align: center;
+    margin-top: 10px;
+    /* Additional styles for the paragraph */
+}
+
+.signup-link a {
+    color: #007bff;
+    text-decoration: none;
+    /* Additional styles for the link */
+}
+
+/* Styles for form labels */
+.firstName-signup-label,
+.last-signup-label,
+.username-signup-label,
+.password-signup-label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    text-align: left;
+}
+
+/* Styles for form inputs */
+.signup-firstname,
+.signup-lastname,
+.signup-username,
+.signup-password {
+    /* text-align: center; */
+    margin-top: 20px;
+    /* width: 100%; */
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    /* Additional styles for inputs */
+}
+
+.signup-form {
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    text-align: center; /* Center-align content */
+}
+
+/* Styles for error messages */
+.signup-error-message {
+    color: red;
+    display: none;
+    /* Additional styles for error messages */
+}
+
+/* Styles for additional notes */
+.signup-p {
+    font-size: 14px;
+    color: #666;
+    /* Additional styles for additional notes */
+}
+
+/* Add a separator between input fields */
+.signup-form label {
+    display: block;
+    margin-top: 15px;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+}
+
+/* Add classes for other input fields here */
+.signup-p {
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+    /* display: none; Initially hidden */
+    text-align: center; /* Center-align text */
+}
+
+.signup-submit {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.signup-submit:hover {
+    background-color: #0056b3;
+}

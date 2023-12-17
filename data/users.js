@@ -640,7 +640,7 @@ const usersMethods = {
   },
 
   async getSellerInformation(id) {
-    id = validation.checkId(id, "itemId");
+    id = validation.checkId(id, "userId");
     const usersCollection = await users();
     const seller = await usersCollection.findOne(
       // hide password and username

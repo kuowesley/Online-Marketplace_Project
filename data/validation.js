@@ -261,28 +261,38 @@ const validation = {
     // check str
     date = this.checkString(date, varName);
 
+    // config regex
+    const dateFormat = /^\d{2}\/\d{2}\/\d{4}$/;
+
     // mm/dd/yyyy
-    let eventDate_check = date.split("/");
-    if (!eventDate_check[0] || !eventDate_check[1] || !eventDate_check[2]) {
-      throw `${varName} should not empty, it should be mm/dd/yyyy`;
-    } else {
-      if (
-        eventDate_check[0].length !== 2 ||
-        eventDate_check[1].length !== 2 ||
-        eventDate_check[2].length !== 4
-      )
-        throw `${varName} not in correct format which length shoudl be mm/dd/yyyy`;
+    // https://stackoverflow.com/questions/6177975/how-to-validate-date-with-format-mm-dd-yyyy-in-javascript
+    // https://www.freecodecamp.org/news/how-to-validate-a-date-in-javascript/
+    // check if the date matches the mm/dd/yyyy format
+    if (!dateFormat.test(date)) {
+      throw `${varName} should be in the format mm/dd/yyyy`;
     }
 
-    // check date valid nor not
-    let dateobj = new Date(date);
-    if (dateobj == "Invalid Date")
-      throw `${varName} could transfer to Date Obj.`;
+    // check if the date is valid
+    const [month, day, year] = date.split("/").map(Number);
+    const isValidDate = !isNaN(year) && !isNaN(month) && !isNaN(day);
+    const dateObj = new Date(year, month - 1, day);
 
-    // The eventDate must be greater than the current date (so only future events can be created).
-    let today = new Date().setHours(0, 0, 0, 0);
-    if (today > dateobj)
-      throw `${varName} must be greater than the current date`;
+    if (!isValidDate)
+      throw `${varName} could only contain number and '/' (mm/dd/yyyy)`;
+    if (dateObj.getMonth() + 1 !== month) throw `${varName} month is not vaild`;
+    if (dateObj.getDate() !== day) throw `${varName} day is not vaild`;
+    if (dateObj.getFullYear() !== year) throw `${varName} year is not vaild`;
+
+    // if (!isValidDate || dateObj.getMonth() + 1 !== month || dateObj.getDate() !== day || dateObj.getFullYear() !== year) {
+    //   throw `${varName} is not a valid date`;
+    // }
+
+    // check if the date is in the future
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (dateObj <= today) {
+      throw `${varName} must be a date in the future`;
+    }
 
     return date;
   },
@@ -300,10 +310,13 @@ const validation = {
   checkDeliveryMethod(str, varName) {
     // check string
     str = this.checkString(str, varName);
+    str = str.toLowerCase();
 
-    if (str.length < 5) {
-      throw `Should ${varName} contain over 5 characters`;
-    }
+    // validate input value
+    if (str !== "meetup" && str !== "shipping")
+      throw `${varName} is not Valid Value: ${str}, only accept "meetup","shipping"`;
+
+    return str;
 
     return str;
   },
@@ -311,10 +324,18 @@ const validation = {
   checkCondition(str, varName) {
     // check string
     str = this.checkString(str, varName);
+    str = str.toLowerCase();
 
-    if (str.length < 3) {
-      throw `Should ${varName} contain over 5 characters`;
-    }
+    // validate input value
+    const validConditions = [
+      "new",
+      "usedlikenew",
+      "usedverygood",
+      "usedgood",
+      "usedacceptable",
+    ];
+    if (!validConditions.includes(str))
+      throw `${varName} is not Valid Value: ${str}, only accept "new","usedlikenew", "usedverygood","usedgood","usedacceptable"`;
 
     return str;
   },
@@ -342,6 +363,13 @@ const validation = {
       throw `file.fieldname should be fileInput`;
     if (!file.mimetype.startsWith("image/"))
       throw `file.mimetype should start with image/`;
+    if (
+      file.mimetype !== "image/jpg" &&
+      file.mimetype !== "image/png" &&
+      file.mimetype !== "image/jpeg"
+    ) {
+      throw `File type should be either JPG or PNG`;
+    }
     if (file.destination !== "upload/")
       throw `file.destination should be upload/`;
     if (!file.path.startsWith(`upload\\`))

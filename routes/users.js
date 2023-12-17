@@ -123,7 +123,7 @@ router.route("/addToCart").post(async (req, res) => {
   let itemId = xss(body.itemId);
   let quantity = xss(body.quantity);
   if (!req.session.user) {
-    return res.status(403).json({ message: false });
+    return res.redirect("/users/login");
   }
   try {
     itemId = validation.checkId(itemId, "itemId");
@@ -305,7 +305,7 @@ router.get("/itemsForSale", async (req, res) => {
 router.get("/getSellerInformation/:id", async (req, res) => {
   try {
     let id = xss(req.params.id);
-    id = validation.checkId(id, "itemId");
+    id = validation.checkId(id, "userId");
     let thisSeller = await usersData.getSellerInformation(id);
     if (!thisSeller) {
       res.status(404).render("error", { errorMessage: e });

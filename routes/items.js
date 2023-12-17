@@ -36,14 +36,9 @@ router
             .status(200)
             .render("home", { title: "Home", user: req.session.user });
         }
-        let allitems = [];
-        for (let i of browseHistory) {
-          let tmp = await items.getById(i);
-          allitems.push(tmp);
-        }
         return res
           .status(200)
-          .render("home", { items: allitems, user: req.session.user });
+          .render("home", { items: browseHistory, user: req.session.user });
       } catch (e) {
         return res.status(404).json({ message: e });
       }
@@ -241,7 +236,9 @@ router.route("/items").get(async (req, res) => {
       items: myItems,
     });
   } catch (e) {
-    res.status(500).render("error", { errorMessage: e });
+    res
+      .status(500)
+      .render("error", { errorMessage: e, user: req.session.user });
   }
 });
 
@@ -251,7 +248,9 @@ router.route("/items/:id").get(async (req, res) => {
     id = validation.checkId(id, "itemId");
     let thisItem = await items.getById(id);
     if (!thisItem) {
-      res.status(404).render("error", { errorMessage: e });
+      res
+        .status(404)
+        .render("error", { errorMessage: e, user: req.session.user });
     }
     // to do
     // add itemid to users.browserHistory
@@ -280,7 +279,9 @@ router.route("/items/:id").get(async (req, res) => {
       allrates: allrates,
     });
   } catch (e) {
-    res.status(500).render("error", { errorMessage: e });
+    res
+      .status(500)
+      .render("error", { errorMessage: e, user: req.session.user });
   }
 });
 
@@ -305,11 +306,15 @@ router.route("/items/search/:searchTerm").get(async (req, res) => {
     searchTerm = validation.checkString(searchTerm, "search entry");
     let result = await items.searchByDescription(searchTerm);
     if (!result) {
-      res.status(404).render("error", { errorMessage: e });
+      res
+        .status(404)
+        .render("error", { errorMessage: e, user: req.session.user });
     }
     res.status(200).json(result);
   } catch (e) {
-    res.status(500).render("error", { errorMessage: e });
+    res
+      .status(500)
+      .render("error", { errorMessage: e, user: req.session.user });
   }
 });
 

@@ -746,19 +746,43 @@ const usersMethods = {
     // to do
     userId = validation.checkId(userId, "UserId");
     const usersCollection = await users();
+    const itemsCollection = await items();
     const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
-
     if (!user) {
       throw "User is not registed to generate browse history";
     }
 
     if (user.browserHistory.length === 0) {
       return;
+    }
 
+    let allItems = [];
+    for (let itemId of user.browserHistory) {
+      let itemInfo = await itemsCollection.findOne({
+        _id: new ObjectId(itemId),
+      });
+      if (!itemInfo) {
+        throw `item not found`;
+      }
+      let picturesPath;
+      const currentFilePath = fileURLToPath(import.meta.url);
+      const currentDirPath = path.dirname(currentFilePath);
+      const uploadDirPath = path.join(currentDirPath, "..", "public", "img");
+      const filePath = path.join(uploadDirPath, imageCount.toString() + ".png");
+      picturesPath = "/public/img/" + imageCount.toString() + ".png";
+      imageCount += 1;
+      fs.writeFile(filePath, itemInfo.picture[0].buffer, (err) => {
+        if (err) {
+          console.error("Error writing file:", err);
+        } else {
+          console.log("File written successfully");
+          // Here you can further process or serve the image file as needed
+        }
+      });
+      itemInfo.picture = picturesPath;
+      allItems.push(itemInfo);
     }
-    if (user.browserHistory) {
-      return user.browserHistory;
-    }
+    return allItems;
   },
 
   async getTimeToBeDetermined(userId) {

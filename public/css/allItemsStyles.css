@@ -5,8 +5,8 @@
   }
   
   .search-form-label {
+    padding: 13px 8px;
     display: block;
-    margin-bottom: 5px;
     /* Style the search form label */
   }
   
@@ -93,6 +93,11 @@
     display: flex;
     /* Adjust item row display */
     margin-bottom: 20px;
+  }
+
+  #searchItems {
+    display: flex; /* Use flexbox layout */
+    align-items: center; /* Align items vertically in the center */
   }
   
   /* Other sections (search result, price sorting, etc.) */

@@ -8,13 +8,24 @@
     {{#if items}}
     <h2 class="history-items">Browsing History</h3>
     {{/if}}
-    <ol class="history-items" type="1">
+    <div id="all-items">
         {{#each items}}
-        <li>
-            <a href="/items/{{this._id}}">{{this.item}}</a>
-        </li>
-        {{/each}}
-    </ol>
+        {{#if (eq (mod @index 2) 0)}}
+        <div class="item-row">
+            {{/if}}
+            <div class="item">
+            <p>Item: <a href="/items/{{this._id}}">{{this.item}}</a></p>
+            <p>Price: ${{this.price}}</p>
+            <p><img alt="Item Picture {{this.item}}" src="{{this.picture}}"></p>
+            <p>Location: {{this.location}}</p>
+            <p>Condition: {{this.condition}}</p>
+            </div>
+            {{#if (eq (mod @index 2) 1)}}
+        </div>
+        {{else if @last}}
+    </div>
+    {{/if}}
+    {{/each}}
     <a href="/items">View all items</a>
 
 

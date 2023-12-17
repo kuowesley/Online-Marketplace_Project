@@ -1,35 +1,79 @@
-/* Styles for the back link */
 a {
     color: #007bff;
     text-decoration: none;
-    display: inline-block;
-    margin-bottom: 20px;
-  }
-  
-  /* Styles for the item details container */
-  .item-details {
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.item-details {
     text-align: center;
     margin-top: 20px;
-  }
-  
-  .item-details h1 {
+}
+
+.itemName {
     font-size: 24px;
-    margin-bottom: 10px;
-  }
-  
-  .item-details p {
-    margin-bottom: 8px;
-  }
-  
-  .item-details img {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 10px;
-  }
-  
-  #map {
+    font-weight: bold;
+}
+
+.itemDescription {
+    margin-top: 10px;
+}
+
+.itemPrice {
+    font-weight: bold;
+    color: #555;
+}
+
+.itemPicture img {
     width: 100%;
-    height: 300px;
+    max-width: 600px;
+    height: auto;
+    margin-top: 10px;
+}
+
+.itemQuantity {
+    margin-top: 10px;
+}
+
+.itemLocation {
+    margin-top: 10px;
+}
+
+.itemDeliveryMethod {
+    margin-top: 10px;
+}
+
+.itemRating {
+    margin-top: 10px;
+}
+
+.itemCondition {
+    margin-top: 10px;
+}
+
+.itemQuantitySelect {
+    margin-top: 10px;
+}
+
+#addToCart,
+#buyItNow {
+    margin-top: 10px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#addToCart:hover,
+#buyItNow:hover {
+    background-color: #0056b3;
+}
+
+.map {
     margin-top: 20px;
-    border: 1px solid #ccc;
-  }
+}

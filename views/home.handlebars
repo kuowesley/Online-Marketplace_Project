@@ -7,7 +7,7 @@
     </p>
      <a href="/items">View all items</a>
     {{#if items}}
-    <h2 class="history-items">Browsing History</h3>
+    <h2 class="history-items">Browsing History</h2>
     {{/if}}
 
     <div id="all-items">
@@ -19,7 +19,7 @@
             <div class="item">
             <p>Item: <a href="/items/{{this._id}}">{{this.item}}</a></p>
             <p>Price: ${{this.price}}</p>
-            <p><img alt="Item Picture {{this.item}}" src="{{this.picture}}"></p>
+            <p><img alt="Item Picture {{this.item}}" src="{{this.picture}}" style="width:500px;height:600px;"></p>
             <p>Location: {{this.location}}</p>
             <p>Condition: {{this.condition}}</p>
             </div>
@@ -29,9 +29,6 @@
     </div>
     {{/if}}
     {{/each}}
-
-
-
 
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
     crossorigin="anonymous"></script>

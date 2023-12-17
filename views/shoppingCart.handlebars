@@ -1,23 +1,32 @@
-<h1>Shopping Cart</h1>
+<link rel="stylesheet" href="/public/css/shoppingCartStyles.css">
+<h1 class="shoppingCart">Shopping Cart</h1>
 {{#if items}}
 <table>
-    <thead>
-
+    <thead class="tableThead">
+        <tr>
+            <th id="ItemName">ItemName</th>
+            <th id="Price">Price</th>
+            <th id="Picture">Picture</th>
+            <th id="Location">Location</th>
+            <th id="Condition">Condition</th>
+            <th id="Quantity">Quantity</th>
+            <th id="Action">Action</th>
+        </tr>
     </thead>
     <tbody>
         {{#each items}}
         <tr class="item">
-            <td><a href="/items/{{this.item._id}}">{{this.item.item}}</a></td>
-            <td>${{this.item.price}}</td>
-            <td>
-                
+            <td headers="ItemName"><a href="/items/{{this.item._id}}">{{this.item.item}}</a></td>
+            <td headers="Price">${{this.item.price}}</td>
+            <td headers="Picture">
+
                 <img alt="{{this.item.item}}" src="{{this.item.picture}}" width="50" height="50">
-                
+
             </td>
-            <td>{{this.item.location}}</td>
-            <td>{{this.item.condition}}</td>
-            <td>{{this.quantity}}</td>
-            <td>
+            <td headers="Location">{{this.item.location}}</td>
+            <td headers="Condition">{{this.item.condition}}</td>
+            <td headers="Quantity">{{this.quantity}}</td>
+            <td headers="Action">
                 <button class="removeItem" type="button" value="{{this.item._id}}">Remove</button>
             </td>
         </tr>

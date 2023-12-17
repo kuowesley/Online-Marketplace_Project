@@ -1,12 +1,21 @@
+<link rel="stylesheet" href="/public/css/confirmMeetUpTimeStyles.css">
 <h1>Confirm Meet Up Time</h1>
 {{#if items}}
 <table>
     <thead>
-
+        <th id="ItemName">ItemName</th>
+        <th id="Price">Price</th>
+        <th id="Picture">Picture</th>
+        <th id="Location">Location</th>
+        <th id="Condition">Condition</th>
+        <th id="Quantity">Quantity</th>
+        <th id="BuyerName">Buyer Name</th>
+        <th id="MeetUpTime">Meet Up Time</th>
+        <th id="Decision">Decision</th>
     </thead>
     <tbody>
         {{#each items}}
-        <tr class="item">
+        <tr>
             <td><a href="/items/{{this.item._id}}">{{this.item.item}}</a></td>
             <td>${{this.item.price}}</td>
             <td>
@@ -20,8 +29,10 @@
             <td>buyerName: {{this.buyerName}}</td>
             <td>Meet Up Time:{{this.meetUpInfo.meetUpTime}}</td>
             <td>
-                <button class="confirm" type="button" value="{{this.meetUpInfo.transactionId}}" data-buyer="{{this.meetUpInfo.buyerId}}">confirm</button>
-                <button class="deny" type="button" value="{{this.meetUpInfo.transactionId}}" data-buyer="{{this.meetUpInfo.buyerId}}">deny</button>
+                <button class="confirm" type="button" value="{{this.meetUpInfo.transactionId}}"
+                    data-buyer="{{this.meetUpInfo.buyerId}}">confirm</button>
+                <button class="deny" type="button" value="{{this.meetUpInfo.transactionId}}"
+                    data-buyer="{{this.meetUpInfo.buyerId}}">deny</button>
             </td>
         </tr>
         {{/each}}

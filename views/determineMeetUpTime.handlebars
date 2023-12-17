@@ -1,12 +1,20 @@
+<link rel="stylesheet" href="/public/css/determineMeetUpTimeStyles.css">
 <h1>Determine Meet Up Time</h1>
 {{#if items}}
 <table>
     <thead>
-
+        <th id="ItemName">ItemName</th>
+        <th id="Price">Price</th>
+        <th id="Picture">Picture</th>
+        <th id="Location">Location</th>
+        <th id="Condition">Condition</th>
+        <th id="Quantity">Quantity</th>
+        <th id="MeetUpTime">Meet Up Time</th>
+        <th id="Submit">Submit</th>
     </thead>
     <tbody>
         {{#each items}}
-        <tr class="item">
+        <tr>
             <td><a href="/items/{{this.item._id}}">{{this.item.item}}</a></td>
             <td>${{this.item.price}}</td>
             <td>
@@ -19,12 +27,13 @@
             <td>{{this.transactionInfo.quantity}}</td>
             <td>
                 <div id="time_div">
-                    <label for="dateInput">meet up time</label>
+                    {{!-- <label for="dateInput"></label> --}}
                     <input type="datetime-local" id="{{this.transactionInfo.transactionId}}">
                 </div>
             </td>
             <td>
-                <button class="submit" type="button" value="{{this.transactionInfo.transactionId}}" data-quantity="{{this.transactionInfo.quantity}}">submit</button>
+                <button class="submit" type="button" value="{{this.transactionInfo.transactionId}}"
+                    data-quantity="{{this.transactionInfo.quantity}}">submit</button>
             </td>
         </tr>
         {{/each}}

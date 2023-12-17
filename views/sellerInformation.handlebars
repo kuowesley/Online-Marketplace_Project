@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="/public/css/sellerInformationstyles.css">
 <h1>Seller's product</h1>
 
 {{!-- <p><a href="javascript:history.go(-1)">Back to item</a></p> --}}
@@ -7,11 +8,18 @@
 {{#if items}}
 <table>
     <thead>
-
+        <tr>
+            <th id="ItemName">ItemName</th>
+            <th id="Price">Price</th>
+            <th id="Picture">Picture</th>
+            <th id="Location">Location</th>
+            <th id="Condition">Condition</th>
+            <th id="RatingComment">Rating and Comment</th>
+        </tr>
     </thead>
     <tbody>
         {{#each items}}
-        <tr class="item">
+        <tr>
             <td><a href="/items/{{this._id}}">{{this.item}}</a></td>
             <td>${{this.price}}</td>
             <td>
@@ -23,16 +31,16 @@
             <td>{{this.condition}}</td>
             <td>
                 {{#if this.comments}}
-                    <ul>
-                        {{#each this.comments}}
-                            <li>
-                                <p>Rating: {{this.rating}}</p>
-                                <p>Comment: {{this.comment}}</p>
-                            </li>
-                        {{/each}}
-                    </ul>
+                <ul>
+                    {{#each this.comments}}
+                    <li>
+                        <p>Rating: {{this.rating}}</p>
+                        <p>Comment: {{this.comment}}</p>
+                    </li>
+                    {{/each}}
+                </ul>
                 {{else}}
-                    No comments
+                No comments
                 {{/if}}
             </td>
         </tr>

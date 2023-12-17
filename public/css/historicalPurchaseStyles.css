@@ -1,0 +1,72 @@
+/* historicalPurchaseStyles.css */
+
+h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #f5f5f5;
+  }
+  
+  .item img {
+    width: 50px;
+    height: 50px;
+    display: block;
+    margin: 0 auto;
+  }
+  
+  #rateCommentModal,
+  #rateCommentModal-edit {
+    border: 1px solid #ccc;
+    padding: 20px;
+    width: 300px;
+    margin: 20px auto;
+    background-color: #f9f9f9;
+  }
+  
+  #rateCommentModal textarea,
+  #rateCommentModal-edit textarea {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 5px;
+  }
+  
+  #rateCommentModal button,
+  #rateCommentModal-edit button {
+    padding: 8px 16px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  #rateCommentModal button#closeModal,
+  #rateCommentModal-edit button#closeModal-edit {
+    background-color: #ddd;
+  }
+  
+  #rateCommentModal button#submitComment,
+  #rateCommentModal-edit button#submitComment-edit {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  #rateCommentModal button#submitComment:hover,
+  #rateCommentModal-edit button#submitComment-edit:hover {
+    background-color: #0056b3;
+  }
+  

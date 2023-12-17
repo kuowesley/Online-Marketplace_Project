@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="/public/css/historicalSoldItemsStyles.css">
 <h1>Sales Record</h1>
 {{#if items}}
 <table>
@@ -6,17 +7,17 @@
     <tbody>
         {{#each items}}
         {{#if this.meetUp}}
-        <tr class="item">
+        <tr>
             <td><a href="/items/{{this.item._id}}">{{this.item.item}}</a></td>
-            <td>${{this.price}}</td>
+            <td>${{this.item.price}}</td>
             <td>
                 <img alt="{{this.item.item}}" src="{{this.item.picture}}" width="50" height="50">
             </td>
             <td>{{this.item.location}}</td>
-            <td>quantity:{{this.saleRecord.quantity}}</td>
-            <td>buyer:{{this.buyer}}</td>
+            <td>Quantity: {{this.saleRecord.quantity}}</td>
+            <td>Buyer: {{this.buyer}}</td>
             {{#if this.saleRecord.meetUpTime}}
-            <td>meet up time : {{this.saleRecord.meetUpTime}} </td>
+            <td>Meet Up Time: {{this.saleRecord.meetUpTime}} </td>
             {{/if}}
         </tr>
         {{/if}}
@@ -25,21 +26,27 @@
 </table>
 <table>
     <thead>
+        <th id="ItemName">ItemName</th>
+        <th id="Price">Price</th>
+        <th id="Picture">Picture</th>
+        <th id="Location">Location</th>
+        <th id="Quantity">Quantity</th>
+        <th id="Buyer">Buyer</th>
     </thead>
     <tbody>
         {{#each items}}
         {{#if (checkBoolean this.meetUp)}}
-        <tr class="item">
+        <tr>
             <td><a href="/items/{{this.item._id}}">{{this.item.item}}</a></td>
-            <td>${{this.price}}</td>
+            <td>${{this.item.price}}</td>
             <td>
                 <img alt="{{this.item.item}}" src="{{this.item.picture}}" width="50" height="50">
             </td>
             <td>{{this.item.location}}</td>
-            <td>quantity:{{this.saleRecord.quantity}}</td>
-            <td>buyer:{{this.buyer}}</td>
+            <td>Quantity: {{this.saleRecord.quantity}}</td>
+            <td>Buyer: {{this.buyer}}</td>
             {{#if this.saleRecord.meetUpTime}}
-            <td>meet up time : {{this.saleRecord.meetUpTime}} </td>
+            <td>Meet Up Time: {{this.saleRecord.meetUpTime}} </td>
             {{/if}}
         </tr>
         {{/if}}

@@ -129,6 +129,7 @@ router.route("/addToCart").post(async (req, res) => {
   }
   try {
     itemId = validation.checkId(itemId, "itemId");
+    quantity = validation.checkQuantity(parseInt(quantity, "quantity"));
     await usersData.getItemToCart(req.session.user.userId, itemId, quantity);
     return res.status(200).json({ message: "Add to cart successful!" });
   } catch (e) {
@@ -186,6 +187,9 @@ router.route("/determineMeetUpTime").post(async (req, res) => {
     let meetUpTime = xss(body.time);
     let transactionId = xss(body.transactionId);
     let userId = xss(req.session.user.userId);
+    meetUpTime = validation.checkTime(meetUpTime, "meetUpTime");
+    transactionId = validation.checkId(transactionId, "transactionId");
+    userId = validation.checkId(userId, "userId");
     await usersData.submitMeetUpTimeToSeller(userId, transactionId, meetUpTime);
     return res.status(200).json({ status: true });
   } catch (e) {
@@ -218,7 +222,14 @@ router.route("/confirmMeetUpTime/confirm").post(async (req, res) => {
     let transactionId = xss(body.transactionId);
     let seller = xss(req.session.user.userId);
     let buyerId = xss(body.buyerId);
-    await usersData.confirmMeetUpTime(transactionId, seller, buyerId);
+    transactionId = validation.checkId(transactionId, "transactionId");
+    seller = validation.checkId(seller, "seller");
+    buyerId = validation.checkId(buyerId, "buyerId");
+    let information = await usersData.confirmMeetUpTime(
+      transactionId,
+      seller,
+      buyerId,
+    );
     return res.status(200).json({ status: true });
   } catch (e) {
     return res.status(400).json({ status: false, message: e });

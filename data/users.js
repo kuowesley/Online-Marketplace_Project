@@ -177,7 +177,7 @@ const usersMethods = {
         if (item.quantity < quantity) {
           quantity = item.quantity;
         }
-        const userUpdate = usersCollection.findOneAndUpdate(
+        const userUpdate = await usersCollection.findOneAndUpdate(
           {
             $and: [
               { _id: new ObjectId(userId) },
@@ -198,10 +198,13 @@ const usersMethods = {
       quantity: quantity,
     };
     shopping_cart.push(newItem);
-    const userUpdate = usersCollection.updateOne(
+    const userUpdate = await usersCollection.updateOne(
       { _id: new ObjectId(userId) },
       { $set: { shopping_cart: shopping_cart } },
     );
+    if (!userUpdate) {
+      throw `fail to update shopping_cart`;
+    }
   },
 
   async getShoppingCart(userId) {
@@ -643,14 +646,18 @@ const usersMethods = {
       throw "You have already submitted a comment for this item";
     }
 
-    // //check if the user bought the item or not
-    // const usersCollection = await users()
-    // const userPurchase = usersCollection.findOne(
-    //   {
-    //     _id: new ObjectId(userId),
-
-    //   }
-    // )
+    //check if the user bought the item or not
+    const usersCollection = await users();
+    const userPurchase = await usersCollection.findOne({
+      $and: [
+        { _id: new ObjectId(userId) },
+        { "historical_purchased_item.itemId": itemId },
+      ],
+    });
+    if (!userPurchase) {
+      console.log(comment);
+      throw `Can not comment the item you didn't buy`;
+    }
 
     const comment_submission = await itemsCollection.findOneAndUpdate(
       { _id: new ObjectId(itemId) },
@@ -1045,6 +1052,12 @@ const usersMethods = {
     if (!updateSaleRecord) {
       throw `update saleRecord fail`;
     }
+
+    // let item = await itemsCollection.findOne({_id:transactionInfo.itemId})
+    // if(!item){
+    //   throw `item not found`
+    // }
+    // return {meetUpTime:transactionInfo.meetUpTime, location:item.location}
   },
 
   async denyMeetUpTime(transactionId, sellerId, buyerId) {

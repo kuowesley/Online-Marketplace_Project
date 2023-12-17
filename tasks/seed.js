@@ -96,8 +96,8 @@ try {
     imagesList,
     10,
     "Brooklyn, NY",
-    "Meetup",
-    "Like New",
+    "shipping",
+    "new",
     user1._id.toString(),
   );
   await users.getItemToItemsForSale(
@@ -123,8 +123,8 @@ try {
     imagesList,
     15,
     "Union City, NJ",
-    "Meetup",
-    "Good",
+    "shipping",
+    "new",
     user1._id.toString(),
   );
   await users.getItemToItemsForSale(
@@ -150,8 +150,8 @@ try {
     imagesList,
     30,
     "Jersey City, NJ",
-    "Meetup",
-    "Good",
+    "shipping",
+    "new",
     user1._id.toString(),
   );
   await users.getItemToItemsForSale(
@@ -177,8 +177,8 @@ try {
     imagesList,
     5,
     "West New York, NJ",
-    "Meetup",
-    "Good",
+    "shipping",
+    "new",
     user2._id.toString(),
   );
   await users.getItemToItemsForSale(
@@ -204,8 +204,8 @@ try {
     imagesList,
     20,
     "Union City, NJ",
-    "Meetup",
-    "Very Good",
+    "shipping",
+    "new",
     user2._id.toString(),
   );
   await users.getItemToItemsForSale(
@@ -231,8 +231,8 @@ try {
     imagesList,
     10,
     "Hoboken, NJ",
-    "Meetup",
-    "Good",
+    "shipping",
+    "new",
     user2._id.toString(),
   );
   await users.getItemToItemsForSale(
@@ -264,8 +264,8 @@ try {
     imagesList,
     10,
     "Hoboken, NJ",
-    "Meetup",
-    "Good",
+    "shipping",
+    "new",
     user3._id.toString(),
   );
   await users.getItemToItemsForSale(
@@ -291,8 +291,8 @@ try {
     imagesList,
     13,
     "Hoboken, NJ",
-    "Meetup",
-    "Used",
+    "shipping",
+    "new",
     user3._id.toString(),
   );
   await users.getItemToItemsForSale(
@@ -318,8 +318,8 @@ try {
     imagesList,
     30,
     "Hoboken, NJ",
-    "Meetup",
-    "Used",
+    "shipping",
+    "new",
     user3._id.toString(),
   );
   await users.getItemToItemsForSale(
@@ -348,8 +348,8 @@ try {
     imagesList,
     30,
     "Hoboken, NJ",
-    "Meetup",
-    "Used",
+    "shipping",
+    "new",
     user3._id.toString(),
   );
   await users.getItemToItemsForSale(
@@ -378,8 +378,8 @@ try {
     imagesList,
     10,
     "Hoboken, NJ",
-    "Meetup",
-    "Used",
+    "shipping",
+    "new",
     user3._id.toString(),
   );
   await users.getItemToItemsForSale(

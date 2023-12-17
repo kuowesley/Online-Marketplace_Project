@@ -1,0 +1,82 @@
+/* Upload Form */
+/* Style for individual error list items */
+/* .error-list li {
+    margin-bottom: 5px;
+  }
+  
+  .error-list a {
+    color: blue;
+    text-decoration: none; 
+    font-style: italic;
+  } */
+
+/* Style for form container */
+#fileUploadForm {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Style for form labels */
+#fileUploadForm label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* Style for form inputs */
+#fileUploadForm input[type="text"],
+#fileUploadForm input[type="number"],
+#fileUploadForm select,
+#fileUploadForm button {
+    width: calc(100% - 10px);
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+/* Style for file select link */
+#fileSelect {
+    display: inline-block;
+    padding: 8px 12px;
+    margin-bottom: 15px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+}
+
+#fileSelect:hover {
+    background-color: #0056b3;
+}
+
+/* Style for error list */
+.error-list {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+/* Style for fileList container */
+#fileList {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+}
+
+/* Style for fileList paragraphs */
+#fileList p {
+    margin: 0;
+    color: #333;
+}

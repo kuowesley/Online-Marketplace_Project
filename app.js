@@ -34,6 +34,10 @@ hbs.handlebars.registerHelper("range", function (value) {
   return new Array(value).fill().map((_, index) => index + 1);
 });
 
+hbs.handlebars.registerHelper("min", function (val1, val2) {
+  return Math.min(val1, val2);
+});
+
 hbs.handlebars.registerHelper("checkBoolean", function (value) {
   if (value) {
     return false;

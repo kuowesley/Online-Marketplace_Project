@@ -8,14 +8,24 @@
   let location = $("#location");
 
   let forurl = location.text().split(":");
+  const locationRegex = /^[a-zA-Z0-9\s,]+$/;
   let forurl2 = forurl[1].trim().split(" ").join("%20");
-  let url =
-    "https://www.google.com/maps/embed/v1/place?key=AIzaSyDmLGhMKw9fQFfNAX1MCu_jeuoCrBxe3XU&q=" +
-    forurl2;
+  let encodedLocation = encodeURIComponent(forurl2);
+  let url = `https://www.google.com/maps/embed/v1/place?key=AIzaSyDmLGhMKw9fQFfNAX1MCu_jeuoCrBxe3XU&q=${encodedLocation}`;
   console.log(url);
   $("#map")
     .append(`<iframe width="600" height="450" style="border:0" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"
   src=${url}></iframe>`);
+
+  //$("#map").append(`<p>Can not find Loaction in google map</p>`)
+
+  // let url =
+  //   "https://www.google.com/maps/embed/v1/place?key=AIzaSyDmLGhMKw9fQFfNAX1MCu_jeuoCrBxe3XU&q=" +
+  //   forurl2;
+  // console.log(url);
+  // $("#map")
+  //   .append(`<iframe width="600" height="450" style="border:0" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"
+  // src=${url}></iframe>`);
 
   addToCart.on("click", function (event) {
     if (itemId.text()) {

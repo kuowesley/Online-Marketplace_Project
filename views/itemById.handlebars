@@ -21,7 +21,7 @@
     <p>Condition: {{item.condition}}</p>
     {{#if item.quantity}}
     <select id="quantitySelect" name="quantitySelect">
-        {{#each (range item.quantity)}}
+        {{#each (range (min item.quantity 30))}}
         <option value="{{this}}">{{this}}</option>
         {{/each}}
     </select>

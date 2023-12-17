@@ -1,16 +1,30 @@
-<link rel="stylesheet" href="/public/css/itemsForSaleStyles.css">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Orders</title>
+    <link rel="stylesheet" href="/public/css/itemsForSaleStyles.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="/public/js/itemsForSale.js"></script>
+</head>
+
 <h1>Items For Sale</h1>
 {{#if items}}
 <table>
     <thead>
-        <th id="ItemName">ItemName</th>
-        <th id="Price">Price</th>
-        <th id="Picture">Picture</th>
-        <th id="Location">Location</th>
-        <th id="Condition">Condition</th>
-        <th id="Quantity">Quantity</th>
-        <th id="RatingComment">Rating and Comment</th>
-        <th id="Review">Review</th>
+        <tr>
+            <th id="ItemName">ItemName</th>
+            <th id="Price">Price</th>
+            <th id="Picture">Picture</th>
+            <th id="Location">Location</th>
+            <th id="Condition">Condition</th>
+            <th id="Quantity">Quantity</th>
+            <th id="RatingComment">Rating and Comment</th>
+            <th id="Review">Review</th>
+        </tr>
     </thead>
     <tbody>
         {{#each items}}
@@ -50,7 +64,4 @@
 </div>
 {{/if}}
 
-
-<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-    crossorigin="anonymous"></script>
-<script src="/public/js/itemsForSale.js"></script>
+</html>

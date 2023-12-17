@@ -1,16 +1,30 @@
-<link rel="stylesheet" href="/public/css/determineMeetUpTimeStyles.css">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Orders</title>
+    <link rel="stylesheet" href="/public/css/determineMeetUpTimeStyles.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="/public/js/determineMeetUpTime.js"></script>
+</head>
+
 <h1>Determine Meet Up Time</h1>
 {{#if items}}
 <table>
     <thead>
-        <th id="ItemName">ItemName</th>
-        <th id="Price">Price</th>
-        <th id="Picture">Picture</th>
-        <th id="Location">Location</th>
-        <th id="Condition">Condition</th>
-        <th id="Quantity">Quantity</th>
-        <th id="MeetUpTime">Meet Up Time</th>
-        <th id="Submit">Submit</th>
+        <tr>
+            <th id="ItemName">ItemName</th>
+            <th id="Price">Price</th>
+            <th id="Picture">Picture</th>
+            <th id="Location">Location</th>
+            <th id="Condition">Condition</th>
+            <th id="Quantity">Quantity</th>
+            <th id="MeetUpTime">Meet Up Time</th>
+            <th id="Submit">Submit</th>
+        </tr>
     </thead>
     <tbody>
         {{#each items}}
@@ -46,6 +60,4 @@
 </div>
 {{/if}}
 
-<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-    crossorigin="anonymous"></script>
-<script src="/public/js/determineMeetUpTime.js"></script>
+</html>

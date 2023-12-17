@@ -1,4 +1,13 @@
-<link rel="stylesheet" href="/public/css/historicalSoldItemsStyles.css">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Orders</title>
+    <link rel="stylesheet" href="/public/css/historicalSoldItemsStyles.css">
+</head>
+
 <h1>Sales Record</h1>
 {{#if items}}
 <table>
@@ -26,12 +35,14 @@
 </table>
 <table>
     <thead>
-        <th id="ItemName">ItemName</th>
-        <th id="Price">Price</th>
-        <th id="Picture">Picture</th>
-        <th id="Location">Location</th>
-        <th id="Quantity">Quantity</th>
-        <th id="Buyer">Buyer</th>
+        <tr>
+            <th id="ItemName">ItemName</th>
+            <th id="Price">Price</th>
+            <th id="Picture">Picture</th>
+            <th id="Location">Location</th>
+            <th id="Quantity">Quantity</th>
+            <th id="Buyer">Buyer</th>
+        </tr>
     </thead>
     <tbody>
         {{#each items}}
@@ -58,3 +69,5 @@
     <p>No items have been sold yet!</p>
 </div>
 {{/if}}
+
+</html>

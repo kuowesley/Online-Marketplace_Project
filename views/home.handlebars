@@ -1,11 +1,23 @@
-<link rel="stylesheet" href="/public/css/homeStyles.css">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Orders</title>
+    <link rel="stylesheet" href="/public/css/homeStyles.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="/public/js/home.js"></script>
+</head>
+
 <h1 class="home-h1">Online Marketplace</h1>
 <main>
     <p class="home-paragraph">Here, you can buy and sell second hand items.
         This website is designed to serve as a one-stop virtual marketplace, catering exclusively to the needs of
         students who are setting up a new life.
     </p>
-     <a href="/items">View all items</a>
+    <a href="/items">View all items</a>
     {{#if items}}
     <h2 class="history-items">Browsing History</h2>
     {{/if}}
@@ -17,11 +29,11 @@
         <div class="item-row">
             {{/if}}
             <div>
-            <p>Item: <a href="/items/{{this._id}}">{{this.item}}</a></p>
-            <p>Price: ${{this.price}}</p>
-            <p><img alt="Item Picture {{this.item}}" src="{{this.picture}}" style="width:500px;height:600px;"></p>
-            <p>Location: {{this.location}}</p>
-            <p>Condition: {{this.condition}}</p>
+                <p>Item: <a href="/items/{{this._id}}">{{this.item}}</a></p>
+                <p>Price: ${{this.price}}</p>
+                <p><img alt="Item Picture {{this.item}}" src="{{this.picture}}" style="width:500px;height:600px;"></p>
+                <p>Location: {{this.location}}</p>
+                <p>Condition: {{this.condition}}</p>
             </div>
             {{#if (eq (mod @index 2) 1)}}
         </div>
@@ -30,9 +42,6 @@
     {{/if}}
     {{/each}}
 
-    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-    crossorigin="anonymous"></script>
-    <script src="/public/js/home.js"></script>
- </main>
+</main>
 
-
+</html>

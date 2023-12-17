@@ -59,6 +59,7 @@ const usersMethods = {
       browserHistory: [],
       confirmMeetUpTime: [],
       timeToBeDetermined: [],
+      saleRecord: [],
     };
 
     const insertInfo = await usersCollection.insertOne(newUser);
@@ -319,6 +320,18 @@ const usersMethods = {
       if (!updateResult) {
         throw "Failed to update historical_sold_item for the seller.";
       }
+      let saleRecord = {
+        itemId: shoppingItem.itemId,
+        buyerId: userId,
+        quantity: shoppingItem.quantity,
+      };
+      const updateSaleRecord = await usersCollection.updateOne(
+        { _id: new ObjectId(sellerId) },
+        { $push: { saleRecord: saleRecord } },
+      );
+      if (!updateSaleRecord) {
+        throw `update saleRecord fail`;
+      }
 
       let purchaseedItem = {
         itemId: soldItemId,
@@ -342,6 +355,15 @@ const usersMethods = {
     }
 
     for (let meetUpItem of meetUpItems) {
+      const item = await itemsCollection.findOneAndUpdate(
+        { _id: new ObjectId(meetUpItem.itemId) },
+        { $inc: { quantity: -parseInt(meetUpItem.quantity) } },
+        { returnDocument: "after" },
+      );
+      if (!item) {
+        throw `Item not found`;
+      }
+
       const user = await usersCollection.findOneAndUpdate(
         { _id: new ObjectId(userId) },
         { $push: { timeToBeDetermined: meetUpItem } },
@@ -488,23 +510,23 @@ const usersMethods = {
     return AllItems;
   },
 
-  async getHistoricalSoldItems(userId) {
+  async getSaleRecord(userId) {
     userId = validation.checkId(userId, "userId");
     const usersCollection = await users();
     const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
     if (!user) {
       throw `user not found`;
     }
-    let soldItems = user.historical_sold_item;
+    let soldItems = user.saleRecord;
 
     let AllItems = [];
     const itemsCollection = await items();
-    for (let itemId of soldItems) {
+    for (let sale of soldItems) {
       const itemInfo = await itemsCollection.findOne({
-        _id: new ObjectId(itemId),
+        _id: new ObjectId(sale.itemId),
       });
       if (!itemInfo) {
-        throw `Item: ${itemId} not found`;
+        throw `Item: ${sale.itemId} not found`;
       } else {
         let picturesPath;
         const currentFilePath = fileURLToPath(import.meta.url);
@@ -526,7 +548,29 @@ const usersMethods = {
         });
         itemInfo.picture = picturesPath;
       }
-      AllItems.push(itemInfo);
+
+      const buyer = await usersCollection.findOne({
+        _id: new ObjectId(sale.buyerId),
+      });
+      if (!buyer) {
+        throw `buyer not found`;
+      }
+
+      if (sale.meetUpTime) {
+        AllItems.push({
+          item: itemInfo,
+          saleRecord: sale,
+          buyer: buyer.userName,
+          meetUp: true,
+        });
+      } else {
+        AllItems.push({
+          item: itemInfo,
+          saleRecord: sale,
+          buyer: buyer.userName,
+          meetUp: false,
+        });
+      }
     }
 
     return AllItems;
@@ -570,7 +614,15 @@ const usersMethods = {
         });
         itemInfo.picture = picturesPath;
       }
-      AllItems.push({ item: itemInfo, quantity: item.quantity });
+      if (item.meetUpTime) {
+        AllItems.push({
+          item: itemInfo,
+          quantity: item.quantity,
+          meetUp: item.meetUpTime,
+        });
+      } else {
+        AllItems.push({ item: itemInfo, quantity: item.quantity });
+      }
     }
 
     return AllItems;
@@ -957,6 +1009,82 @@ const usersMethods = {
     );
     if (!removeTransaction) {
       throw `removeTransaction from confirmMeetUpTime fail`;
+    }
+    let meetUpItem = {
+      itemId: transactionInfo.itemId,
+      quantity: transactionInfo.quantity,
+      meetUpTime: transactionInfo.meetUpTime,
+    };
+    let update_historical_purchased_item =
+      await usersCollection.findOneAndUpdate(
+        { _id: new ObjectId(buyerId) },
+        { $push: { historical_purchased_item: meetUpItem } },
+      );
+    if (!update_historical_purchased_item) {
+      thorw`update_historical_purchased_item fail`;
+    }
+
+    const updateResult = await usersCollection.updateOne(
+      { _id: new ObjectId(sellerId) },
+      { $addToSet: { historical_sold_item: transactionInfo.itemId } }, // prevent duplicate item IDs
+    );
+    if (!updateResult) {
+      throw "Failed to update historical_sold_item for the seller.";
+    }
+
+    let saleRecord = {
+      itemId: transactionInfo.itemId,
+      buyerId: buyerId,
+      quantity: transactionInfo.quantity,
+      meetUpTime: transactionInfo.meetUpTime,
+    };
+    const updateSaleRecord = await usersCollection.updateOne(
+      { _id: new ObjectId(sellerId) },
+      { $push: { saleRecord: saleRecord } },
+    );
+    if (!updateSaleRecord) {
+      throw `update saleRecord fail`;
+    }
+  },
+
+  async denyMeetUpTime(transactionId, sellerId, buyerId) {
+    transactionId = validation.checkId(transactionId, "transactionId");
+    sellerId = validation.checkId(sellerId, "sellerId");
+    buyerId = validation.checkId(buyerId, "buyerId");
+    const usersCollection = await users();
+    const itemsCollection = await items();
+    let transactionInfo = await usersCollection.findOne(
+      { "confirmMeetUpTime.transactionId": new ObjectId(transactionId) },
+      { projection: { _id: 0, "confirmMeetUpTime.$": 1 } },
+    );
+    if (!transactionInfo) {
+      throw `transactionInfo not found`;
+    }
+    transactionInfo = transactionInfo.confirmMeetUpTime[0];
+
+    let removeTransaction = await usersCollection.findOneAndUpdate(
+      { "confirmMeetUpTime.transactionId": new ObjectId(transactionId) },
+      {
+        $pull: {
+          confirmMeetUpTime: { transactionId: new ObjectId(transactionId) },
+        },
+      },
+    );
+    if (!removeTransaction) {
+      throw `removeTransaction from confirmMeetUpTime fail`;
+    }
+
+    let meetUpItem = {
+      transactionId: new ObjectId(),
+      itemId: transactionInfo.itemId,
+      quantity: transactionInfo.quantity,
+    };
+    let updateTimeToBeDetermined = await usersCollection.findOneAndUpdate(
+      { _id: new ObjectId(buyerId) },
+      { $push: { timeToBeDetermined: meetUpItem } },
+    );
+    if (!updateTimeToBeDetermined) {
+      throw `updateTimeToBeDetermined fail`;
     }
   },
 };

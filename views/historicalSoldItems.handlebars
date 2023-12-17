@@ -1,33 +1,48 @@
-<h1>Historical Sold Items</h1>
+<h1>Sales Record</h1>
 {{#if items}}
 <table>
     <thead>
     </thead>
     <tbody>
         {{#each items}}
+        {{#if this.meetUp}}
         <tr class="item">
-            <td><a href="/items/{{this._id}}">{{this.item}}</a></td>
+            <td><a href="/items/{{this.item._id}}">{{this.item.item}}</a></td>
             <td>${{this.price}}</td>
             <td>
-                <img alt="{{this.item}}" src="{{this.picture}}" width="50" height="50">
+                <img alt="{{this.item.item}}" src="{{this.item.picture}}" width="50" height="50">
             </td>
-            <td>{{this.location}}</td>
-            <td>{{this.condition}}</td>
-            <td>
-                {{#if this.comments}}
-                <ul>
-                    {{#each this.comments}}
-                    <li>
-                        <p>Rating: {{this.rating}}</p>
-                        <p>Comment: {{this.comment}}</p>
-                    </li>
-                    {{/each}}
-                </ul>
-                {{else}}
-                No comments
-                {{/if}}
-            </td>
+            <td>{{this.item.location}}</td>
+            <td>quantity:{{this.saleRecord.quantity}}</td>
+            <td>buyer:{{this.buyer}}</td>
+            {{#if this.saleRecord.meetUpTime}}
+            <td>meet up time : {{this.saleRecord.meetUpTime}} </td>
+            {{/if}}
         </tr>
+        {{/if}}
+        {{/each}}
+    </tbody>
+</table>
+<table>
+    <thead>
+    </thead>
+    <tbody>
+        {{#each items}}
+        {{#if (checkBoolean this.meetUp)}}
+        <tr class="item">
+            <td><a href="/items/{{this.item._id}}">{{this.item.item}}</a></td>
+            <td>${{this.price}}</td>
+            <td>
+                <img alt="{{this.item.item}}" src="{{this.item.picture}}" width="50" height="50">
+            </td>
+            <td>{{this.item.location}}</td>
+            <td>quantity:{{this.saleRecord.quantity}}</td>
+            <td>buyer:{{this.buyer}}</td>
+            {{#if this.saleRecord.meetUpTime}}
+            <td>meet up time : {{this.saleRecord.meetUpTime}} </td>
+            {{/if}}
+        </tr>
+        {{/if}}
         {{/each}}
     </tbody>
 </table>

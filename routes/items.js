@@ -293,8 +293,18 @@ router.route("/items/purchase").post(async (req, res) => {
     return res.redirect("/users/login");
   }
   try {
-    await items.purchaseItem(req.session.user.userId, itemId, quantity);
-    return res.status(200).json({ message: "Purchase successful!" });
+    const result = await items.purchaseItem(
+      req.session.user.userId,
+      itemId,
+      quantity,
+    );
+    if (result === "meetup") {
+      return res
+        .status(200)
+        .json({ message: "Purchase successful!", meetup: true });
+    } else {
+      return res.status(200).json({ message: "Purchase successful!" });
+    }
   } catch (e) {
     return res.status(400).json({ message: e });
   }

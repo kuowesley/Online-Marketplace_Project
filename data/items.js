@@ -220,6 +220,22 @@ const itemsMethods = {
       throw `Item not found`;
     }
 
+    if (item1.deliveryMethod === "meetup") {
+      let meetUpItem = {
+        transactionId: new ObjectId(),
+        itemId: itemId,
+        quantity: parseInt(quantity),
+      };
+      const user = await usersCollection.findOneAndUpdate(
+        { _id: new ObjectId(userId) },
+        { $push: { timeToBeDetermined: meetUpItem } },
+      );
+      if (!user) {
+        throw `update timeToBeDetermined fail`;
+      }
+      return "meetup";
+    }
+
     // Add itemId to historical_sold_item of the seller
     let soldItemId = item._id.toString();
     let sellerId = item.seller_id;
@@ -244,6 +260,20 @@ const itemsMethods = {
     if (!update_historical_purchased_item) {
       throw `Update historical_purchased_item fail`;
     }
+
+    let saleRecord = {
+      itemId: itemId,
+      buyerId: userId,
+      quantity: parseInt(quantity),
+    };
+    const updateSaleRecord = await usersCollection.updateOne(
+      { _id: new ObjectId(sellerId) },
+      { $push: { saleRecord: saleRecord } },
+    );
+    if (!updateSaleRecord) {
+      throw `update saleRecord fail`;
+    }
+    return "shipping";
   },
 };
 

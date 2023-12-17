@@ -64,7 +64,11 @@
             window.location.href = "/users/login";
           } else {
             alert(data.message);
-            window.location.href = "/items";
+            if (data.meetup) {
+              window.location.href = "/users/determineMeetUpTime";
+            } else {
+              window.location.href = "/items";
+            }
           }
         },
         error: function (xhr, status, error) {

@@ -20,7 +20,8 @@
             <td>buyerName: {{this.buyerName}}</td>
             <td>Meet Up Time:{{this.meetUpInfo.meetUpTime}}</td>
             <td>
-                <button class="confirm" type="button" value="{{this.meetUpInfo.transactionId}}" data-buyer="{{this.meetUpInfo.buyerId}}">confirm</button>
+                <button class="confirm" type="button" value="{{this.meetUpInfo.transactionId}}" data-buyer="{{this.meetUpInfo.buyerId}}"
+                    data-location="{{this.item.location}}" data-time="{{this.meetUpInfo.meetUpTime}}" data-item="{{this.item.item}}">confirm</button>
                 <button class="deny" type="button" value="{{this.meetUpInfo.transactionId}}" data-buyer="{{this.meetUpInfo.buyerId}}">deny</button>
             </td>
         </tr>

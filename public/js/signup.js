@@ -31,7 +31,7 @@
 
     try {
       $("#error3").hide();
-      usercheck(userName.val());
+      userCheck(userName.val());
     } catch (e) {
       $("#error3").show();
       userName.val("");
@@ -39,7 +39,7 @@
 
     try {
       $("#error4").hide();
-      userCheck(email.val());
+      emailCheck(email.val());
     } catch (e) {
       $("#error4").show();
       email.val("");
@@ -47,7 +47,7 @@
 
     try {
       $("#error5").hide();
-      nameCheck(street.val());
+      streetCheck(street.val());
     } catch (e) {
       $("#error5").show();
       street.val("");
@@ -102,6 +102,22 @@
     }
   });
 })(window.jQuery);
+
+function streetCheck(str) {
+  if (typeof str !== "string") {
+    throw "please enter a string";
+  }
+  if (str.trim() == "") {
+    throw "empty input";
+  }
+  str = str.trim();
+  if (str.length < 2 || str.length > 25) {
+    throw "exceed maximum length";
+  }
+  if (!/^[0-9a-zA-Z-,. ]+$/.test(str)) {
+    throw "contain not characters";
+  }
+}
 
 function nameCheck(str) {
   if (typeof str !== "string") {
@@ -194,6 +210,7 @@ function emailCheck(email) {
   if (domain.length < 2 || domain[domain.length - 1].length < 2) {
     throw "wrong format";
   }
+  return check[0].toLowerCase() + "@" + check[1].toLowerCase();
 }
 
 function stateCheck(state) {

@@ -181,6 +181,7 @@ const validation = {
       "WY",
     ];
     str = this.checkString(str, varName);
+    str = str.toUpperCase();
     if (str.length !== 2 || !state.includes(str)) {
       throw `Invalid ${varName}`;
     }

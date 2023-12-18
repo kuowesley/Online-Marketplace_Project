@@ -19,6 +19,7 @@
       $("#error1").hide();
       nameCheck(firstName.val());
     } catch (e) {
+      $("#error1").text(e);
       $("#error1").show();
       firstName.val("");
       event.preventDefault();
@@ -28,6 +29,7 @@
       $("#error2").hide();
       nameCheck(lastName.val());
     } catch (e) {
+      $("#error2").text(e);
       $("#error2").show();
       lastName.val("");
       event.preventDefault();
@@ -37,6 +39,7 @@
       $("#error3").hide();
       userCheck(userName.val());
     } catch (e) {
+      $("#error3").text(e);
       $("#error3").show();
       userName.val("");
       event.preventDefault();
@@ -46,6 +49,7 @@
       $("#error4").hide();
       emailCheck(email.val());
     } catch (e) {
+      $("#error4").text(e);
       $("#error4").show();
       email.val("");
       event.preventDefault();
@@ -55,6 +59,7 @@
       $("#error5").hide();
       streetCheck(street.val());
     } catch (e) {
+      $("#error5").text(e);
       $("#error5").show();
       street.val("");
       event.preventDefault();
@@ -64,6 +69,7 @@
       $("#error6").hide();
       nameCheck(city.val());
     } catch (e) {
+      $("#error6").text(e);
       $("#error6").show();
       city.val("");
       event.preventDefault();
@@ -73,6 +79,7 @@
       $("#error7").hide();
       stateCheck(state.val());
     } catch (e) {
+      $("#error7").text(e);
       $("#error7").show();
       state.val("");
       event.preventDefault();
@@ -82,6 +89,7 @@
       $("#error8").hide();
       zipcodeCheck(zipcode.val());
     } catch (e) {
+      $("#error8").text(e);
       $("#error8").show();
       zipcode.val("");
       event.preventDefault();
@@ -91,6 +99,7 @@
       $("#error9").hide();
       ageCheck(age.val());
     } catch (e) {
+      $("#error9").text(e);
       $("#error9").show();
       age.val("");
       event.preventDefault();
@@ -100,6 +109,7 @@
       $("#error10").hide();
       passwordCheck(password.val());
     } catch (e) {
+      $("#error10").text(e);
       $("#error10").show();
       password.val("");
       event.preventDefault();
@@ -109,6 +119,7 @@
       $("#error11").hide();
       passwordCheck(confirnPassword.val());
     } catch (e) {
+      $("#error11").text(e);
       $("#error11").show();
       confirnPassword.val("");
       event.preventDefault();
@@ -156,8 +167,11 @@ function userCheck(str) {
     throw "empty input";
   }
   str = str.trim();
-  if (str.length < 2 || str.length > 25) {
+  if (str.length > 25) {
     throw "exceed maximum length";
+  }
+  if (str.length < 2) {
+    throw "userName can not be less then two character";
   }
   if (!/^[a-zA-Z0-9-_]+$/.test(str)) {
     throw "contain not characters";

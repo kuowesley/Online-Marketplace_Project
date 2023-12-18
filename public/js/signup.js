@@ -12,7 +12,7 @@
     (confirnPassword = $("#confirmPasswordInput"));
 
   $("#signup-form").submit(function (event) {
-    event.preventDefault();
+    // event.preventDefault();
     try {
       $("#error1").hide();
       nameCheck(firstName.val());

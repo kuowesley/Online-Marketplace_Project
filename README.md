@@ -1,8 +1,10 @@
 # Online-Marketplace_Project
 on the terminal and run:
+```bash
 	npm install
 	node tasks/seed.js
 	npm start
+```
 
 about core features "Like/Diske a transaction: Allows the user to Rate Their Order and Leave Comment"
 We comdine the features "Like/Diske" and "Rate Their Order", useing rating scale from 1 to 5 stars to indicate

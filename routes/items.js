@@ -244,7 +244,7 @@ router.route("/items").get(async (req, res) => {
 
 router.route("/items/:id").get(async (req, res) => {
   try {
-    let id = req.params.id;
+    let id = xss(req.params.id);
     id = validation.checkId(id, "itemId");
     let thisItem = await items.getById(id);
     if (!thisItem) {
@@ -261,7 +261,7 @@ router.route("/items/:id").get(async (req, res) => {
     }
     let rating = "N/A";
     let allrates = 0;
-    if (thisItem.comments.length != 0) {
+    if (thisItem.comments.length !== 0) {
       rating = 0;
       for (let i of thisItem.comments) {
         allrates += 1;

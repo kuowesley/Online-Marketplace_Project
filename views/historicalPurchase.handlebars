@@ -1,11 +1,21 @@
+<link rel="stylesheet" href="/public/css/historicalPurchaseStyles.css">
 <h1>Your orders</h1>
 {{#if items}}
 <table>
     <thead>
+        <th id="ItemName">ItemName</th>
+        <th id="Price">Price</th>
+        <th id="Picture">Picture</th>
+        <th id="Location">Location</th>
+        <th id="Condition">Condition</th>
+        <th id="Quantity">Quantity</th>
+        <th id="RatingComment">Rating and Comment</th>
+        <th id="MeetUpTime">Meet Up Time</th>
+        <th id="Review">Review</th>
     </thead>
     <tbody>
         {{#each items}}
-        <tr class="item">
+        <tr>
             <td><a href="/items/{{this.item._id}}">{{this.item.item}}</a></td>
             <td>${{this.item.price}}</td>
             <td>
@@ -14,14 +24,16 @@
             <td>{{this.item.location}}</td>
             <td>{{this.item.condition}}</td>
             <td>quantity:{{this.quantity}}</td>
-            {{#if this.meetUp}}
-            <td>Meet Up Time:{{this.meetUp}}</td>
-            {{/if}}
             <td>
-                <button class="rate" type="button" id="{{this.item._id}} rate" value="{{this.item._id}}" data-itemname="{{this.item.item}}">Rate&Comment</button>
+                <button class="rate" type="button" id="{{this.item._id}} rate" value="{{this.item._id}}"
+                    data-itemname="{{this.item.item}}">Rate/Comment</button>
             </td>
+            {{!-- {{#if this.meetUp}} --}}
+            <td> {{#if this.meetUp}}{{this.meetUp}} {{/if}}</td>
+            {{!-- {{/if}} --}}
             <td>
-                <button class="edit" type="button" id="{{this.item._id}} edit" value="{{this.item._id}}" data-itemname="{{this.item.item}}">Edit Review</button>
+                <button class="edit" type="button" id="{{this.item._id}} edit" value="{{this.item._id}}"
+                    data-itemname="{{this.item.item}}">Edit Review</button>
             </td>
         </tr>
         {{/each}}

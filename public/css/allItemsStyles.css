@@ -1,108 +1,112 @@
-/* Search form */
 #searchItems {
-    margin-bottom: 20px;
-    /* Add your custom styles here for the search form */
-    justify-content: center; /* Center items horizontally */
-    align-items: center; /* Center items vertically (optional) */
-  }
-  
-  
-  .search-form-label {
-    padding: 13px 8px;
-    display: block;
-    /* Style the search form label */
-  }
-  
-  .search-input {
-    width: 200px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    /* Input box styling */
-  }
-  
-  .search-submit {
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    /* Submit button styling */
-  }
-  
-  /* Filter form */
-  #filterSearch {
-    margin-bottom: 20px;
-    /* Custom styles for the filter form */
-  }
-  
-  .filter-search-label {
-    display: block;
-    margin-bottom: 5px;
-    /* Style the filter form label */
-  }
-  
-  #sort_order {
-    width: 150px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    /* Select dropdown styling */
-  }
-  
-  .filter-submit {
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    /* Filter submit button styling */
-  }
-  
-  /* All Items display */
-  #all-items {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    grid-gap: 20px;
-    /* Grid layout for items */
-  }
-  
-  .item {
-    border: 1px solid #ccc;
-    padding: 20px;
-    /* Individual item box styling */
-  }
-  
-  .item p {
-    margin-bottom: 10px;
-    /* Style paragraphs inside items */
-  }
-  
-  .item a {
-    color: #007bff;
-    text-decoration: none;
-    /* Style links inside items */
-  }
-  
-  .item img {
-    max-width: 100%;
-    height: auto;
-    /* Style images inside items */
-  }
-  
-  .item-row {
-    display: flex;
-    /* Adjust item row display */
-    margin-bottom: 20px;
-  }
+  margin-bottom: 20px;
+  justify-content: center;
+  align-items: center;
+}
 
-  #searchItems {
-    display: flex; /* Use flexbox layout */
-    align-items: center; /* Align items vertically in the center */
-  }
-  
-  /* Other sections (search result, price sorting, etc.) */
-  /* Style these sections as needed */
-  
+
+.search-form-label {
+  padding: 13px 8px;
+  display: block;
+}
+
+.search-input {
+  width: 200px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.search-submit {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#filterSearch {
+  margin-bottom: 20px;
+}
+
+.filter-search-label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+#sort_order {
+  width: 150px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.filter-submit {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#all-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 20px;
+}
+
+.item {
+  border: 1px solid #ccc;
+  padding: 20px;
+}
+
+.item p {
+  margin-bottom: 10px;
+}
+
+.item a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.item img {
+  max-width: 100%;
+  height: auto;
+}
+
+.item-row {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+#searchItems {
+  display: flex;
+  align-items: center;
+}
+
+
+
+.item {
+  display: inline-block;
+  margin-right: 10px;
+  border: 3px solid #b0b0b0;
+}
+
+.item-row {
+  margin-bottom: 20px;
+}
+
+.item-details {
+  text-align: center;
+}
+
+.item-details img {
+  display: block;
+  margin: 0 auto;
+}
+
+.inline-block-nav>li {
+  display: inline-block;
+}

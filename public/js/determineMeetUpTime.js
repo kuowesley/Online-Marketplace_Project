@@ -11,6 +11,9 @@
       alert("you must choose a time");
       return;
     }
+    if (!checkTime(time.val().trim())) {
+      return;
+    }
     let requestConfig = {
       method: "POST",
       url: "/users/determineMeetUpTime",
@@ -38,40 +41,18 @@
     $.ajax(requestConfig);
   });
 
-  // loginForm.submit((event) => {
-  //     event.preventDefault();
-  //     error.empty();
-  //     if (!usernameInput.val().trim() || !passwordInput.val().trim()) {
-  //         error.text("Either the email address or password is invalid");
-  //         return false;
-  //     }
-
-  //     let requestConfig = {
-  //         method: "POST",
-  //         url: "/users/login",
-  //         contentType: "application/json",
-  //         data: JSON.stringify({
-  //             usernameInput: usernameInput.val().trim(),
-  //             passwordInput: passwordInput.val().trim(),
-  //         }),
-  //         success: function (data) {
-  //             if (!data.user) {
-  //                 alert("login fail");
-  //                 window.location.href = "/users/login";
-  //             } else {
-  //                 alert("login success");
-  //                 window.location.href = "/";
-  //             }
-  //         },
-  //         error: function (xhr, status, error) {
-  //             if (xhr.responseJSON && xhr.responseJSON.message) {
-  //                 alert(xhr.responseJSON.message);
-  //             } else {
-  //                 alert(status);
-  //             }
-  //         },
-  //     };
-
-  //     $.ajax(requestConfig);
-  // });
+  function checkTime(timeVal) {
+    let dateObj = new Date(timeVal);
+    let now = new Date();
+    let oneDaysLater = new Date(now.getTime() + 1 * 24 * 60 * 60 * 1000);
+    if (dateObj.toString() === "Invalid Date") {
+      alert("invalid time");
+      return false;
+    }
+    if (dateObj < oneDaysLater) {
+      alert("Time should be at least 1 day later than now");
+      return false;
+    }
+    return true;
+  }
 })(window.jQuery);

@@ -41,30 +41,6 @@
     color: red;
 }
 
-.item {
-    display: inline-block;
-    margin-right: 20px;
-    border: 1px solid #ccc;
-}
-
-.item-row {
-    margin-bottom: 20px;
-}
-
-.item-details {
-    text-align: center;
-}
-
-.item-details img {
-    display: block;
-    margin: 0 auto;
-}
-
-.inline-block-nav>li {
-    display: inline-block;
-}
-
-
 .error-list {
     list-style: none;
     margin: 0;
@@ -73,8 +49,6 @@
     font-weight: bold;
 }
 
-/* Main */
-/* Reset default margin and padding */
 body,
 ul,
 li {
@@ -83,7 +57,6 @@ li {
     list-style: none;
 }
 
-/* Global styles */
 body {
     font-family: 'Arial', sans-serif;
     line-height: 1.6;

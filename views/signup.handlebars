@@ -2,6 +2,7 @@
 <h1 class="signup-h1">Sign up</h1>
 <p class="signup-link">Already a user? <a href="/users/login">click here to log in</a></p>
 
+<p id ="error" hidden>{{errorMessage}}</p>
 <form action="/users/signup" method="POST" id="signup-form" class="signup-form">
     <label for="firstNameInput" class="firstName-signup-label">First Name</label>
     <input type="text" id="firstNameInput" name="firstNameInput" class="signup-firstname">
@@ -59,7 +60,6 @@
     Not valid: test123, test123$, foobar, tS12$<br>
     Valid: Test123$, FooBar123*, HorsePull748*%
 </p>
-<p>{{errorMessage}}</p>
 
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
     crossorigin="anonymous"></script>

@@ -10,15 +10,18 @@
     (age = $("#ageInput")),
     (password = $("#passwordInput")),
     (confirnPassword = $("#confirmPasswordInput"));
-
+  let error = $("#error");
+  if (error.text()) {
+    alert(error.text());
+  }
   $("#signup-form").submit(function (event) {
-    // event.preventDefault();
     try {
       $("#error1").hide();
       nameCheck(firstName.val());
     } catch (e) {
       $("#error1").show();
       firstName.val("");
+      event.preventDefault();
     }
 
     try {
@@ -27,6 +30,7 @@
     } catch (e) {
       $("#error2").show();
       lastName.val("");
+      event.preventDefault();
     }
 
     try {
@@ -35,6 +39,7 @@
     } catch (e) {
       $("#error3").show();
       userName.val("");
+      event.preventDefault();
     }
 
     try {
@@ -43,6 +48,7 @@
     } catch (e) {
       $("#error4").show();
       email.val("");
+      event.preventDefault();
     }
 
     try {
@@ -51,6 +57,7 @@
     } catch (e) {
       $("#error5").show();
       street.val("");
+      event.preventDefault();
     }
 
     try {
@@ -59,6 +66,7 @@
     } catch (e) {
       $("#error6").show();
       city.val("");
+      event.preventDefault();
     }
 
     try {
@@ -67,6 +75,7 @@
     } catch (e) {
       $("#error7").show();
       state.val("");
+      event.preventDefault();
     }
 
     try {
@@ -75,6 +84,7 @@
     } catch (e) {
       $("#error8").show();
       zipcode.val("");
+      event.preventDefault();
     }
 
     try {
@@ -83,6 +93,7 @@
     } catch (e) {
       $("#error9").show();
       age.val("");
+      event.preventDefault();
     }
 
     try {
@@ -91,6 +102,7 @@
     } catch (e) {
       $("#error10").show();
       password.val("");
+      event.preventDefault();
     }
 
     try {
@@ -99,6 +111,7 @@
     } catch (e) {
       $("#error11").show();
       confirnPassword.val("");
+      event.preventDefault();
     }
   });
 })(window.jQuery);

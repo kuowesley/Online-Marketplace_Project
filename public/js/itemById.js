@@ -10,7 +10,7 @@
   let forurl = location.text().split(":");
   const locationRegex = /^[a-zA-Z0-9\s,]+$/;
   let forurl2 = forurl[1].trim().split(" ").join("%20");
-  let encodedLocation = encodeURIComponent(forurl2);
+  let encodedLocation = encodeURIComponent(forurl[1]);
   let url = `https://www.google.com/maps/embed/v1/place?key=AIzaSyCYZLvFlrBKTaeIj2PrmHNryS9q0TJYRpc&q=${encodedLocation}`;
   console.log(url);
   $("#map")
